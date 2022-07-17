@@ -1,159 +1,253 @@
 * {
-    font-family: sans-serif;
-  }
-  
-  th 
-  {
-    vertical-align: center;
-    text-align: center;
-    height: 40px;
-  }
-  
-  th span 
-  {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    white-space: nowrap;
-    text-align: center;
-  }
-  
-  div.tableregen table, 
-  div.tableregen th, 
-  div.tableregen td {
-    border: 1px solid;
-    border-collapse:collapse;
-    text-align: center;
-  }
-  
-  .tableregen table {
-    background-color: #e6b8af;
-  }
-  
-  #table td {
-    width: 60px;
-    font-size: 14px;
-    height: 21px;
-  }
-  
-  .group-1 {
-    background-color: #cc4125;
-  }
-  
-  .group-2 {
-    background-color: #ea9999;
-  }
-  
-  .group-3 {
-    background-color: #f6b26b;
-  }
-  
-  .group-4 {
-    background-color: #ffd966;
-  }
-  
-  .group-5 {
-    background-color: #fff2cc;
-  }
-  
-  .group-6 {
-    background-color: #b6d7a8;
-  }
-  
-  .group-7 {
-    background-color: #6aa84f;
-  }
-  
-  .group-8 {
-    background-color: #3c78d8;
-  }
-  
-  .group-9 {
-    background-color: #6d9eeb;
-  }
-  
-  .group-10 {
-    background-color: #9fc5e8;
-  }
-  
-  .group-11 {
-    background-color: #b4a7d6;
-  }
-  
-  .group-12 {
-    background-color: #8e7cc3;
-  }
-  
-  .group-13 {
-    background-color: #d5a6bd;
-  }
-  
-  .group-14 {
-    background-color: #a64d79;
-  }
-  
-  .group-15 {
-    background-color: #999999;
-  }
-  
-  #header-ms {
-    background-color: #8e7cc3;
-    font-size: 40px;
-  }
-  
-  #header-lb {
-    background-color: #6d9eeb;
-    font-size: 40px;
-  }
-  
-  .button {
-    padding: 10px 20px;
-    font-size: 16px;
-    text-align: center;
-    cursor: pointer;
+  font-family: sans-serif;
+}
+
+div.tableregen th {
+  vertical-align: center;
+  text-align: center;
+  height: 40px;
+}
+
+th span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  text-align: center;
+}
+
+div.tableregen table,
+div.tableregen th,
+div.tableregen td {
+  border: 1px solid;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.tableregen table {
+  background-color: #e6b8af;
+}
+
+#table td {
+  width: 60px;
+  font-size: 14px;
+  height: 21px;
+}
+
+.group-1 {
+  background-color: #cc4125;
+}
+
+.group-2 {
+  background-color: #ea9999;
+}
+
+.group-3 {
+  background-color: #f6b26b;
+}
+
+.group-4 {
+  background-color: #ffd966;
+}
+
+.group-5 {
+  background-color: #fff2cc;
+}
+
+.group-6 {
+  background-color: #b6d7a8;
+}
+
+.group-7 {
+  background-color: #6aa84f;
+}
+
+.group-8 {
+  background-color: #3c78d8;
+}
+
+.group-9 {
+  background-color: #6d9eeb;
+}
+
+.group-10 {
+  background-color: #9fc5e8;
+}
+
+.group-11 {
+  background-color: #b4a7d6;
+}
+
+.group-12 {
+  background-color: #8e7cc3;
+}
+
+.group-13 {
+  background-color: #d5a6bd;
+}
+
+.group-14 {
+  background-color: #a64d79;
+}
+
+.group-15 {
+  background-color: #999999;
+}
+
+#header-ms {
+  background-color: #8e7cc3;
+  font-size: 40px;
+}
+
+#header-lb {
+  background-color: #6d9eeb;
+  font-size: 40px;
+}
+
+button.regenbtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #04AA6D;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+  margin-bottom: 20px;
+}
+
+button.regenbtn:hover {
+  background-color: #3e8e41
+}
+
+button.regenbtn:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+table.stats input {
+  display: inline;
+  text-align: center;
+  background: transparent;
+  border: none;
+  width: 100%;
+}
+
+select {
+  display: inline;
+  background: transparent;
+  margin-left: 5px;
+  border: 1px solid;
+  width: 100%;
+  border: none;
+  text-align: center;
+}
+
+td.stat {
+  background-color: #93c47d;
+  height: 20px;
+}
+
+td.statinput {
+  background-color: #b6d7a8;
+}
+
+div.tablestats table,
+div.tablestats th,
+div.tablestats td {
+  border: 1px solid;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 16px;
+  table-layout: fixed;
+  width: 200px;
+}
+
+#left {
+  float: left;
+  margin-right: 50px;
+}
+
+#right {
+  float: left;
+  width: 500p
+}
+
+table.suggestion th {
+  background-color: #e69138;
+  border: 1px solid;
+  width: 150px;
+  font-size: 14px;
+  width: 130px;
+}
+
+table.suggestion td {
+  background-color: #f9cb9c;
+  border: 1px solid;
+  text-align: center;
+  height: 24px;
+  width: 130px;
+}
+
+table.suggestion table {
+  border: 1px solid;
+  table-layout: fixed;
+}
+
+div.suggestion table.stats,
+div.suggestion table.stats td {
+  border: 1px solid;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 16px;
+  table-layout: fixed;
+  width: 130px;
+  height: 45px;
+}
+
+button.suggestbtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #ab6d03;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+  margin-bottom: 20px;
+}
+
+button.suggestbtn:hover {
+  background-color: #99602e
+}
+
+button.suggestbtn:active {
+  background-color: #99602e;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+table.stats,
+table.stats td {
+  border: 1px solid;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 16px;
+  table-layout: fixed;
+  width: 200px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input:focus,
+select:focus {
     outline: none;
-    color: #fff;
-    background-color: #04AA6D;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-    margin-bottom: 20px;
-  }
-  
-  .button:hover {background-color: #3e8e41}
-  
-  .button:active {
-    background-color: #3e8e41;
-    box-shadow: 0 5px #666;
-    transform: translateY(4px);
-  }
-  
-  input {
-    text-align: left;
-    background: transparent;
-    border: none;
-    margin-left: 5px;
-  }
-  
-  select {
-    background: transparent;
-    margin-left: 5px;
-    border: 1px solid;
-  }
-  
-  td.stat {
-    background-color: #93c47d;
-    height: 20px;
-  }
-  
-  td.statinput {
-    background-color: #b6d7a8;
-  }
-  
-  div.tablestats table, 
-  div.tablestats th, 
-  div.tablestats td {
-    border: 1px solid;
-    border-collapse:collapse;
-    text-align: left;
-    font-size: 16px;
-  }
+}

@@ -11,27 +11,6 @@
     </head>
 
     <body>
-      <!--
-    <div class="curDmg">
-       <label for="dmgtypes">Damage Type:&nbsp</label>
-           <select name="dmgtypes" id="DmgType">
-               <option value="Clan Ship">Clan Ship</option>
-               <option value="Shadow Clone">Shadow Clone</option>
-               <option value="Heavenly Strike">Heavently Strike</option>
-               <option value="Pet">Pet</option>
-               <option value="Dagger">Dagger</option>
-               <option value="Gold Gun">Gold Gun</option>
-           </select> 
-    </div>
-  <div class="curGold">
-     <label for="goldtypes">Gold Type:&nbsp</label>
-         <select name="goldtypes" id="GoldType">
-             <option value="Fairy">Fairy</option>
-             <option value="Heart of Gold">Heart of Gold</option>
-             <option value="Chesterson">Chesterson</option>
-         </select> 
-    </div> <br>
-    -->
       <div>
         <h1>
           Limit Break & Mana Siphon Optimizer
@@ -40,7 +19,7 @@
           This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.
         </p>
       </div>
-      <div class="tablestats"><span style=font-size:24px>Stat Inputs: </span><br>
+      <div class="tablestats" id="left"><span style=font-size:24px>Stat Inputs: </span><br>
         <table class="stats" border="1" style=border-collapse:collapse;>
           <tbody>
             <tr>
@@ -162,9 +141,54 @@
           </tbody>
         </table>
       </div>
-    </body> <br>
-    <button type="button" class="button" onclick="populate(); return false;">Calculate &rarr;</button>
+
+      <div class="suggestion" id="right"><span style=font-size:24px>Suggestions: </span><br>
+        <table class="stats">
+          <tbody>
+            <tr>
+              <td class="stat">Mana Regen Needed</td>
+              <td class="statinput"><input type="number" id="neededRegen" value="1568.07"></td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <table class="suggestion" border="1" style=border-collapse:collapse;>
+          <thead class="suggestion">
+            <tr>
+              <th></th>
+              <th class="suggestion">Regen / Min</th>
+              <th class="suggestion">Mana Siphon</th>
+              <th class="suggestion">Limit Break</th>
+              <th class="suggestion" style="word-wrap:normal">SP Cost of Suggestion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Suggested</th>
+              <td class="suggestion" id="suggestedRegen"></td>
+              <td class="suggestion" id="suggestedSiphon"></td>
+              <td class="suggestion" id="suggestedLB"></td>
+              <td class="suggestion" id="suggestedCost"></td>
+            </tr>
+            <tr>
+              <th>Maybe Better?</th>
+              <td class="better" id="betterRegen"></td>
+              <td class="better" id="betterSiphon"></td>
+              <td class="better" id="betterLB"></td>
+              <td class="better" id="betterCost"></td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <button type="button" class="suggestbtn" onclick="suggestion(); return false;">Suggest Me &rarr;</button>
+      </div>
+    </body>
+    <br clear="all">
+    <div></div>
     <br>
+    <button type="button" class="regenbtn" onclick="populate(); return false;">Calculate &rarr;</button>
+    <br>
+    </div>
     <div class="tableregen" id="tableregen" style="display: none">
       <table id="table">
         <thead>
