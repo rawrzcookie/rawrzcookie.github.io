@@ -18,7 +18,7 @@ var player = {
   "RF": "",
   "staff": "",
   "neededRegen": ""
-}
+};
 
 function playerStats() {
   player["lucky"] = $("lucky").checked;
