@@ -302,14 +302,18 @@ function save() {
 }
 
 function load() {
-  let playerStats = JSON.parse(localStorage.getItem("player"));
-  player = playerStats;
+  if (Object.keys(player).length ==0) {
+    return;
+  } else {
+    let playerStats = JSON.parse(localStorage.getItem("player"));
+    player = playerStats;
 
-  for (key in player) {
-    if (key == "lucky" || key == "AK" || key == "CC" || key == "RF" || key == "staff") {
-      $(key).checked = player[key];
-    } else {
-      $(key).value = player[key];
+    for (key in player) {
+      if (key == "lucky" || key == "AK" || key == "CC" || key == "RF" || key == "staff") {
+        $(key).checked = player[key];
+      } else {
+        $(key).value = player[key];
+      }
     }
   }
 }
