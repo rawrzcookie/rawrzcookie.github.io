@@ -3,21 +3,21 @@ var $ = function(id) {
 };
 
 var player = {
-  "lucky": $("lucky").checked,
-  "slash": $("slash").value,
-  "tps": $("tps").value,
-  "bFury": $("bFury").value,
-  "sClone": $("sClone").value,
-  "NP": $("NP").value,
-  "curRegen": $("curRegen").value,
-  "LB": $("LB").value,
-  "manaPotion": $("manaPotion").value,
-  "CP": $("CP").value,
-  "AK": $("AK").checked,
-  "CC": $("CC").checked,
-  "RF": $("RF").checked,
-  "staff": $("staff").checked,
-  "neededRegen": $("neededRegen").value
+  "lucky": false,
+  "slash": 0,
+  "tps": 0,
+  "bFury": 0,
+  "sClone": 0,
+  "NP": 0,
+  "curRegen": 0,
+  "LB": 0,
+  "manaPotion": 0,
+  "CP": 1,
+  "AK": false,
+  "CC": false,
+  "RF": false,
+  "staff": false,
+  "neededRegen": 0
 }
 
 function playerStats() {
@@ -308,7 +308,7 @@ function load() {
   for (key in player) {
     if (key == "lucky" || key == "AK" || key == "CC" || key == "RF" || key == "staff") {
       $(key).checked = player[key];
-    } else{
+    } else {
       $(key).value = player[key];
     }
   }
