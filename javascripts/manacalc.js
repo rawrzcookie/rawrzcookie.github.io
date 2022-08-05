@@ -91,6 +91,8 @@ function lucky_foot() {
 
 function calcMana(lb_level, siphon_level) {
 
+  playerStats();
+
   var slash = player["slash"];
   var tps = Number(player["tps"]);
   var bFury = fury[player["bFury"]];
