@@ -2,7 +2,24 @@ var $ = function(id) {
   return document.getElementById(id);
 };
 
-var player = {};
+var player = {
+  "lucky": "",
+  "slash": "",
+  "tps": "",
+  "bFury": "",
+  "sClone": "",
+  "NP": "",
+  "curRegen": "",
+  "LB": "",
+  "manaPotion": "",
+  "CP": "",
+  "AK": "",
+  "CC": "",
+  "RF": "",
+  "staff": "",
+  "neededRegen": ""
+};
+
 
 function playerStats() {
   player["lucky"] = $("lucky").checked;
@@ -286,7 +303,7 @@ function save() {
 }
 
 function load() {
-  if (Object.keys(player).length == 0) {
+  if (localStorage.getItem("player") === null) {
     return;
   } else {
     let playerStats = JSON.parse(localStorage.getItem("player"));
