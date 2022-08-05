@@ -10,7 +10,7 @@
       <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     </head>
 
-    <body>
+    <body onchange="save()" onload="load()">
       <div>
         <h1>
           Limit Break & Mana Siphon Optimizer
@@ -27,7 +27,7 @@
                 <span>Lucky Foot Artifact</span>
               </td>
               <td class="statinput">
-                <input type="checkbox" id="lucky" checked>
+                <input type="checkbox" id="lucky">
               </td>
             </tr>
             <tr>
@@ -35,7 +35,7 @@
                 <span>All Probability Slash</span>
               </td>
               <td class="statinput">
-                <input type="number" id="slash" value="1.155">
+                <input type="number" id="slash" placeholder="1.155" step="any">
               </td>
             </tr>
             <tr>
@@ -43,7 +43,7 @@
                 <span>Taps/seconds</span>
               </td>
               <td class="statinput">
-                <input type="number" id="tps" value="20">
+                <input type="number" id="tps" placeholder="20" step="">
               </td>
             </tr>
             <tr>
@@ -51,7 +51,7 @@
                 <span>Barbaric Fury Level</span>
               </td>
               <td class="statinput">
-                <input type="number" id="bFury" value="7">
+                <input type="number" id="bFury" placeholder="7">
               </td>
             </tr>
             <tr>
@@ -59,14 +59,14 @@
                 <span>Shadow Clone Level</span>
               </td>
               <td class="statinput">
-                <input type="number" id="sClone" value="35"><br>
+                <input type="number" id="sClone" placeholder="35"><br>
               </td>
             <tr>
               <td class="stat">
                 <span>Nightmare Puppeteer Level</span>
               </td>
               <td class="statinput">
-                <input type="number" id="NP" value="11"><br>
+                <input type="number" id="NP" placeholder="11"><br>
               </td>
             </tr>
             <tr>
@@ -74,7 +74,7 @@
                 <span>Current Mana Regen</span>
               </td>
               <td class="statinput">
-                <input type="number" id="curRegen" value="697.2"><br>
+                <input type="number" id="curRegen" placeholder="697.2" step="any"><br>
               </td>
             </tr>
             <tr>
@@ -82,7 +82,7 @@
                 <span>Current LB Level</span>
               </td>
               <td class="statinput">
-                <input type="number" id="LB" value="4"><br>
+                <input type="number" id="LB" placeholder="4"><br>
               </td>
             </tr>
             <tr>
@@ -103,7 +103,7 @@
                 <span>Crafting Power Level</span>
               </td>
               <td class="statinput">
-                <input type="number" id="craft" value="27"><br>
+                <input type="number" id="CP" placeholder="27"><br>
               </td>
             </tr>
             <tr>
@@ -111,7 +111,7 @@
                 <span>Azure Knight:</span>
               </td>
               <td class="statinput">
-                <input type="checkbox" id="AK" checked><br>
+                <input type="checkbox" id="AK"><br>
               </td>
             </tr>
             <tr>
@@ -119,7 +119,7 @@
                 <span>Chained Clockwork:</span>
               </td>
               <td class="statinput">
-                <input type="checkbox" id="CC" checked><br>
+                <input type="checkbox" id="CC"><br>
               </td>
             </tr>
             <tr>
@@ -127,7 +127,7 @@
                 <span>Reckless Firepower:</span>
               </td>
               <td class="statinput">
-                <input type="checkbox" id="RF" checked><br>
+                <input type="checkbox" id="RF"><br>
               </td>
             </tr>
             <tr>
@@ -135,11 +135,13 @@
                 <span>Mystic Staff:</span>
               </td>
               <td class="statinput">
-                <input type="checkbox" id="staff" checked><br>
+                <input type="checkbox" id="staff"><br>
               </td>
             </tr>
           </tbody>
         </table>
+        <br>
+        <button type="button" class="regenbtn" onclick="populate(); return false;">Calculate &rarr;</button>
       </div>
 
       <div class="suggestion" id="right"><span style=font-size:24px>Suggestions: </span><br>
@@ -147,7 +149,7 @@
           <tbody>
             <tr>
               <td class="stat">Mana Regen Needed</td>
-              <td class="statinput"><input type="number" id="neededRegen" value="1568.07"></td>
+              <td class="statinput"><input type="number" id="neededRegen" placeholder="1568.07" step="any"></td>
             </tr>
           </tbody>
         </table>
@@ -185,8 +187,6 @@
     </body>
     <br clear="all">
     <div></div>
-    <br>
-    <button type="button" class="regenbtn" onclick="populate(); return false;">Calculate &rarr;</button>
     <br>
     </div>
     <div class="tableregen" id="tableregen" style="display: none">

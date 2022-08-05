@@ -2,34 +2,103 @@ var $ = function(id) {
   return document.getElementById(id);
 };
 
+var player = {
+  "lucky": $("lucky").checked,
+  "slash": $("slash").value,
+  "tps": $("tps").value,
+  "bFury": $("bFury").value,
+  "sClone": $("sClone").value,
+  "NP": $("NP").value,
+  "curRegen": $("curRegen").value,
+  "LB": $("LB").value,
+  "manaPotion": $("manaPotion").value,
+  "CP": $("CP").value,
+  "AK": $("AK").checked,
+  "CC": $("CC").checked,
+  "RF": $("RF").checked,
+  "staff": $("staff").checked,
+  "neededRegen": $("neededRegen").value
+}
+
+function playerStats() {
+  player["lucky"] = $("lucky").checked;
+  player["slash"] = $("slash").value;
+  player["tps"] = $("tps").value;
+  player["bFury"] = $("bFury").value;
+  player["sClone"] = $("sClone").value;
+  player["NP"] = $("NP").value;
+  player["curRegen"] = $("curRegen").value;
+  player["LB"] = $("LB").value;
+  player["manaPotion"] = $("manaPotion").value;
+  player["CP"] = $("CP").value;
+  player["AK"] = $("AK").checked;
+  player["CC"] = $("CC").checked;
+  player["RF"] = $("RF").checked;
+  player["staff"] = $("staff").checked;
+  player["neededRegen"] = $("neededRegen").value;
+}
 
 function azure_knight(CP) {
-  if ($("AK").checked == true) {
-    return 1.2 * 1.002 ** ((CP - 1) ** 0.8);
+  let AK;
+  if (player["AK"] == true) {
+    AK = 1.2 * 1.002 ** ((CP - 1) ** 0.8);
   } else {
-    return 1;
+    AK = 1;
   }
+  return AK;
 }
 
 function chained_clockwork(CP) {
-  if ($("CC").checked == true) {
-    return 1.5 * 1.005 ** ((CP - 1) ** 0.8);
+  let CC;
+  if (player["CC"] == true) {
+    CC = 1.5 * 1.005 ** ((CP - 1) ** 0.8);
   } else {
-    return 1;
+    CC = 1;
   }
+  return CC;
+}
+
+function mystic_staff() {
+  let staff;
+  if (player["staff"] == true) {
+    staff = 1.2;
+  } else {
+    staff = 1;
+  }
+  return staff;
+}
+
+function reckless_firepower() {
+  let RF;
+  if (player["RF"] == true) {
+    RF = 3;
+  } else {
+    RF = 0;
+  }
+  return RF;
+}
+
+function lucky_foot() {
+  let lucky;
+  if (player["lucky"] == true) {
+    lucky = 1.1;
+  } else {
+    lucky = 1;
+  }
+  return lucky;
 }
 
 function calcMana(lb_level, siphon_level) {
 
-  var slash = $("slash").value;
-  var tps = Number($("tps").value);
-  var bFury = fury[$("bFury").value];
-  var sClone = clone[$("sClone").value];
-  var NP = puppet[$("NP").value];
-  var curRegen = $("curRegen").value;
-  var LB = limit[$("LB").value]["Mana boost"];
-  var manaPotion = potion[$("manaPotion").value];
-  var CP = $("craft").value;
+  var slash = player["slash"];
+  var tps = Number(player["tps"]);
+  var bFury = fury[player["bFury"]];
+  var sClone = clone[player["sClone"]];
+  var NP = puppet[player["NP"]];
+  var curRegen = player["curRegen"];
+  var LB = limit[player["LB"]]["Mana boost"];
+  var manaPotion = potion[player["manaPotion"]];
+  var CP = player["CP"];
 
   // get Azure Knight
   var AK = azure_knight(CP);
@@ -38,25 +107,13 @@ function calcMana(lb_level, siphon_level) {
   var CC = chained_clockwork(CP);
 
   // get Mystic Staff
-  if ($("staff").checked == true) {
-    var staff = 1.2;
-  } else {
-    var staff = 1;
-  }
+  var staff = mystic_staff();
 
   // get Reckless Firepower
-  if ($("RF").checked == true) {
-    var RF = 3;
-  } else {
-    var RF = 0;
-  }
+  var RF = reckless_firepower();
 
   // get Lucky Foot (All Prob) Art
-  if ($("lucky").checked == true) {
-    var lucky = 1.1;
-  } else {
-    var lucky = 1;
-  }
+  var lucky = lucky_foot();
 
   // calc Mana Siphon
   var prob = slash * lucky;
@@ -239,4 +296,20 @@ function suggestion() {
   }
 }
 
+function save() {
+  playerStats();
+  localStorage.setItem("player", JSON.stringify(player))
+}
 
+function load() {
+  let playerStats = JSON.parse(localStorage.getItem("player"));
+  player = playerStats;
+
+  for (key in player) {
+    if (key == "lucky" || key == "AK" || key == "CC" || key == "RF" || key == "staff") {
+      $(key).checked = player[key];
+    } else{
+      $(key).value = player[key];
+    }
+  }
+}
