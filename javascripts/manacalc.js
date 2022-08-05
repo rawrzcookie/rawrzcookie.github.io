@@ -3,21 +3,21 @@ var $ = function(id) {
 };
 
 var player = {
-  "lucky": false,
-  "slash": 0,
-  "tps": 0,
-  "bFury": 0,
-  "sClone": 0,
-  "NP": 0,
-  "curRegen": 0,
-  "LB": 0,
-  "manaPotion": 0,
-  "CP": 1,
-  "AK": false,
-  "CC": false,
-  "RF": false,
-  "staff": false,
-  "neededRegen": 0
+  "lucky": "",
+  "slash": "",
+  "tps": "",
+  "bFury": "",
+  "sClone": "",
+  "NP": "",
+  "curRegen": "",
+  "LB": "",
+  "manaPotion": "",
+  "CP": "",
+  "AK": "",
+  "CC": "",
+  "RF": "",
+  "staff": "",
+  "neededRegen": ""
 }
 
 function playerStats() {
