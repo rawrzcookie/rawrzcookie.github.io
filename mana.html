@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Mana Consumption Calculator</title>
+</head>
+<body class="nav" style=background-color:#36393e>
+   <nav class="navbar">
+        <div class="titlename"><a href="/"><img class="rawrz" src="images/Circle Cookie Dino.png" height="60">rawrzcookie</a></div>
+    
+    <a href="#" class="toggle-button">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </a>
+    <div class="vl"></div>
+    <div class="navbar-links">
+        <ul>
+            <li><a href="spopti.html">Skill Point Optimizer</a></li>
+            <li><a href="mana.html">Mana Consumption Calculator</a></li>
+            <li><a href="lbms.html">LB/MS Optimizer</a></li>
+        </ul>
+        </div>
+   </nav>
+    
+    <div class="container">
+        <div class="maintitle">
+            <h1>Coming soon!</h1>
+        </div>
+    </div>
+
+
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+        <script>
+        kofiWidgetOverlay.draw('rawrzcookie', {
+            'type': 'floating-chat',
+            'floating-chat.donateButton.text': 'Like It?',
+            'floating-chat.donateButton.background-color': '#00b9fe',
+            'floating-chat.donateButton.text-color': '#fff'
+        });
+    </script>
+    <script>
+        const toggleButton = document.getElementsByClassName('toggle-button')[0];
+        const navbarLinks = document.getElementsByClassName('navbar-links')[0];
+
+        toggleButton.addEventListener('click', () => {
+            navbarLinks.classList.toggle('active')
+        })
+    </script>
+</body>
+</html>
