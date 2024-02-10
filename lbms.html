@@ -1,1050 +1,293 @@
 <!doctype html>
 <html lang="en">
 
-  <html>
+<head>
+  <title>LB & Siphon Optimizer</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="images/Circle Cookie Dino.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Limit Break & Mana Siphon Optimizer">
+  <meta property="og:description" content="This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.">
+  <meta property="og:url" content="https://rawrzcookie.github.io/lbms.html">
+  <meta property="og:image" content="https://i.imgur.com/LUAz5M6.png">
+  <meta property="twitter:title" content="Limit Break & Mana Siphon Optimizer">
+  <meta property="twitter:description" content="This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.">
+  <meta property="twitter:image" content="https://i.imgur.com/LUAz5M6.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7920010104044650"
+     crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Y80TVE110"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-    <head>
-      <title>LB & Siphon Optimizer</title>
-      <link rel="stylesheet" href="style.css">
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta property="og:type" content="website">
-      <meta property="og:title" content="Limit Break & Mana Siphon Optimizer">
-      <meta property="og:description" content="This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.">
-      <meta property="og:url" content="https://rawrzcookie.github.io/lbms.html">
-      <meta property="og:image" content="https://i.imgur.com/LUAz5M6.png">
-      <meta property="twitter:title" content="Limit Break & Mana Siphon Optimizer">
-      <meta property="twitter:description" content="This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.">
-      <meta property="twitter:image" content="https://i.imgur.com/LUAz5M6.png">
-      <meta name="twitter:card" content="summary_large_image">
-      <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-    </head>
+    gtag('config', 'G-9Y80TVE110');
+  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+</head>
 
-    <body onchange="save()" onload="load()" style=background-color:#36393e>
-        <nav class="navbar">
-            <div class="titlename"><a href="/"><img class="rawrz" src="images/Circle Cookie Dino.png" height="60">rawrzcookie</a></div>
-            
-            <a href="#" class="toggle-button">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </a>
-            <div class="vl"></div>
-            <div class="navbar-links">
-                <ul>
-                    <li><a href="spopti.html">Skill Point Optimizer</a></li>
-                    <li><a href="mana.html">Mana Consumption Calculator</a></li>
-                    <li><a href="lbms.html">LB/MS Optimizer</a></li>
-                </ul>
-            </div>
-        </nav>
+<body onchange="save(), suggestion()" onload="load(), populate(), suggestion()" style=background-color:#36393e>
+  <nav class="navbar">
+      <div class="titlename"><a href="index.html"><img class="rawrz" src="images/Circle Cookie Dino.png" height="60">rawrzcookie</a></div>
       
-      <div class="lb-ms">
-        <div class="titlehead" style="height: auto !important;">
-          <h1 style=color:#FFFFFF>
-            Limit Break & Mana Siphon Optimizer
-          </h1>
-          <hr>
-          <p style=color:#FFFFFF>
-            This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.
-          </p>
-        </div>
-        <div class="row">
-          <div class="tablestats" id="left"><span style=color:#FFFFFF;font-size:24px;>Stat Inputs: </span><br>
-            <table class="stats" border="1" style=border-collapse:collapse;>
-              <tbody>
-                <tr>
-                  <td class="stat">
-                    <span>Lucky Foot Artifact</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="checkbox" id="lucky">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>All Probability Slash</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="number" id="slash" value="1" step="any">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>Taps/seconds</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="number" id="tps" value="20" step="">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>Barbaric Fury Level</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="number" id="bFury" value="0">
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>Shadow Clone Level</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="number" id="sClone" value="30"><br>
-                  </td>
-                <tr>
-                  <td class="stat">
-                    <span>Nightmare Puppeteer Level</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="number" id="NP" value="0"><br>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>Current Mana Regen</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="number" id="curRegen" value="1" step="any"><br>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>Current LB Level</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="number" id="LB" value="0"><br>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>Mana Potion Stacks</span>
-                  </td>
-                  <td class="statinput">
-                    <select name="manaPotion" id="manaPotion">
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                    </select><br>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>Crafting Power Level</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="number" id="CP" value="1"><br>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>Azure Knight:</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="checkbox" id="AK"><br>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>Chained Clockwork:</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="checkbox" id="CC"><br>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>Reckless Firepower:</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="checkbox" id="RF"><br>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="stat">
-                    <span>Mystic Staff:</span>
-                  </td>
-                  <td class="statinput">
-                    <input type="checkbox" id="staff"><br>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <br>
-            <button type="button" class="regenbtn" onclick="populate(); return false;">Calculate &rarr;</button>
-          </div>
-         
+      <a href="#" class="toggle-button">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+      </a>
+      <div class="vl"></div>
+      <div class="navbar-links">
+          <ul>
+              <li><a href="spopti.html">Skill Tree Builder</a></li>
+              <li><a href="lbms.html">Mana Optimizer</a></li>
+              <li><a href="changelog.html">Changelog</a></li>
+              <li><a href="https://discord.gg/zhJt63Atn3" style="padding-bottom: 5px;"><img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg" height="20"></a></li>
+          </ul>
+      </div>
+  </nav>
 
-          <div class="suggestion" id="right"><span style=font-size:24px;color:#FFFFFF>Suggestions: </span><br>
-            <table class="stats">
-              <tbody>
-                <tr>
-                  <td class="stat">
-                    <span>Mana Regen Needed</span>
-                  </td>
-                  <td class="statinput"><input type="number" id="neededRegen" value="1568.07" step="any"></td>
-                </tr>
-              </tbody>
-            </table>
-            <br>
-            <table class="suggestion" border="1" style=border-collapse:collapse;>
-              <thead class="suggestion">
-                <tr>
-                  <th></th>
-                  <th class="suggestion">Regen / Min</th>
-                  <th class="suggestion">Mana Siphon</th>
-                  <th class="suggestion">Limit Break</th>
-                  <th class="suggestion" style="word-wrap:normal">SP Cost of Suggestion</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>Suggested</th>
-                  <td class="suggestion" id="suggestedRegen"></td>
-                  <td class="suggestion" id="suggestedSiphon"></td>
-                  <td class="suggestion" id="suggestedLB"></td>
-                  <td class="suggestion" id="suggestedCost"></td>
-                </tr>
-                <tr>
-                  <th>Maybe Better?</th>
-                  <td class="better" id="betterRegen"></td>
-                  <td class="better" id="betterSiphon"></td>
-                  <td class="better" id="betterLB"></td>
-                  <td class="better" id="betterCost"></td>
-                </tr>
-              </tbody>
-            </table>
-            <br>
-            <button type="button" class="suggestbtn" onclick="suggestion(); return false;">Suggest Me &rarr;</button>
-          </div>
-        </div>
+  <div class="lb-ms">
+    <div class="titlehead" style="height: auto !important;">
+      <h1 style=color:#FFFFFF>
+        Limit Break & Mana Siphon Optimizer
+      </h1>
+      <hr>
+      <p style=color:#FFFFFF>
+        This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.
+      </p>
+    </div>
+    
+    <div class="optimizer-container">
+      <div class="tablestats" id="left">
+        <span style=color:#FFFFFF;font-size:24px;>Stat Inputs: </span>
+        <br>
+        <table class="stats" border="1" style=border-collapse:collapse;>
+          <tbody>
+            <tr>
+              <td class="stat">
+                <span>Lucky Foot Artifact</span>
+              </td>
+              <td class="statinput">
+                <input type="checkbox" id="lucky">
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>All Probability Slash</span>
+              </td>
+              <td class="statinput">
+                <input type="number" id="slash" value="1" step="any">
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Taps/seconds</span>
+              </td>
+              <td class="statinput">
+                <input type="number" id="tps" value="20" step="">
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Barbaric Fury Level</span>
+              </td>
+              <td class="statinput">
+                <input type="number" id="bFury" value="0">
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Shadow Clone Level</span>
+              </td>
+              <td class="statinput">
+                <input type="number" id="sClone" value="30">
+                <br>
+              </td>
+            <tr>
+              <td class="stat">
+                <span>Nightmare Puppeteer Level</span>
+              </td>
+              <td class="statinput">
+                <input type="number" id="NP" value="0">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Current Mana Regen</span>
+              </td>
+              <td class="statinput">
+                <input type="number" id="curRegen" value="1" step="any">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Current LB Level</span>
+              </td>
+              <td class="statinput">
+                <input type="number" id="LB" value="0">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Mana Potion Stacks</span>
+              </td>
+              <td class="statinput">
+                <select name="manaPotion" id="manaPotion">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Crafting Power Level</span>
+              </td>
+              <td class="statinput">
+                <input type="number" id="CP" value="1">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Azure Knight:</span>
+              </td>
+              <td class="statinput">
+                <input type="checkbox" id="AK">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Chained Clockwork:</span>
+              </td>
+              <td class="statinput">
+                <input type="checkbox" id="CC">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Reckless Firepower:</span>
+              </td>
+              <td class="statinput">
+                <input type="checkbox" id="RF">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Mystic Staff:</span>
+              </td>
+              <td class="statinput">
+                <input type="checkbox" id="staff">
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td class="stat">
+                <span>Mana Regen Needed</span>
+              </td>
+              <td class="statinput">
+                <input type="number" id="neededRegen" value="1568.07" step="any">
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-          <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-          <script>
-          kofiWidgetOverlay.draw('rawrzcookie', {
-              'type': 'floating-chat',
-              'floating-chat.donateButton.text': 'Like It?',
-              'floating-chat.donateButton.background-color': '#00b9fe',
-              'floating-chat.donateButton.text-color': '#fff'
-          });
-          </script>
-          <script>
-              const toggleButton = document.getElementsByClassName('toggle-button')[0];
-              const navbarLinks = document.getElementsByClassName('navbar-links')[0];
+        <div style="height: 20px; display: block;"></div>
 
-              toggleButton.addEventListener('click', () => {
-                  navbarLinks.classList.toggle('active')
-              })
-          </script>
+        <table class="suggestion" border="1" style=border-collapse:collapse;>
+          <thead class="suggestion">
+            <tr>
+              <th></th>
+              <th class="suggestion">Regen / Min</th>
+              <th class="suggestion">Mana Siphon</th>
+              <th class="suggestion">Limit Break</th>
+              <th class="suggestion" style="word-wrap:normal">SP Cost of Suggestion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Suggested</th>
+              <td class="suggestion" id="suggestedRegen"></td>
+              <td class="suggestion" id="suggestedSiphon"></td>
+              <td class="suggestion" id="suggestedLB"></td>
+              <td class="suggestion" id="suggestedCost"></td>
+            </tr>
+            <tr>
+              <th>Maybe Better?</th>
+              <td class="better" id="betterRegen"></td>
+              <td class="better" id="betterSiphon"></td>
+              <td class="better" id="betterLB"></td>
+              <td class="better" id="betterCost"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <br>
+        <button type="button" class="calculate" onclick="populate(); return false;">Calculate &rarr;</button>
+        <button type="button" class="suggestbtn" onclick="suggestion(); return false;">Suggest Me &rarr;</button>
       
-        <br clear="all">
-        <div class="view">
-          <div class="tableregen" id="tableregen" style="display: none">
-            <table id="table">
-              <thead>
-                <tr>
-                  <th class="sticky-first-row" id="header-ms" colspan="28">Mana Siphon</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-              <th class="sticky-first-col" id="header-lb" rowspan="28"><span>Limit Break</span></th>
-                <tr>
-                  <td class="sticky-second-col"></td>
-                  <td class="sticky-second-row">0</td>
-                  <td class="sticky-second-row">1</td>
-                  <td class="sticky-second-row">2</td>
-                  <td class="sticky-second-row">3</td>
-                  <td class="sticky-second-row">4</td>
-                  <td class="sticky-second-row">5</td>
-                  <td class="sticky-second-row">6</td>
-                  <td class="sticky-second-row">7</td>
-                  <td class="sticky-second-row">8</td>
-                  <td class="sticky-second-row">9</td>
-                  <td class="sticky-second-row">10</td>
-                  <td class="sticky-second-row">11</td>
-                  <td class="sticky-second-row">12</td>
-                  <td class="sticky-second-row">13</td>
-                  <td class="sticky-second-row">14</td>
-                  <td class="sticky-second-row">15</td>
-                  <td class="sticky-second-row">16</td>
-                  <td class="sticky-second-row">17</td>
-                  <td class="sticky-second-row">18</td>
-                  <td class="sticky-second-row">19</td>
-                  <td class="sticky-second-row">20</td>
-                  <td class="sticky-second-row">21</td>
-                  <td class="sticky-second-row">22</td>
-                  <td class="sticky-second-row">23</td>
-                  <td class="sticky-second-row">24</td>
-                  <td class="sticky-second-row">25</td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">0</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">1</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">2</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">3</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">4</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">5</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">6</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">7</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">8</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">9</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">10</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">11</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">12</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">13</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">14</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">15</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">16</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">17</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">18</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">19</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">20</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">21</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">22</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">23</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">24</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td class="sticky-second-col">25</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </body>
-        
-        <br>
-        <br>
-        <br>
-        <br>
+      <div id="siphon">Mana Siphon</div>
+      <div class="tableregen" id="tableregen" style="display: block">
+        <table id="table">
+          <thead>
+            <tr>
+            </tr>
+          </thead>
+          <tbody>
+            <th class="sticky-first-col" id="header-lb" rowspan="28">
+              <span>Limit Break</span>
+            </th>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+  </div>
 
-    <script type="text/javascript" src="javascripts/mana.js"></script>
-    <script type="text/javascript" src="javascripts/manacalc.js"></script>
+  <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+      <style>
+        .floatingchat-container-wrap { left:unset; right: 10px; }
+        .floating-chat-kofi-popup-iframe { left:unset; right: 10px; }
+        .floatingchat-container-wrap-mobi { left:unset; right: 160px; }
+        .floating-chat-kofi-popup-iframe-mobi { left:unset; right: 10px; }
+        </style>
+      <script>
+        kofiWidgetOverlay.draw('rawrzcookie', {
+            'type': 'floating-chat',
+            'floating-chat.donateButton.text': 'Like It?',
+            'floating-chat.donateButton.background-color': '#00b9fe',
+            'floating-chat.donateButton.text-color': '#fff'
+        });
+      </script>
+    <script>
+        const toggleButton = document.getElementsByClassName('toggle-button')[0];
+        const navbarLinks = document.getElementsByClassName('navbar-links')[0];
 
-  </html>
+        toggleButton.addEventListener('click', () => {
+            navbarLinks.classList.toggle('active')
+        })
+    </script>
+  </body>
+    
+    <br>
+    <br>
+    <br>
+    <br>
+
+<script type="text/javascript" src="javascripts/mana.js"></script>
+<script type="text/javascript" src="javascripts/lbms.js"></script>
+<script type="text/javascript" src="javascripts/player.js"></script>
+
+</html>

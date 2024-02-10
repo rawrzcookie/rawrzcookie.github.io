@@ -1,46 +1,676 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Skill Point Optimizer</title>
+    <link rel="icon" href="images/Circle Cookie Dino.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Skill Tree Builder</title>
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Skill Tree Builder">
+    <meta property="og:description" content="This tool helps distribute your specified skill points for highest damage efficiency.">
+    <meta property="og:url" content="https://rawrzcookie.github.io/spopti.html">
+    <meta property="og:image" content="https://i.imgur.com/LUAz5M6.png">
+    <meta property="twitter:title" content="Skill Tree Builder">
+    <meta property="twitter:description" content="This tool helps distribute your specified skill points for highest damage efficiency.">
+    <meta property="twitter:image" content="https://i.imgur.com/LUAz5M6.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7920010104044650"
+     crossorigin="anonymous"></script>
+    <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Y80TVE110"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9Y80TVE110');
+  </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
 </head>
-<body class="nav" style=background-color:#36393e>
-    <nav class="navbar">
-        <div class="titlename"><a href="/"><img class="rawrz" src="images/Circle Cookie Dino.png" height="60">rawrzcookie</a></div>
-        
-        <a href="#" class="toggle-button">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </a>
-        <div class="vl"></div>
-        <div class="navbar-links">
-            <ul>
-                <li><a href="spopti.html">Skill Point Optimizer</a></li>
-                <li><a href="mana.html">Mana Consumption Calculator</a></li>
-                <li><a href="lbms.html">LB/MS Optimizer</a></li>
-            </ul>
-        </div>
-    </nav>
+<body style=background-color:#36393e>
+  
+  <nav class="navbar">
+    <div class="titlename"><a href="index.html"><img class="rawrz" src="images/Circle Cookie Dino.png" height="60">rawrzcookie</a></div>
+    <div class="notification-container" id="notification-container"></div>
     
-    <div class="container">
-        <div class="maintitle">
-            <h1>Coming soon!</h1>
-        </div>
+    <a href="#" class="toggle-button">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </a>
+    <div class="vl"></div>
+    <div class="navbar-links">
+      <ul>
+        <li><a href="spopti.html">Skill Tree Builder</a></li>
+        <li><a href="lbms.html">Mana Optimizer</a></li>
+        <li><a href="changelog.html">Changelog</a></li>
+        <li><a href="https://discord.gg/zhJt63Atn3" style="padding-bottom: 5px;"><img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg" height="20"></a></li>
+      </ul>
     </div>
+  </nav>
+
+  <div class="titlehead">
+    <h1 style="color:#FFFFFF; text-align: center;">
+        Skill Tree Builder
+    </h1>
+    <hr>
+    <noscript>Please enable JavaScript to use this application.</noscript>
+    <p style="color:#FFFFFF; text-align: center;">
+      <button type="button" class="instructionsbtn" onclick="return false;">Instructions &#9662;</button>
+      <div class="instructions">
+        <div id="instructions" style="display: none">
+          <p>This tool helps distribute your specified skill points for highest damage efficiency.</p>
+          <p>Basic instructions:</p>
+          <ol>
+            <li>Enter your stats</li>
+            <li>Enter the desired levels for skills you want your build to have</li>
+            <li>Click on &#39;Optimize&#39; to efficiently distribute your remaining skill points</li>
+          </ol>
+          <p>Skill levels in the tree can be directly edited.</p>
+          <p><u>Toggle Skills</u> enables selecting or deselecting of skills when optimizing.</p>
+          <p><u>Lock Skills</u> enables locking or unlocking of skills. Locked skills will keep their skill levels upon Resetting the Tree.</p>
+          <p>Quality of Life (QoL) skills will be ignored when optimizing as they do not directly increase your damage.</p> 
+          <p>These can include, but are not limited to:</p>
+          <ul>
+            <li>Titan skip and Stage skip skills</li>
+            <li>Cooldown Reducing skills</li>
+            <li>Mana skills</li>
+            <li>Probability or chance increasing skills</li>
+          </ul>
+          <p></p>
+        </div>
+      </div>
+    </p>
+  </div>
+  
+  <div class="optimizer-container">
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <img id="modalImg" src="" alt="Modal Image" download>
+        <div style="height: 5px; display: block;"></div>
+        <div class="modalButtons">
+          <button type="button" class="downloadImg" onclick="return false;">Download</button>
+          <button type="button" class="close" onclick="return false;">Close</button>
+        </div>
+      </div>
+    </div>
+    <div class="lb-ms">
+      
+      <div class="row">
+        <div class="tablestats" id="left"><span style=color:#FFFFFF;font-size:24px;>Stat Inputs: </span><br>
+          <div style="height: 10px; display: block;"></div>
+          <button type="button" class="import">Import Data &#9662;</button>
+          <table id="import" style="display: none; border-collapse:collapse">
+            <tbody>
+              <tr>
+                <th class="buildStat">
+                  Paste data and click Import
+                </th>
+              </tr>
+              <tr>
+                <td class="buildStat">
+                  <textarea spellcheck="false" onfocusout="this.style.height = '20px || auto'; this.scrollTop = 0;" onclick="this.style.height = 'auto'; this.style.height = '200px'" oninput="this.style.height = 'auto'; this.style.height = '200px'; PageHelper.prettifyJSON(); //this.selectionEnd = 0;" placeholder="Paste data here." id="saveImport"></textarea>
+                </td>
+              </tr>
+              <tr>
+                <td class="buildStat">
+                  <a id="importButton">Click to Import</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="height: 15px; display: block;"></div>
+          <table class="stats" border="1" style=border-collapse:collapse;>
+            <tbody>
+              <tr>
+                <td class="stat">
+                  <span>Damage Type</span>
+                </td>
+                <td class="statinput">
+                  <select aria-label="typeDamage" name="typeDamage" id="typeDamage">
+                    <option value="Clan Ship">Clan Ship</option>
+                    <option value="Pet">Pet</option>
+                    <option value="Heavenly Strike">Heavenly Strike</option>
+                    <option value="Shadow Clone">Shadow Clone</option>
+                    <option value="Dagger">Dagger</option>
+                    <option value="Gold Gun">Gold Gun</option>
+                  </select>
+                  <br>
+                </td>
+              </tr>
+              <tr>
+                <td class="stat">
+                  <span>Gold Type</span>
+                </td>
+                <td class="statinput">
+                    <select aria-label="typeGold" name="typeGold" id="typeGold">
+                      <option value="Fairy">Fairy</option>
+                      <option value="HoG">HoG</option>
+                      <option value="Chesterson">Chesterson</option>
+                    </select><br>
+                  </td>
+              </tr>
+              <tr>
+                <td class="stat">
+                  <span>Skill Points</span>
+                </td>
+                <td class="statinput">
+                  <input type="number" id="SkillPoints" value=""><br>
+                </td>
+              </tr>
+              <tr>
+                <td class="stat">
+                  <span>Max Stage
+                    <span class="tooltiptext">Restricts skills based on Max Stage. Leave 0 or empty to ignore.</span>
+                  </span>
+                </td>
+                <td class="statinput">
+                  <input type="number" id="MaxStage" value=""><br>
+                </td>
+              </tr>
+              <tr>
+                <td class="stat">
+                  <span>Build Version</span>
+                </td>
+                <td class="statinput">
+                  <input type="float" id="buildVersion" value="6.5.0"><br>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+          <button type="button" class="advanced">Advanced Options &#9662;</button>
+          <br>
+          <div id="advancedOptions" style="display: none; border-collapse:collapse";>
+            <table class="stats" border="1" style="border-collapse: unset;">
+              <tbody>
+                <tr>
+                  <td class="stat">
+                    <span>Forsaken Battlemage
+                      <span class="tooltiptext">Legendary Set</span>
+                    </span>
+                  </td>
+                  <td class="statinput">
+                    <label>
+                      <input type="checkbox" id="FB">
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat">
+                    <span>Shae (Knight)
+                      <span class="tooltiptext">Mythic Set</span>
+                    </span>
+                  </td>
+                  <td class="statinput">
+                    <label>
+                      <input type="checkbox" id="Shae">
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat">
+                    <span>Ignus (Summoner)
+                      <span class="tooltiptext">Mythic Set</span></span>
+                  </td>
+                  <td class="statinput">
+                    <label>
+                      <input type="checkbox" id="Ignus">
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat">
+                    <span>Ironheart (Warlord)
+                      <span class="tooltiptext">Mythic Set</span></span>
+                  </td>
+                  <td class="statinput">
+                    <label>
+                      <input type="checkbox" id="Ironheart">
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat">
+                    <span>Kor (Sorceror)
+                      <span class="tooltiptext">Mythic Set</span></span>
+                  </td>
+                  <td class="statinput">
+                    <label>
+                      <input type="checkbox" id="Kor">
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat">
+                    <span>Styxsis (Rogue)
+                      <span class="tooltiptext">Mythic Set</span></span>
+                  </td>
+                  <td class="statinput">
+                    <label>
+                      <input type="checkbox" id="Styxsis">
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat">
+                    <span>Rygal (Alchemist)
+                      <span class="tooltiptext">Mythic Set</span></span>
+                  </td>
+                  <td class="statinput">
+                    <label>
+                      <input type="checkbox" id="Rygal">
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat">
+                    <span>Gold Weight
+                      <span class="tooltiptext">Typically between 0.6 - 0.9. Higher value puts more to gold skills</span></span>
+                  </td>
+                  <td class="statinput">
+                    <input type="number" id="goldWeight" value="0.7"><br>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat">
+                    <span>Crafting Power Level
+                      <span class="tooltiptext">From your profile window (mainly for Lightning Strike)</span></span>
+                  </td>
+                  <td class="statinput">
+                    <input type="number" id="CP" value="1"><br>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat">
+                    <span>Shadow Clone Level
+                      <span class="tooltiptext">Highest spell level you can get (mainly for Lightning Strike)</span></span>
+                  </td>
+                  <td class="statinput">
+                    <input type="number" id="sClone" value="35"><br>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat">
+                    <span>Time To Kill
+                      <span class="tooltiptext">In seconds; how long you want to wait to kill a boss (mainly for Lightning Strike)</span></span>
+                  </td>
+                  <td class="statinput">
+                    <input type="number" id="TimeToKill" value="8" step="any"><br>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="height: 5px; display: block;"></div>
+            <button type="button" class="optimizeMode" data-maxCumlEff=false>Mode: Spend All</button>
+            <button type="button" class="reset">Reset to Default</button>
+          </div>
+          <br>
+          <div class="buttons">
+            <button type="button" class="calculate">Optimize</button>
+            <button type="button" class="resetTree">Reset Tree</button>
+            <button type="button" class="toggleSkills">Toggle Skills</button>
+            <button type="button" class="toggleLock">Lock Skills</button>
+            <button type="button" class="shareLink"> Share Link</button>
+            <button type="button" class="shareImage">Share Image</button>
+          </div>
+          <div style="height: 5px; display: block;"></div>
+          <div id="lockSettings" style="display: none">
+            <div class="buttons buttonsTwo">
+              <button type="button" class="unlockAll">Unlock All</button>
+              <button type="button" class="lockAll">Lock All</button>
+            </div>
+          </div>
+          <div id="selectSettings" style="display: none">
+            <div class="buttons buttonsTwo">
+              <button type="button" class="deselectAll">Deselect All</button>
+              <button type="button" class="selectAll">Select All</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class='skillTree'>
+        <div NodeToImage>
+          <div class="trees" id="trees">
+            <div class="buildStat" id="buildName">Clan Ship Fairy</div>
+            <div class="buildStat" id="buildSP">0 / 0 (0 SP Remaining)</div>
+            <div class='grid-wrapper'>
+              <div class="grid-container Knight">
+                <div class="grid-item treeName" id="BranchRed">K</div>
+                <div class="grid-item spTotal" id="BranchRedTotal">0</div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot0" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot1" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot2" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot3" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot4" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot5" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot6" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot7" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot8" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot9" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                </div>
+                <div class="grid-item">
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot12" value="0" data-select=true data-lock=false>
+                </div>
+              </div>
+              <div class="grid-container Summoner">
+                <div class="grid-item treeName" id="BranchOrange">Su</div>
+                <div class="grid-item spTotal" id="BranchOrangeTotal">0</div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot0" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot1" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot2" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot3" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot4" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot5" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot6" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot7" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot8" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot9" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                </div>
+                <div class="grid-item">
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot12" value="0" data-select=true data-lock=false>
+                </div>
+              </div>
+              <div class="grid-container Warlord">
+                <div class="grid-item treeName" id="BranchYellow">W</div>
+                <div class="grid-item spTotal" id="BranchYellowTotal">0</div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot0" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot1" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot2" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot3" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot4" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot5" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot6" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot7" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot8" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot9" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                </div>
+                <div class="grid-item">
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot12" value="0" data-select=true data-lock=false>
+                </div>
+              </div>
+              <div class="grid-container Sorceror">
+                <div class="grid-item treeName" id="BranchBlue">So</div>
+                <div class="grid-item spTotal" id="BranchBlueTotal">0</div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot0" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot1" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot2" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot3" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot4" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot5" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot6" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot7" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot8" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot9" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot10" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                </div>
+                <div class="grid-item">
+                </div>
+              </div>
+              <div class="grid-container Rogue">
+                <div class="grid-item treeName" id="BranchGreen">R</div>
+                <div class="grid-item spTotal" id="BranchGreenTotal">0</div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot0" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot1" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot2" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot3" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot4" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot5" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot6" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot7" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot8" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot9" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot11" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                </div>
+              </div>
+              <div class="grid-container Alchemist">
+                <div class="grid-item treeName" id="BranchPurple">A</div>
+                <div class="grid-item spTotal" id="BranchPurpleTotal">0</div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot0" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item" id="blank"></div>
+                <div class="grid-item">
+                  <input type="number" id="slot1" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot2" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot3" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot4" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot5" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot6" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot7" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot8" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot9" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                  <input type="number" id="slot10" value="0" data-select=true data-lock=false>
+                </div>
+                <div class="grid-item">
+                </div>
+                <div class="grid-item">
+                </div>
+              </div>
+            </div>
+            <div class="buildStat" data-format="sci" id="totalEffect">Estimated Total Effect: </div>
+          </div>
+          <textarea style="display: block" class="buildStat" id="exportString" style="overflow:hidden" readonly></textarea>
+        </div>
+        <div style="height: 20px; display: block;"></div>
+
+        <button type="button" class="builder">Builder Tools &#9662;</button>
+        <div class="builder" id="builder" style="display: none; border-collapse:collapse">
+          <div class="buttons">
+            <button type="button" class="buildSave" data-toggle="false">Save &#9662;</button>
+            <button type="button" class="buildLoad" data-toggle="false">Load &#9662;</button>
+            <button type="button" class="buildDelete" data-toggle="false">Delete &#9662;</button>
+          </div>
+          <div id="buildSave" style="display: none; border-collapse:collapse">
+            <div class="buildSaveMode">
+              <select class="buildStat" style="height: 35px; font-weight: bold;" aria-label="buildSaveMode" name="buildSaveMode" id="buildSaveMode">
+                <option value="0">Save as New Build</option>
+              </select><br>
+              <textarea spellcheck="false" placeholder="Name your build" id="buildSaveName"></textarea>
+              <div style="height: 5px; display: block;"></div>
+              <button class="builderSave" style="font-size: 80%">Save</button>
+            </div>
+          </div>
+          <div id="buildLoad" style="display: none; border-collapse:collapse">
+            <div class="buildLoadMode" id="buildLoadMode">
+              <div class="buildStat" style="line-height: 2; font-weight: bold;">Load a build</div>
+            </div>
+          </div>
+          <div id="buildDelete" style="display: none; border-collapse:collapse">
+            <div class="buildDeleteMode">
+              <div class="buildStat" id="buildDeleteMode" style="line-height: 2; font-weight: bold;">Delete builds</div>
+              <div style="height: 5px; display: block;"></div>
+              <button class="builderDelete" style="font-size: 80%">Delete</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 10px; display: block;"></div>
+        <button type="button" class="nextLevels">Efficiency Table &#9662;</button>
+          <table class="buildStat effTable" id="effTable" style="display: none;">
+            <tbody>
+              <tr>
+                <th>Name</th>
+                <th>From Level</th>
+                <th>To Level</th>
+                <th>Efficiency</th>
+                <th>SP Cost</th>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+      <div style="height: 50px; display: block;"></div>
+    </div>
+  </div>
 
 
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-        <script>
+      <style>
+        .floatingchat-container-wrap { left:unset; right: 10px; }
+        .floating-chat-kofi-popup-iframe { left:unset; right: 10px; }
+        .floatingchat-container-wrap-mobi { left:unset; right: 160px; }
+        .floating-chat-kofi-popup-iframe-mobi { left:unset; right: 10px; }
+        </style>
+      <script>
         kofiWidgetOverlay.draw('rawrzcookie', {
             'type': 'floating-chat',
             'floating-chat.donateButton.text': 'Like It?',
             'floating-chat.donateButton.background-color': '#00b9fe',
             'floating-chat.donateButton.text-color': '#fff'
         });
-    </script>
+      </script>
     <script>
         const toggleButton = document.getElementsByClassName('toggle-button')[0];
         const navbarLinks = document.getElementsByClassName('navbar-links')[0];
@@ -49,5 +679,11 @@
             navbarLinks.classList.toggle('active')
         })
     </script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="javascripts\skills.js"></script>
+    <script src="javascripts\reductions.js"></script>
+    <script src="javascripts\spopti.js"></script>
+    <script src="javascripts\player.js"></script>
+    <script src="javascripts\mana.js"></script>
 </body>
-</html>
+    </html>
