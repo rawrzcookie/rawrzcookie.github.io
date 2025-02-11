@@ -28,7 +28,7 @@ var playerInfo = {
     "TimeToKill": "8",
     "WarCry": "",
     "SkillPoints": "0",
-    "buildVersion": "6.5.0",
+    "buildVersion": "7.2.0",
     "MaxStage": ""
   },
   "skills": {
@@ -110,7 +110,7 @@ var playerInfo = {
       "Selection": true,
       "Locked": false
       },
-    "Heart Of Gold": {
+    "Heart of Gold": {
       "ID": "PetGoldQTE",
       "Level": "",
       "Selection": true,

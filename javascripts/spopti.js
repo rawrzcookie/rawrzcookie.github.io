@@ -99,7 +99,7 @@ class Player {
                 mythic = 1;
                 break;
         }
-        let currEffs = Array(71).fill(1 * mythic);
+        let currEffs = Array(91).fill(1 * mythic);
         
         let currLevel = Number(playerskills[i]['Level']);
         let maxLevel = Number(skillInfo[talentID]['MaxLevel']);
@@ -109,7 +109,7 @@ class Player {
         for (let i = 0; i <= maxLevel; i++) {
             if (i >= currLevel) {
             let j = (i - currLevel);
-            currEffs[35 + j] = cumSP;
+            currEffs[45 + j] = cumSP;
             }
             let cost = Number(skillInfo[talentID]["Co" + i]);
             cumSP += cost;
@@ -127,10 +127,12 @@ class Player {
             let nextA = Number(skillInfo[talentID]["A" + (j + 1)]);
             let currB = Number(skillInfo[talentID]["B" + currLevel]);
             let nextB = Number(skillInfo[talentID]["B" + (j + 1)]);
-            let cost = Number(currEffs[36 + k] - currEffs[35]);
+            let currC = Number(skillInfo[talentID]["C" + currLevel]);
+            let nextC = Number(skillInfo[talentID]["C" + (j + 1)]);
+            let cost = Number(currEffs[46 + k] - currEffs[45]);
             let reduction = Number(reductions[talentID][this.typeDamage] + (reductions[talentID][this.typeGold] * this.goldWeight));
 
-            let efficiency = this._calcEff(talentID, currA, nextA, currB, nextB, cost, reduction, this.FB, this.goldWeight, "efficiency");
+            let efficiency = this._calcEff(talentID, currA, nextA, currB, nextB, currC, nextC, cost, reduction, this.FB, this.goldWeight, "efficiency");
 
             currEffs[k] = efficiency * mythic;
         }
@@ -172,7 +174,7 @@ class Player {
                 mythic = 1;
                 break;
         }
-        let currEffs = Array(71).fill(1 * mythic);
+        let currEffs = Array(91).fill(1 * mythic);
         
         let currLevel = Number(playerskills[i]['Level']);
         let maxLevel = Number(skillInfo[talentID]['MaxLevel']);
@@ -181,7 +183,7 @@ class Player {
         for (let i = 0; i <= maxLevel; i++) {
             if (i >= currLevel) {
             let j = (i - currLevel);
-            currEffs[35 + j] = cumSP;
+            currEffs[45 + j] = cumSP;
             }
             let cost = Number(skillInfo[talentID]["Co" + i]);
             cumSP += cost;
@@ -193,10 +195,12 @@ class Player {
         let nextA = 1
         let currB = Number(skillInfo[talentID]["B" + currLevel]);
         let nextB = 1
-        let cost = currEffs[35];
+        let currC = Number(skillInfo[talentID]["C" + currLevel]);
+        let nextC = 1
+        let cost = currEffs[45];
         let reduction = Number(reductions[talentID][this.typeDamage] + (reductions[talentID][this.typeGold] * this.goldWeight));
 
-        let efficiency = this._calcEff(talentID, currA, nextA, currB, nextB, 1, reduction, this.FB, this.goldWeight, "curr");
+        let efficiency = this._calcEff(talentID, currA, nextA, currB, nextB, currC, nextC, 1, reduction, this.FB, this.goldWeight, "curr");
 
         currEffs = efficiency * (mythic ** cost);
         
@@ -206,7 +210,7 @@ class Player {
     return effectArr;
   }
 
-  _calcEff(id, currA, nextA, currB, nextB, cost, reduction, FB, goldWeight, returnValue) {
+  _calcEff(id, currA, nextA, currB, nextB, currC, nextC, cost, reduction, FB, goldWeight, returnValue) {
     let efficiency;
     let reduction_2;
     let gold_2;
@@ -216,7 +220,6 @@ class Player {
     switch (id) {
         // if multicasts
         case "BurstDamageMultiCastSkill":
-        case "TwilightGatheringMultiCastSkill":
         case "TapBoostMultiCastSkill":
         case "DualPetMultiCast":
         case "HelperBoostMultiCastSkill":
@@ -229,6 +232,13 @@ class Player {
           efficiency = next / curr;
           break;
         
+        // twilight multicast includes gloom damage
+        case "TwilightGatheringMultiCastSkill":
+          next = (((10 * nextA) ** (nextB + FB)) ** (reduction / cost)) * (nextC ** (reduction / cost));
+          curr = (((10 * (currA ?? 1)) ** (!currB ? 0 : (currB + FB))) ** (reduction / cost)) * ((currC || 1) ** (reduction / cost));
+          efficiency = next / curr;
+          break;
+
         case "PetBonusBoost": // Ember Arts
           reduction_2 = Number(reductions["TapDmg"][this.typeDamage]);
           next = (nextA ** (reduction / cost)) * (nextB ** (reduction_2 / cost));
@@ -370,8 +380,8 @@ class Player {
     let length = skillArr.length;
     
     for (let i = 0; i < length; i++) {
-      let arr = skillArr[i].slice(0,35)
-      let costs = skillArr[i].slice(35,71);
+      let arr = skillArr[i].slice(0,45)
+      let costs = skillArr[i].slice(45,91);
       let max = Math.max(...arr);
       let steps = Number(arr.indexOf(max)) + 1;
       let skillName = skillNames[i];
@@ -604,15 +614,15 @@ class Optimize {
         tree=[[baseB,[]]];
       }
       var maxLevInc=0;
-      while (maxLevInc<35 && optData[i][maxLevInc+35]<optData[i][maxLevInc+36]) ++maxLevInc;
+      while (maxLevInc<45 && optData[i][maxLevInc+45]<optData[i][maxLevInc+46]) ++maxLevInc;
       var newArray=[];
-      var maxSPCount=optData[i][maxLevInc+35];
+      var maxSPCount=optData[i][maxLevInc+45];
       for (var j=0;j<=maxSPCount;++j) newArray.push(-100000);
-      var SPU=optData[i][35];
+      var SPU=optData[i][45];
       newArray[SPU]=0;
       for (var j=1;j<=maxLevInc;++j)
       {
-        var SPC=optData[i][j+35];
+        var SPC=optData[i][j+45];
         newArray[SPC]=(SPC-SPU)*Math.log10(optData[i][j-1]);
       }
       var SPReq=0;
@@ -668,7 +678,7 @@ class Optimize {
         var SPHere=curValFast[0];
         var curMask=curValFast[1];
         var levHere=0;
-        while (optData[goodRows-levels.length-1][levHere+35]!=SPHere)
+        while (optData[goodRows-levels.length-1][levHere+45]!=SPHere)
         {
           ++levHere;
         }
@@ -793,8 +803,8 @@ class PageHelper {
         let sum = 0;
         for (let i = 0; i < branches.length; i++) {
             if (branches[i][0] == branch) {
-                sum += optData[i][35];
-                sumTotal += optData[i][35];
+                sum += optData[i][45];
+                sumTotal += optData[i][45];
             } 
         }
         treeTotals.push(sum);
@@ -821,7 +831,7 @@ class PageHelper {
     let sumTotal = 0;
 
     for (let i = 0; i < optData.length; i++) {
-      sumTotal += optData[i][35];
+      sumTotal += optData[i][45];
     }
     return sumTotal;
   }
@@ -1028,9 +1038,8 @@ class PageHelper {
         let skillPoints = jsonObj["playerStats"]["Skill Points Owned"];
   
         // set skill levels
-        for (let i in playerskills) {
-          let level = skillsObj[i] || 0;
-          skillArr.push([parseInt(level)]);
+        for (let i in skillsObj) {
+          skillArr.push([skillsObj[i]]);
         }
         
         // check for equipment sets
