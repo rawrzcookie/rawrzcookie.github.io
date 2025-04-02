@@ -386,7 +386,7 @@ class Player {
       let steps = Number(arr.indexOf(max)) + 1;
       let skillName = skillNames[i];
       let currLevel = Number(currLevels[i][0]);
-      let cost = costs[steps] - costs[steps - 1];
+      let cost = costs[steps] - costs[0];
 
       if (currLevel >= skillInfo[skillName]["MaxLevel"]) {
         //steps = 0;
