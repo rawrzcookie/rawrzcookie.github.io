@@ -321,6 +321,7 @@ td.stat span {
   height: 20px;
 }
 
+
 td.statinput {
   background-color: #b6d7a8;
 }
@@ -348,15 +349,21 @@ table.suggestion {
   width: 400px;
 }
 
+.info-icon {
+  font-size: 0.8em;
+  margin-left: 5px;
+  cursor: help;
+}
+
 .buttons {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: 1fr;
   gap: 10px;
 }
 
 button {
-  padding: 10px 20px;
+  padding: 10px 15px;
   font-size: 14px;
   text-align: center;
   cursor: pointer;

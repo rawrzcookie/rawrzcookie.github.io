@@ -31,6 +31,7 @@
   </script>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body style=background-color:#313338>
   
@@ -72,8 +73,9 @@
             <li>Click on &#39;Optimize&#39; to efficiently distribute your remaining skill points</li>
           </ol>
           <p>Skill levels in the tree can be directly edited.</p>
-          <p><u>Toggle Skills</u> enables selecting or deselecting of skills when optimizing.</p>
-          <p><u>Lock Skills</u> enables locking or unlocking of skills. Locked skills will keep their skill levels upon Resetting the Tree.</p>
+          <p><u>Auto QoL</u> are hard-coded suggestions that differ based on SP ranges. If you prefer a different value, toggle the skill off and enter your desired value, or enter a higher value.</p>
+          <p><u>Toggle Skills</u> enables selecting or deselecting of skills when optimizing. Toggle whether a skill should be included in the optimization. Disabled skills will be ignored.</p>
+          <p><u>Lock Skills</u> enables locking or unlocking of skills. Locking a skill prevents it from being reset when you reset the tree, but it does NOT keep the skill at a fixed level when optimizing.</p>
           <p>Quality of Life (QoL) skills will be ignored when optimizing as they do not directly increase your damage.</p> 
           <p>These can include, but are not limited to:</p>
           <ul>
@@ -190,7 +192,7 @@
             <table class="stats" border="1" style="border-collapse: unset;">
               <tbody>
                 <tr>
-                  <td class="stat">
+                  <td class="stat"> 
                     <span>Forsaken Battlemage
                       <span class="tooltiptext">Legendary Set</span>
                     </span>
@@ -198,6 +200,18 @@
                   <td class="statinput">
                     <label>
                       <input type="checkbox" id="FB">
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat"> 
+                    <span>Flowering Falconer
+                      <span class="tooltiptext">Legendary Set</span>
+                    </span>
+                  </td>
+                  <td class="statinput">
+                    <label>
+                      <input type="checkbox" id="FF">
                     </label>
                   </td>
                 </tr>
@@ -316,17 +330,20 @@
             <button type="button" class="resetTree">Reset Tree</button>
             <button type="button" class="toggleSkills">Toggle Skills</button>
             <button type="button" class="toggleLock">Lock Skills</button>
+            <button type="button" class="autoQol" data-qol=true>Auto QoL: On</button>
             <button type="button" class="shareLink"> Share Link</button>
             <button type="button" class="shareImage">Share Image</button>
           </div>
           <div style="height: 5px; display: block;"></div>
           <div id="lockSettings" style="display: none">
+            <p style="color: #FFFFFF; font-size:small ;">Prevents skill from resetting. Does not keep a skill at a fixed level.</p>
             <div class="buttons buttonsTwo">
               <button type="button" class="unlockAll">Unlock All</button>
               <button type="button" class="lockAll">Lock All</button>
             </div>
           </div>
           <div id="selectSettings" style="display: none">
+            <p style="color: #FFFFFF; font-size:small ;">Toggles skills to be included in the optimization. Disabled skills will be ignored.</p>
             <div class="buttons buttonsTwo">
               <button type="button" class="deselectAll">Deselect All</button>
               <button type="button" class="selectAll">Select All</button>
@@ -682,6 +699,7 @@
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="javascripts\skills.js"></script>
     <script src="javascripts\reductions.js"></script>
+    <script src="javascripts\qol-baseline.js"></script>
     <script src="javascripts\spopti.js"></script>
     <script src="javascripts\player.js"></script>
     <script src="javascripts\mana.js"></script>

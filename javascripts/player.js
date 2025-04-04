@@ -19,6 +19,7 @@ var playerInfo = {
     "typeGold": "Fairy",
     "goldWeight": "0.7",
     "FB": false,
+    "FF": false,
     "Shae": false,
     "Ignus": false,
     "Ironheart": false,

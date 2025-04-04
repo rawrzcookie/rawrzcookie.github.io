@@ -14,7 +14,7 @@ if (user) {
 }
 
 function playerStats() {
-    const inputs = ["typeDamage", "typeGold", "goldWeight", "FB", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal", "CP", "sClone", "TimeToKill", "SkillPoints", "buildVersion", "MaxStage"];
+    const inputs = ["typeDamage", "typeGold", "goldWeight", "FB", "FF", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal", "CP", "sClone", "TimeToKill", "SkillPoints", "buildVersion", "MaxStage"];
     inputs.reduce((_, input) => {
       playerstats[input] = $(input).type === "checkbox" ? $(input).checked : $(input).value;
     }, {});
@@ -36,6 +36,7 @@ class Player {
       this.typeGold = playerstats["typeGold"];
       this.goldWeight = playerstats["goldWeight"];
       this.FB = Number(playerstats["FB"] ? 1 : 0);
+      this.FF = Number(playerstats["FF"] ? 1 : 0);
       this.Shae = Number(playerstats["Shae"] ? 1.01 : 1);
       this.Ignus = Number(playerstats["Ignus"] ? 1.01 : 1);
       this.Ironheart = Number(playerstats["Ironheart"] ? 1.01 : 1);
@@ -132,7 +133,7 @@ class Player {
             let cost = Number(currEffs[46 + k] - currEffs[45]);
             let reduction = Number(reductions[talentID][this.typeDamage] + (reductions[talentID][this.typeGold] * this.goldWeight));
 
-            let efficiency = this._calcEff(talentID, currA, nextA, currB, nextB, currC, nextC, cost, reduction, this.FB, this.goldWeight, "efficiency");
+            let efficiency = this._calcEff(talentID, currA, nextA, currB, nextB, currC, nextC, cost, reduction, this.FB, this.FF, this.goldWeight, "efficiency");
 
             currEffs[k] = efficiency * mythic;
         }
@@ -200,7 +201,7 @@ class Player {
         let cost = currEffs[45];
         let reduction = Number(reductions[talentID][this.typeDamage] + (reductions[talentID][this.typeGold] * this.goldWeight));
 
-        let efficiency = this._calcEff(talentID, currA, nextA, currB, nextB, currC, nextC, 1, reduction, this.FB, this.goldWeight, "curr");
+        let efficiency = this._calcEff(talentID, currA, nextA, currB, nextB, currC, nextC, 1, reduction, this.FB, this.FF, this.goldWeight, "curr");
 
         currEffs = efficiency * (mythic ** cost);
         
@@ -210,7 +211,8 @@ class Player {
     return effectArr;
   }
 
-  _calcEff(id, currA, nextA, currB, nextB, currC, nextC, cost, reduction, FB, goldWeight, returnValue) {
+  _calcEff(id, currA, nextA, currB, nextB, currC, nextC, cost, reduction, FB, FF, goldWeight, returnValue) {
+    let multicast = FB + FF;
     let efficiency;
     let reduction_2;
     let gold_2;
@@ -227,15 +229,15 @@ class Player {
         case "ShadowCloneMultiCastSkill":
         case "GuidedBlade":
         case "StreamOfBladesMultiCastSkill":
-          next = ((10 * nextA) ** (nextB + FB)) ** (reduction / cost);
-          curr = ((10 * (currA ?? 1)) ** (!currB ? 0 : (currB + FB))) ** (reduction / cost);
+          next = ((10 * nextA) ** (nextB + multicast)) ** (reduction / cost);
+          curr = ((10 * (currA ?? 1)) ** (!currB ? 0 : (currB + multicast))) ** (reduction / cost);
           efficiency = next / curr;
           break;
         
         // twilight multicast includes gloom damage
         case "TwilightGatheringMultiCastSkill":
-          next = (((10 * nextA) ** (nextB + FB)) ** (reduction / cost)) * (nextC ** (reduction / cost));
-          curr = (((10 * (currA ?? 1)) ** (!currB ? 0 : (currB + FB))) ** (reduction / cost)) * ((currC || 1) ** (reduction / cost));
+          next = (((10 * nextA) ** (nextB + multicast)) ** (reduction / cost)) * (nextC ** (reduction / cost));
+          curr = (((10 * (currA ?? 1)) ** (!currB ? 0 : (currB + multicast))) ** (reduction / cost)) * ((currC || 1) ** (reduction / cost));
           efficiency = next / curr;
           break;
 
@@ -318,8 +320,10 @@ class Player {
 
         case "HandOfMidasMultiCastSkillBoost": // Midas Overflow
           gold_2 = this.typeGold !== "Chesterson" ? 1 : 0;
-          next = (((100 * nextA) ** (nextB + FB)) ** (reduction / cost)) * (((10) ** (nextB + FB)) ** (gold_2 * goldWeight / cost));
-          curr = (((100 * (currA ?? 1)) ** (!currB ? 0 : (currB + FB))) ** (reduction / cost)) * (((10) ** (!currB ? 0 : (currB + FB))) ** (gold_2 * goldWeight / cost));
+          let mc_bonus_A = [1, 100, 10000, 1000000, 100000000, 1000000000]
+          let mc_bonus_B = [1, 10, 100, 1000, 10000, 50000]
+          next = (((mc_bonus_A[nextB + multicast]) * (nextA) ** (nextB + multicast)) ** (reduction / cost)) * ((mc_bonus_B[(nextB + multicast)]) ** (gold_2 * goldWeight / cost));
+          curr = (((mc_bonus_A[(!currB ? 0 : (currB + multicast))]) * ((currA ?? 1) ** (!currB ? 0 : (currB + multicast)))) ** (reduction / cost)) * ((mc_bonus_B[(!currB ? 0 : (currB + multicast))]) ** (gold_2 * goldWeight / cost));
           efficiency = next / curr;
           //efficiency = (((100 * nextA) ** (nextB + FB)) / ((100 * (currA ?? 1)) ** (!currB ? 0 : (currB + FB)))) ** (reduction / cost) * (((10) ** (nextB + FB)) / ((10) ** (!currB ? 0 : (currB + FB)))) ** (gold_2 * goldWeight / cost);
           break;
@@ -759,6 +763,15 @@ class PageHelper {
   }
 
   static resetTree() { // reset skill levels in the tree
+    if (document.getElementById("lockSettings").style.display !== "none") {
+      toggleBtn('lock');
+      document.getElementById("lockSettings").style.display = "none";
+    }
+    if (document.getElementById("selectSettings").style.display !== "none") {
+      toggleBtn('select');
+      document.getElementById("selectSettings").style.display = "none";
+    }
+
     let gridItems;
     let locks = player.currLocks;
     let i = 0;
@@ -963,6 +976,12 @@ class PageHelper {
     element.innerHTML = mode ? 'Mode: Spend All' : 'Mode: Cuml. Eff';
   }
 
+  static toggleQol(element) {
+    let mode = element.getAttribute("data-qol") === 'true';
+    element.setAttribute("data-qol", String(!mode));
+    element.innerHTML = mode ? 'Auto QoL: Off' : 'Auto QoL: On';
+  }
+
   static doAll(element) { // lock/unlock/select/deselect all skills
     let mode = element.className;
 
@@ -1005,6 +1024,61 @@ class PageHelper {
       console.error('Invalid JSON format:', error);
       // Handle the error, e.g., display an error message to the user
     }
+  }
+
+  static binarySearch(array, key) {
+    const keys = array;
+    let left = 0;
+    let right = keys.length - 1;
+    let count = 0;
+
+    while (left <= right) {
+        const mid = left + Math.floor((right - left) / 2);
+        count++;
+        // console.log(`mid: ${mid} | count: ${count}`);
+
+        if (keys[mid] === key) {
+            return mid;
+        } else if (keys[mid] < key) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    // If the key is not found, return the value of the previous smallest key
+    if (right >= 0) {
+        return right;
+    } else {
+        return null;  // or a default value
+    }
+}
+
+  static baselineQol() {
+    let dmg = player.typeDamage;
+    let gold = player.typeGold;
+    let sp = player.SkillPoints;
+    let currLevels = player.currLevels;
+    let skillArr = [];
+
+    let build = baseline[dmg][gold];
+
+    let baselines = Object.keys(build).map(Number);
+    
+    let index = this.binarySearch(baselines, sp);
+    let qol_baselines = build[baselines[index]];
+    
+    for (const [i, { Name: skillName }] of Object.entries(skillInfo)) {
+      const index = Object.keys(skillInfo).indexOf(i);
+      const curr_level = parseInt(currLevels[index]);
+      const level = parseInt(qol_baselines[skillName] || 0);
+
+      const value = !playerskills[skillName].Selection ? curr_level : Math.max(level, curr_level);
+      
+      skillArr.push(value);
+    }
+
+    this.toTree(skillArr);  
   }
 
   static importSave(string) { // handle importing of player data or build export
@@ -1053,7 +1127,7 @@ class PageHelper {
           "Rygal, the Brilliant Engineer"
         ];
 
-        let inputs = ["FB", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal"]
+        let inputs = ["FB", "FF", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal"]
   
         for (let i of sets) {
           let setObj = jsonObj["equipmentSets"];
@@ -1474,7 +1548,7 @@ class PageHelper {
       for (key in stats) {
           if ($(key) === null) {
               continue
-          } else if (["FB", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal"].includes(key)) {
+          } else if (["FB", "FF", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal"].includes(key)) {
               $(key).checked = stats[key];
           } else {
               $(key).value = stats[key];
@@ -1659,6 +1733,17 @@ function toggleBtn(type) {
 }
 
 function optimize() {
+  if (document.getElementById("lockSettings").style.display !== "none") {
+    toggleBtn('lock');
+    document.getElementById("lockSettings").style.display = "none";
+  }
+  if (document.getElementById("selectSettings").style.display !== "none") {
+    toggleBtn('select');
+    document.getElementById("selectSettings").style.display = "none";
+  }
+  if (document.querySelector('.autoQol').getAttribute("data-qol") === 'true') {
+    PageHelper.baselineQol();
+  }
   PageHelper.toTree(Optimize.optTree(player.skillArray, player.currLevels, Number(playerstats["SkillPoints"])));
   PageHelper.totalEffect();
   PageHelper.save();
@@ -1749,6 +1834,11 @@ function setEventListeners() {
 
   document.querySelector('.optimizeMode').addEventListener('click', () => {
     PageHelper.toggleMode(document.querySelector('.optimizeMode'));
+    return false;
+  });
+
+  document.querySelector('.autoQol').addEventListener('click', () => {
+    PageHelper.toggleQol(document.querySelector('.autoQol'));
     return false;
   });
 
