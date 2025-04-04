@@ -1118,13 +1118,14 @@ class PageHelper {
         
         // check for equipment sets
         let sets = [
-          "Forsaken Battlemage",
-          "Shae, the Radiant Beacon",
-          "Ignus, the Volcanic Phoenix",
-          "Ironheart, the Crackling Tiger",
-          "Kor, the Whispering Wave",
-          "Styxsis, the Single Touch",
-          "Rygal, the Brilliant Engineer"
+          "MultiCast",
+          "Valkyrie",
+          "FairyKnight",
+          "FireKnight",
+          "ElectricWarlord",
+          "WaterSorcerer",
+          "EarthRogue",
+          "SteampunkKnight"
         ];
 
         let inputs = ["FB", "FF", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal"]
