@@ -1950,7 +1950,9 @@ const baseline = {
                 "LovePotion": 9,
             },
         },
-        "Chesterson": {},
+        "Chesterson": {
+            "0": {},
+        },
     },
     "Pet": {
         "Fairy": {
@@ -3230,7 +3232,9 @@ const baseline = {
                 "LovePotion": 9,
             },
         },
-        "Chesterson": {},
+        "Chesterson": {
+            "0": {},
+        },
     },
     "Gold Gun": {
         "Fairy": {
