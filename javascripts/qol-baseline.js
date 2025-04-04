@@ -1,6 +1,7 @@
 const baseline = {
     "Clan Ship": {
         "Fairy": {
+            "0": {},
             "24": {"Coordinated Offensive": 1, "Anchoring Shot": 1},
             "50": {"Coordinated Offensive": 2, "Anchoring Shot": 3},
             "100": {"Coordinated Offensive": 2, "Anchoring Shot": 4},
@@ -230,6 +231,7 @@ const baseline = {
             },
         },
         "HoG": {
+            "0": {},
             "24": {"Coordinated Offensive": 1, "Anchoring Shot": 1},
             "51": {"Heart of Gold": 1, "Coordinated Offensive": 1, "Anchoring Shot": 4},
             "99": {"Heart of Gold": 2, "Coordinated Offensive": 1, "Anchoring Shot": 4},
@@ -466,6 +468,7 @@ const baseline = {
             },
         },
         "Chesterson": {
+            "0": {},
             "24": {"Coordinated Offensive": 1, "Anchoring Shot": 1},
             "50": {"Coordinated Offensive": 2, "Anchoring Shot": 3},
             "100": {"Coordinated Offensive": 2, "Anchoring Shot": 4},
@@ -683,6 +686,7 @@ const baseline = {
     },
     "Shadow Clone": {
         "Fairy": {
+            "0": {},
             "26": {
                 "MPCapacityBoost": 2,
                 "CloneSkillBoost": 5,
@@ -947,6 +951,7 @@ const baseline = {
             },
         },
         "HoG": {
+            "0": {},
             "26": {
                 "MPCapacityBoost": 2,
                 "CloneSkillBoost": 5,
@@ -1211,6 +1216,7 @@ const baseline = {
             },
         },
         "Chesterson": {
+            "0": {},
             "26": {
                 "MPCapacityBoost": 2,
                 "CloneSkillBoost": 5,
@@ -1448,6 +1454,7 @@ const baseline = {
     },
     "Heavenly Strike": {
         "Fairy": {
+            "0": {},
             "98": {
                 "BurstSkillBoost": 6,
                 "BurstSkillMana": 9,
@@ -1704,6 +1711,7 @@ const baseline = {
             },
         },
         "HoG": {
+            "0": {},
             "98": {
                 "BurstSkillBoost": 6,
                 "BurstSkillMana": 9,
@@ -1946,6 +1954,7 @@ const baseline = {
     },
     "Pet": {
         "Fairy": {
+            "0": {},
             "25": {"PetQTE": 2},
             "50": {"PetQTE": 5},
             "101": {"PetQTE": 7, "BossDmgQTE": 4},
@@ -2204,6 +2213,7 @@ const baseline = {
             },
         },
         "HoG": {
+            "0": {},
             "24": {"PetGoldQTE": 1, "PetQTE": 1},
             "50": {"PetGoldQTE": 1, "PetQTE": 5},
             "102": {"PetGoldQTE": 1, "PetQTE": 7, "BossDmgQTE": 4},
@@ -2466,6 +2476,7 @@ const baseline = {
             },
         },
         "Chesterson": {
+            "0": {},
             "24": {"PetQTE": 2},
             "50": {"PetQTE": 5},
             "102": {"PetQTE": 7, "BossDmgQTE": 4},
@@ -2701,6 +2712,7 @@ const baseline = {
     },
     "Dagger": {
         "Fairy": {
+            "0": {},
             "100": {"UltraDagger": 7, "PoisonedBlade": 4},
             "149": {
                 "MPCapacityBoost": 3,
@@ -2951,6 +2963,7 @@ const baseline = {
             },
         },
         "HoG": {
+            "0": {},
             "100": {"PetGoldQTE": 1, "UltraDagger": 7, "PoisonedBlade": 5},
             "149": {
                 "PetGoldQTE": 1,
@@ -3221,6 +3234,7 @@ const baseline = {
     },
     "Gold Gun": {
         "Fairy": {
+            "0": {},
             "199": {
                 "GoldGun": 14,
                 "MagnumOpus": 4,
@@ -3567,6 +3581,7 @@ const baseline = {
             },
         },
         "HoG": {
+            "0": {},
             "199": {
                 "PetGoldQTE": 1,
                 "GoldGun": 14,
@@ -3889,6 +3904,7 @@ const baseline = {
             },
         },
         "Chesterson": {
+            "0": {},
             "199": {
                 "GoldGun": 14,
                 "MagnumOpus": 4,

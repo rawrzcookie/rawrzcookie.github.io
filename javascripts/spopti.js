@@ -1057,7 +1057,7 @@ class PageHelper {
   static baselineQol() {
     let dmg = player.typeDamage;
     let gold = player.typeGold;
-    let sp = player.SkillPoints;
+    let sp = parseInt(player.SkillPoints || 0);
     let currLevels = player.currLevels;
     let skillArr = [];
 
