@@ -1071,7 +1071,7 @@ class PageHelper {
     for (const [i, { Name: skillName }] of Object.entries(skillInfo)) {
       const index = Object.keys(skillInfo).indexOf(i);
       const curr_level = parseInt(currLevels[index]);
-      const level = parseInt(qol_baselines[skillName] || 0);
+      const level = parseInt(qol_baselines[i] || 0);
 
       const value = !playerskills[skillName].Selection ? curr_level : Math.max(level, curr_level);
       
