@@ -841,3 +841,10 @@ label {
   text-align: left;
   width: 100%;
 }
+
+.notification--warning {
+  background-color: #ffd166;
+  border-color: #efb366;
+  text-align: left;
+  width: 100%;
+}

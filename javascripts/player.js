@@ -30,7 +30,8 @@ var playerInfo = {
     "WarCry": "",
     "SkillPoints": "0",
     "buildVersion": "7.2.0",
-    "MaxStage": ""
+    "MaxStage": "",
+    "AutoQol": true
   },
   "skills": {
     "Knight's Valor": {

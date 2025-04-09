@@ -12,6 +12,28 @@ if (user) {
   playerskills = user["skills"];
   playersaves = user["saves"];
 }
+const getCumulativeSP = ((skillInfo) => {
+  const result = {};
+  for (const [key, skill] of Object.entries(skillInfo)) {
+    let total = 0;
+    result[key] = [0]; // Level 0 costs 0 SP
+    for (let level = 1; level <= skill.MaxLevel; level++) {
+      const cost = parseFloat(skill[`Co${level - 1}`] || 0);
+      total += cost;
+      result[key].push(total);
+    }
+  }
+  return result;
+})(skillInfo);
+
+// Calculate the maximum skill level from skillInfo
+const MAX_SKILL_LEVEL = Math.max(...Object.values(skillInfo).map(skill => skill.MaxLevel));
+
+// Calculate array size as (MaxLevel * 2) + 1
+const EFFECTS_ARRAY_SIZE = (MAX_SKILL_LEVEL * 2) + 1;
+
+// Define the mid-point for the efficiency array
+const MID_POINT = MAX_SKILL_LEVEL;
 
 function playerStats() {
     const inputs = ["typeDamage", "typeGold", "goldWeight", "FB", "FF", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal", "CP", "sClone", "TimeToKill", "SkillPoints", "buildVersion", "MaxStage"];
@@ -69,71 +91,62 @@ class Player {
       
     return y;
   }
-  
+
   effArray() {
-    let skillArray = [];
     this.setStats();
+    
+    // Define mythic mapping once outside the loop
+    const branchToMythicMap = {
+      "BranchRed": this.Shae,
+      "BranchOrange": this.Ignus,
+      "BranchYellow": this.Ironheart,
+      "BranchBlue": this.Kor,
+      "BranchGreen": this.Styxsis,
+      "BranchPurple": this.Rygal
+    };
+    
+    const skillArray = [];
 
-    for (let i in playerskills) {
-        let talentID = playerskills[i]['ID'];
-        let mythic = skillInfo[talentID]["Branch"];
-        switch (mythic) {
-            case "BranchRed":
-                mythic = this.Shae;
-                break;
-            case "BranchOrange":
-                mythic = this.Ignus;
-                break;
-            case "BranchYellow":
-                mythic = this.Ironheart;
-                break;
-            case "BranchBlue":
-                mythic = this.Kor;
-                break;
-            case "BranchGreen":
-                mythic = this.Styxsis;
-                break;
-            case "BranchPurple":
-                mythic = this.Rygal;
-                break;
-            default:
-                mythic = 1;
-                break;
-        }
-        let currEffs = Array(91).fill(1 * mythic);
+    for (const skill in playerskills) {
+        const talentID = playerskills[skill]['ID'];
+        const skillData = skillInfo[talentID];
+        const mythic = branchToMythicMap[skillData.Branch] || 1;
         
-        let currLevel = Number(playerskills[i]['Level']);
-        let maxLevel = Number(skillInfo[talentID]['MaxLevel']);
-        let stageReq = Number(skillInfo[talentID]["S0"]);
-
-        let cumSP = 0;
+        let currEffs = Array(EFFECTS_ARRAY_SIZE).fill(1 * mythic);
+        
+        const currLevel = +playerskills[skill]['Level'];
+        const maxLevel = +skillData.MaxLevel;
+        const stageReq = +skillData.S0;
+        
+        const talentCumSP = getCumulativeSP[talentID]; // Get precomputed array for this skill
         for (let i = 0; i <= maxLevel; i++) {
-            if (i >= currLevel) {
-            let j = (i - currLevel);
-            currEffs[45 + j] = cumSP;
-            }
-            let cost = Number(skillInfo[talentID]["Co" + i]);
-            cumSP += cost;
+          if (i >= currLevel) {
+            const j = i - currLevel;
+            currEffs[MID_POINT + j] = talentCumSP[i];
+          }
         }
 
-        if (playerskills[i]['Selection'] == false || (this.MaxStage && this.MaxStage < stageReq)) {
+        if (playerskills[skill]['Selection'] === false || (this.MaxStage && this.MaxStage < stageReq)) {
           skillArray.push(currEffs);
           continue;
         }
         
         for (let j = currLevel; j < maxLevel; j++) {
-            let k = (j - currLevel);
+            const k = j - currLevel;
             
-            let currA = Number(skillInfo[talentID]["A" + currLevel]);
-            let nextA = Number(skillInfo[talentID]["A" + (j + 1)]);
-            let currB = Number(skillInfo[talentID]["B" + currLevel]);
-            let nextB = Number(skillInfo[talentID]["B" + (j + 1)]);
-            let currC = Number(skillInfo[talentID]["C" + currLevel]);
-            let nextC = Number(skillInfo[talentID]["C" + (j + 1)]);
-            let cost = Number(currEffs[46 + k] - currEffs[45]);
-            let reduction = Number(reductions[talentID][this.typeDamage] + (reductions[talentID][this.typeGold] * this.goldWeight));
+            const currA = +skillData["A" + currLevel];
+            const nextA = +skillData["A" + (j + 1)];
+            const currB = +skillData["B" + currLevel];
+            const nextB = +skillData["B" + (j + 1)];
+            const currC = +skillData["C" + currLevel];
+            const nextC = +skillData["C" + (j + 1)];
+            const cost = currEffs[MID_POINT + 1 + k] - currEffs[MID_POINT];
+            const reduction = reductions[talentID][this.typeDamage] + (reductions[talentID][this.typeGold] * this.goldWeight);
 
-            let efficiency = this._calcEff(talentID, currA, nextA, currB, nextB, currC, nextC, cost, reduction, this.FB, this.FF, this.goldWeight, "efficiency");
+            const efficiency = this._calcEff(
+                talentID, currA, nextA, currB, nextB, currC, nextC,
+                cost, reduction, this.FB, this.FF, this.goldWeight, "efficiency"
+            );
 
             currEffs[k] = efficiency * mythic;
         }
@@ -141,73 +154,54 @@ class Player {
         skillArray.push(currEffs);
     }
 
-    //this.skillArray = skillArray;
     return skillArray;
   }
 
   totalEffects() {
-    let effectArr = []
     this.setStats();
 
-    for (let i in playerskills) {
-        let talentID = playerskills[i]['ID'];
-        let mythic = skillInfo[talentID]["Branch"];
-        switch (mythic) {
-            case "BranchRed":
-                mythic = this.Shae;
-                break;
-            case "BranchOrange":
-                mythic = this.Ignus;
-                break;
-            case "BranchYellow":
-                mythic = this.Ironheart;
-                break;
-            case "BranchBlue":
-                mythic = this.Kor;
-                break;
-            case "BranchGreen":
-                mythic = this.Styxsis;
-                break;
-            case "BranchPurple":
-                mythic = this.Rygal;
-                break;
-            default:
-                mythic = 1;
-                break;
-        }
-        let currEffs = Array(91).fill(1 * mythic);
-        
-        let currLevel = Number(playerskills[i]['Level']);
-        let maxLevel = Number(skillInfo[talentID]['MaxLevel']);
+    const branchToMythicMap = {
+      "BranchRed": this.Shae,
+      "BranchOrange": this.Ignus,
+      "BranchYellow": this.Ironheart,
+      "BranchBlue": this.Kor,
+      "BranchGreen": this.Styxsis,
+      "BranchPurple": this.Rygal
+    };
+  
+    const effectArr = [];
 
-        let cumSP = 0;
-        for (let i = 0; i <= maxLevel; i++) {
-            if (i >= currLevel) {
-            let j = (i - currLevel);
-            currEffs[45 + j] = cumSP;
-            }
-            let cost = Number(skillInfo[talentID]["Co" + i]);
-            cumSP += cost;
-        }
-        
-        let k = currLevel;
-        
-        let currA = Number(skillInfo[talentID]["A" + currLevel]);
-        let nextA = 1
-        let currB = Number(skillInfo[talentID]["B" + currLevel]);
-        let nextB = 1
-        let currC = Number(skillInfo[talentID]["C" + currLevel]);
-        let nextC = 1
-        let cost = currEffs[45];
-        let reduction = Number(reductions[talentID][this.typeDamage] + (reductions[talentID][this.typeGold] * this.goldWeight));
+    for (const skill in playerskills) {
+      const talentID = playerskills[skill]['ID'];
+      const skillData = skillInfo[talentID];
+      const mythic = branchToMythicMap[skillData.Branch] || 1;
 
-        let efficiency = this._calcEff(talentID, currA, nextA, currB, nextB, currC, nextC, 1, reduction, this.FB, this.FF, this.goldWeight, "curr");
+      const currLevel = +playerskills[skill]['Level'];
+      const maxLevel = +skillData.MaxLevel;
 
-        currEffs = efficiency * (mythic ** cost);
-        
-        effectArr.push(currEffs);
+          // Get the cost directly from talentCumSP
+    const cost = getCumulativeSP[talentID][currLevel];
+    
+    // Extract values directly without repeated lookups
+    const currA = +skillData["A" + currLevel];
+    const nextA = 1;
+    const currB = +skillData["B" + currLevel];
+    const nextB = 1;
+    const currC = +skillData["C" + currLevel];
+    const nextC = 1;
+    
+    const reduction = reductions[talentID][this.typeDamage] + (reductions[talentID][this.typeGold] * this.goldWeight);
+    
+    const efficiency = this._calcEff(
+      talentID, currA, nextA, currB, nextB, currC, nextC, 
+      1, reduction, this.FB, this.FF, this.goldWeight, "curr"
+    );
+    
+    // Calculate final value directly
+    const currEffs = efficiency * (mythic ** cost);
+    
+    effectArr.push(currEffs);
     }
-
     return effectArr;
   }
 
@@ -219,6 +213,8 @@ class Player {
     let curr;
     let next;
 
+    const reductionFactor = reduction / cost;
+
     switch (id) {
         // if multicasts
         case "BurstDamageMultiCastSkill":
@@ -229,92 +225,92 @@ class Player {
         case "ShadowCloneMultiCastSkill":
         case "GuidedBlade":
         case "StreamOfBladesMultiCastSkill":
-          next = ((10 * nextA) ** (nextB + multicast)) ** (reduction / cost);
-          curr = ((10 * (currA ?? 1)) ** (!currB ? 0 : (currB + multicast))) ** (reduction / cost);
+          next = ((10 * nextA) ** (nextB + multicast)) ** (reductionFactor);
+          curr = ((10 * (currA ?? 1)) ** (!currB ? 0 : (currB + multicast))) ** (reductionFactor);
           efficiency = next / curr;
           break;
         
         // twilight multicast includes gloom damage
         case "TwilightGatheringMultiCastSkill":
-          next = (((10 * nextA) ** (nextB + multicast)) ** (reduction / cost)) * (nextC ** (reduction / cost));
-          curr = (((10 * (currA ?? 1)) ** (!currB ? 0 : (currB + multicast))) ** (reduction / cost)) * ((currC || 1) ** (reduction / cost));
+          next = (((10 * nextA) ** (nextB + multicast)) ** (reductionFactor)) * (nextC ** (reductionFactor));
+          curr = (((10 * (currA ?? 1)) ** (!currB ? 0 : (currB + multicast))) ** (reductionFactor)) * ((currC || 1) ** (reductionFactor));
           efficiency = next / curr;
           break;
 
         case "PetBonusBoost": // Ember Arts
           reduction_2 = Number(reductions["TapDmg"][this.typeDamage]);
-          next = (nextA ** (reduction / cost)) * (nextB ** (reduction_2 / cost));
-          curr = ((currA || 1) ** (reduction / cost)) * ((currB || 1) ** (reduction_2 / cost));
+          next = (nextA ** (reductionFactor)) * (nextB ** (reduction_2 / cost));
+          curr = ((currA || 1) ** (reductionFactor)) * ((currB || 1) ** (reduction_2 / cost));
           efficiency = next / curr;
           break;
 
         case "BossDmgQTE": // Flash Zip
-          next = (nextA ** (reduction / cost)) * ((nextB || 1) ** (reduction / cost));
-          curr = ((currA || 1) ** (reduction / cost)) * ((currB || 1) ** (reduction / cost));
+          next = (nextA ** (reductionFactor)) * ((nextB || 1) ** (reductionFactor));
+          curr = ((currA || 1) ** (reductionFactor)) * ((currB || 1) ** (reductionFactor));
           efficiency = next / curr;
           break;
 
         case "HelperBoost": // Tactical Insight
-          next = ((1 + nextA) ** (reduction / cost));
-          curr = ((1 + currA) ** (reduction / cost));
+          next = ((1 + nextA) ** (reductionFactor));
+          curr = ((1 + currA) ** (reductionFactor));
           efficiency = next / curr;
           break;
         
         case "HelperInspiredWeaken": // Searing Light
-          next = ((nextA * nextB) ** (reduction / cost));
-          curr = (((currA || 1) * (currB || 1)) ** (reduction / cost));
+          next = ((nextA * nextB) ** (reductionFactor));
+          curr = (((currA || 1) * (currB || 1)) ** (reductionFactor));
           efficiency = next / curr;
-          //efficiency = ((nextA * nextB) / (currA || 1) * (currB || 1)) ** (reduction / cost);
+          //efficiency = ((nextA * nextB) / (currA || 1) * (currB || 1)) ** (reductionFactor);
           break;
 
         case "HelperDmgQTE": // Astral Awakening
-          next = (nextA ** (5 * reduction / cost));
-          curr = ((currA || 1) ** (5 * reduction / cost));
+          next = (nextA ** (5 * reductionFactor));
+          curr = ((currA || 1) ** (5 * reductionFactor));
           efficiency = next / curr;
           break;
 
         // Voltaic Sails, Weakpoint Throw
         case "ClanShipVoltage":
         case "CriticalHit":
-          next = ((nextA * nextB) ** (reduction / cost));
-          curr = (((currA || 1) * (currB || 1)) ** (reduction / cost));
+          next = ((nextA * nextB) ** (reductionFactor));
+          curr = (((currA || 1) * (currB || 1)) ** (reductionFactor));
           efficiency = next / curr;
           break;
 
         // Loaded Dice
           case "LoadedDice":
           reduction_2 = goldWeight;
-          next = (nextA ** (reduction / cost)) * (nextB ** (reduction_2 / cost));
-          curr = ((currA || 1) ** (reduction / cost)) * ((currB || 1) ** (reduction_2 / cost));
+          next = (nextA ** (reductionFactor)) * (nextB ** (reduction_2 / cost));
+          curr = ((currA || 1) ** (reductionFactor)) * ((currB || 1) ** (reduction_2 / cost));
           efficiency = next / curr;
           break;
 
         case "CloneDmg": // Phantom Vengeance
-          next = ((nextA * (4 + nextB)) ** (reduction / cost));
-          curr = (((currA || 1) * (4 + currB)) ** (reduction / cost));
+          next = ((nextA * (4 + nextB)) ** (reductionFactor));
+          curr = (((currA || 1) * (4 + currB)) ** (reductionFactor));
           if (returnValue == "curr") {
-            curr = (((currA || 1) * (4 + currB) / 4) ** (reduction / cost));
+            curr = (((currA || 1) * (4 + currB) / 4) ** (reductionFactor));
           }
           efficiency = next / curr;
           break;
 
         case "CritSkillBoost": // Lightning Strike
           let LS = this._lightningStrike(currA, nextA, currB, nextB);
-          next = (LS[0] ** (reduction / cost));
-          curr = (LS[1] ** (reduction / cost));
+          next = (LS[0] ** (reductionFactor));
+          curr = (LS[1] ** (reductionFactor));
           efficiency = next / curr;
           break;
 
         case "TerrifyingPact": // Terrifying Pact
           reduction_2 = playerskills["Royal Contract"]["Selection"] === true ? 1 : 0; // if RoCo is enabled
-          next = (nextA ** (reduction / cost)) * (nextB ** (reduction_2 / cost));
-          curr = ((currA || 1) ** (reduction / cost)) * ((currB || 1) ** (reduction_2 / cost));
+          next = (nextA ** (reductionFactor)) * (nextB ** (reduction_2 / cost));
+          curr = ((currA || 1) ** (reductionFactor)) * ((currB || 1) ** (reduction_2 / cost));
           efficiency = next / curr;
           break;
 
         case "PoisonedBlade": // Poison Edge
-          next = ((1 + (nextA * 10)) ** (reduction / cost));
-          curr = ((1 + (currA * 10)) ** (reduction / cost));
+          next = ((1 + (nextA * 10)) ** (reductionFactor));
+          curr = ((1 + (currA * 10)) ** (reductionFactor));
           efficiency = next / curr;
           break;
 
@@ -322,23 +318,23 @@ class Player {
           gold_2 = this.typeGold !== "Chesterson" ? 1 : 0;
           let mc_bonus_A = [1, 100, 10000, 1000000, 100000000, 1000000000]
           let mc_bonus_B = [1, 10, 100, 1000, 10000, 50000]
-          next = (((mc_bonus_A[nextB + multicast]) * (nextA) ** (nextB + multicast)) ** (reduction / cost)) * ((mc_bonus_B[(nextB + multicast)]) ** (gold_2 * goldWeight / cost));
-          curr = (((mc_bonus_A[(!currB ? 0 : (currB + multicast))]) * ((currA ?? 1) ** (!currB ? 0 : (currB + multicast)))) ** (reduction / cost)) * ((mc_bonus_B[(!currB ? 0 : (currB + multicast))]) ** (gold_2 * goldWeight / cost));
+          next = (((mc_bonus_A[nextB + multicast]) * (nextA) ** (nextB + multicast)) ** (reductionFactor)) * ((mc_bonus_B[(nextB + multicast)]) ** (gold_2 * goldWeight / cost));
+          curr = (((mc_bonus_A[(!currB ? 0 : (currB + multicast))]) * ((currA ?? 1) ** (!currB ? 0 : (currB + multicast)))) ** (reductionFactor)) * ((mc_bonus_B[(!currB ? 0 : (currB + multicast))]) ** (gold_2 * goldWeight / cost));
           efficiency = next / curr;
-          //efficiency = (((100 * nextA) ** (nextB + FB)) / ((100 * (currA ?? 1)) ** (!currB ? 0 : (currB + FB)))) ** (reduction / cost) * (((10) ** (nextB + FB)) / ((10) ** (!currB ? 0 : (currB + FB)))) ** (gold_2 * goldWeight / cost);
+          //efficiency = (((100 * nextA) ** (nextB + FB)) / ((100 * (currA ?? 1)) ** (!currB ? 0 : (currB + FB)))) ** (reductionFactor) * (((10) ** (nextB + FB)) / ((10) ** (!currB ? 0 : (currB + FB)))) ** (gold_2 * goldWeight / cost);
           break;
 
         case "KratosSummon": // Sprouting Salts
-          next = ((nextA ** nextB) ** (reduction / cost));
-          curr = ((currA ** currB || 1)) ** (reduction / cost);
+          next = ((nextA ** nextB) ** (reductionFactor));
+          curr = ((currA ** currB || 1)) ** (reductionFactor);
           efficiency = next / curr;
           break;
 
         default:
-          next = (nextA ** (reduction / cost));
-          curr = ((currA || 1) ** (reduction / cost));
+          next = (nextA ** (reductionFactor));
+          curr = ((currA || 1) ** (reductionFactor));
           efficiency = next / curr;
-          //efficiency = (nextA / (currA || 1)) ** (reduction / cost);
+          //efficiency = (nextA / (currA || 1)) ** (reductionFactor);
     }
 
     switch (returnValue) {
@@ -384,8 +380,8 @@ class Player {
     let length = skillArr.length;
     
     for (let i = 0; i < length; i++) {
-      let arr = skillArr[i].slice(0,45)
-      let costs = skillArr[i].slice(45,91);
+      let arr = skillArr[i].slice(0, MID_POINT);
+      let costs = skillArr[i].slice(MID_POINT, EFFECTS_ARRAY_SIZE);
       let max = Math.max(...arr);
       let steps = Number(arr.indexOf(max)) + 1;
       let skillName = skillNames[i];
@@ -468,24 +464,25 @@ let flagop = 1;
 class Optimize {
 
   // Dorijanko's modified
-
   static getImportant(a) {
-    let imp = [];
+    const imp = [];
     let maxSF = -Infinity;
 
     for (let i = 0; i < a.length; ++i) {
-        if (i < 101 || a[i] > maxSF) {
-            imp.push(i);
-            maxSF = Math.max(maxSF, a[i]);
-        }
+      if (i < 101) {
+        imp.push(i);
+        maxSF = Math.max(maxSF, a[i]);
+      } else if (a[i] > maxSF) {
+        imp.push(i);
+        maxSF = a[i];
+      }
     }
 
     return imp;
-}
+  }
 
 
   static mergeEff(a, b, req, goodMasks) {
-
     /*
     1 = previous skill taken
     2 = two skills ago taken
@@ -496,89 +493,121 @@ class Optimize {
     [0,0,1,1,0,0,1,1]; //T5 mid; 2, 3, 6, 7
     [0,0,0,0,1,1,1,1]; //T5 left; 4, 5, 6, 7
     */
-    let c = Array(8).fill().map(() => Array(a.length + b[0].length - 1).fill(-100000));
-    let d = Array(8).fill().map(() => Array(a.length + b[0].length - 1).fill(-100000));
+    // Pre-allocate arrays with correct size once
+    const resultLength = a.length + b[0].length - 1;
+    
+    // Create arrays once with proper initialization
+    const c = Array(8).fill().map(() => new Array(resultLength).fill(-100000));
+    const d = Array(8).fill().map(() => new Array(resultLength).fill(-100000));
   
-    a.forEach((val, i) => {
-      if (val < 0) return;
+    // Cache important indices of b arrays outside loop
+    const bImportantIndices = [];
+    for (let mask = 0; mask < 8; mask++) {
+      bImportantIndices[mask] = this.getImportant(b[mask]);
+    }
+  
+    // Main processing loop
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] < 0) continue;
+      
       for (let mask = 0; mask < 8; mask++) {
         if (i > 0 && goodMasks[mask] === 0) continue;
-        let newMask = (mask * 2 + (i > 0 ? 1 : 0)) % 8;
-        let b1 = b[mask];
-        let impj = this.getImportant(b1);
-        impj.forEach(j => {
-          if ((i === 0 || j >= req) && a[i] + b1[j] > c[newMask][i + j]) {
-            c[newMask][i + j] = a[i] + b1[j];
-            d[newMask][i + j] = i;
+        
+        const newMask = (mask * 2 + (i > 0 ? 1 : 0)) % 8;
+        const b1 = b[mask];
+        const impj = bImportantIndices[mask];
+        
+        for (let jIdx = 0; jIdx < impj.length; jIdx++) {
+          const j = impj[jIdx];
+          const idx = i + j;
+          if ((i === 0 || j >= req) && idx < resultLength) {
+            const sum = a[i] + b1[j];
+            if (sum > c[newMask][idx]) {
+              c[newMask][idx] = sum;
+              d[newMask][idx] = i;
+            }
           }
-        });
+        }
       }
-    });
+    }
   
     return [c, d];
   }
   
   static mergeTrees(a, b, totSP) {
-    let c = [], d = [];
     const tot = totSP + 1000;
+    const c = [];
+    const d = [];
+
+    // Pre-calculate important indices once
+    const impj = this.getImportant(b);
+    const impi = [];
+    for (let mask = 0; mask < 8; ++mask) {
+      impi[mask] = this.getImportant(a[mask]);
+    }
 
     for (let mask = 0; mask < 8; ++mask) {
-        let a1 = a[mask];
-        let lenAB = a1.length + b.length;
-        let c1 = new Array(lenAB).fill(-100000);
-        let d1 = new Array(lenAB).fill(-100000);
-        let impi = this.getImportant(a1);
-        let impj = this.getImportant(b);
-
-        for (let i of impi) {
-            if (a1[i] >= 0) for (let j of impj) {
-                let index = i + j;
-                if (index > tot) break;
-                let sum = a1[i] + b[j];
-                if (sum > c1[index]) {
-                    c1[index] = sum;
-                    d1[index] = i;
-                }
-            }
+      const a1 = a[mask];
+      const lenAB = Math.min(a1.length + b.length, tot + 1);
+      const c1 = new Array(lenAB).fill(-100000);
+      const d1 = new Array(lenAB).fill(-100000);
+      
+      const currentImpi = impi[mask];
+      
+      for (let iIdx = 0; iIdx < currentImpi.length; iIdx++) {
+        const i = currentImpi[iIdx];
+        if (a1[i] < 0) continue;
+        
+        for (let jIdx = 0; jIdx < impj.length; jIdx++) {
+          const j = impj[jIdx];
+          const index = i + j;
+          if (index > tot) break;
+          
+          const sum = a1[i] + b[j];
+          if (sum > c1[index]) {
+            c1[index] = sum;
+            d1[index] = i;
+          }
         }
+      }
 
-        c1.length = d1.length = Math.min(c1.length, tot);
-        c.push(c1);
-        d.push(d1);
+      c.push(c1);
+      d.push(d1);
     }
     return [c, d];
-}
+  }
 
 
-  static intoOne(a,b,which) {
-    let c;
-    let d;
-    c=[];
-    for (var i=0;i<a[0].length;++i) c.push(-100000);
-    d=[];
-    for (var i=0;i<a[0].length;++i) d.push([-1,-1]);
-    for (var x=0;x<which.length;++x) {
-      var i=which[x];
-      for (var j=0;j<a[i].length;++j) {
-        if (a[i][j]>c[j])
-        {
-          c[j]=a[i][j];
-          d[j]=[b[i][j],i];
+  static intoOne(a, b, which) {
+    const len = a[0].length;
+    const c = new Array(len).fill(-100000);
+    const d = new Array(len).fill().map(() => [-1, -1]);
+    
+    for (let x = 0; x < which.length; ++x) {
+      const i = which[x];
+      const ai = a[i];
+      
+      for (let j = 0; j < ai.length; ++j) {
+        if (ai[j] > c[j]) {
+          c[j] = ai[j];
+          d[j] = [b[i][j], i];
         }
       }
     }
-    return [c,d];
+    return [c, d];
   }
 
   
-  static intoOneFastc(a,b,which) {
-    let c = new Array(a[0].length).fill(-100000);
-    for (var x=0;x<which.length;++x) {
-      var i=which[x];
-      for (var j=0;j<a[i].length;++j) {
-        if (a[i][j]>c[j])
-        {
-          c[j]=a[i][j];
+  static intoOneFastc(a, which) {
+    const c = new Array(a[0].length).fill(-100000);
+    
+    for (let x = 0; x < which.length; ++x) {
+      const i = which[x];
+      const ai = a[i];
+      
+      for (let j = 0; j < ai.length; ++j) {
+        if (ai[j] > c[j]) {
+          c[j] = ai[j];
         }
       }
     }
@@ -586,10 +615,10 @@ class Optimize {
   }
   
   static intoOneFastd(a, b, which, totSP) {
-    let c = Number.NEGATIVE_INFINITY;;
+    let c = Number.NEGATIVE_INFINITY;
     let d = [-1, -1];
-    const whichLength = which.length;
-    for (let x = 0; x < whichLength; ++x) {
+    
+    for (let x = 0; x < which.length; ++x) {
       const i = which[x];
       if (totSP < a[i].length && a[i][totSP] > c) {
         c = a[i][totSP];
@@ -604,61 +633,83 @@ class Optimize {
   }
 
   static optTree(efficiencies, currLevels, SP) {
-    var optData = efficiencies;
-    var goodRows = optData.length;
-    var branches = this.treeBranch();
-    var trees=[];
-    var baseB=[[0],[0],[0],[0],[0],[0],[0],[0]];
-    var tree=[[baseB,[]]];
-    for (var i=0;i<goodRows;++i)
-    {
-      if (i>0 && branches[i][0]!=branches[i-1][0])
-      {
+    const optData = efficiencies;
+    const goodRows = optData.length;
+    const branches = this.treeBranch();
+    const trees = [];
+    const baseB = [[0],[0],[0],[0],[0],[0],[0],[0]];
+    let tree = [[baseB,[]]];
+    
+    // Cache common mask arrays
+    const T5RightMask = [0,1,0,1,0,1,0,1]; //T5 right; 1, 3, 5, 7
+    const T5MidMask = [0,0,1,1,0,0,1,1]; //T5 mid; 2, 3, 6, 7
+    const T5LeftMask = [0,0,0,0,1,1,1,1]; //T5 left; 4, 5, 6, 7
+    const allMask = [1,1,1,1,1,1,1,1];
+    const standardMasks = [0,1,2,3,4,5,6,7];
+    
+    for (let i = 0; i < goodRows; ++i) {
+      if (i > 0 && branches[i][0] != branches[i-1][0]) {
         trees.push(tree);
-        tree=[[baseB,[]]];
+        tree = [[baseB,[]]];
       }
-      var maxLevInc=0;
-      while (maxLevInc<45 && optData[i][maxLevInc+45]<optData[i][maxLevInc+46]) ++maxLevInc;
-      var newArray=[];
-      var maxSPCount=optData[i][maxLevInc+45];
-      for (var j=0;j<=maxSPCount;++j) newArray.push(-100000);
-      var SPU=optData[i][45];
-      newArray[SPU]=0;
-      for (var j=1;j<=maxLevInc;++j)
-      {
-        var SPC=optData[i][j+45];
-        newArray[SPC]=(SPC-SPU)*Math.log10(optData[i][j-1]);
+      
+      // Find maxLevInc more efficiently
+      let maxLevInc = 0;
+      while (maxLevInc < MID_POINT && optData[i][maxLevInc+MID_POINT] < optData[i][maxLevInc+MID_POINT+1]) ++maxLevInc;
+      
+      const newArray = new Array(optData[i][maxLevInc+MID_POINT] + 1).fill(-100000);
+      const SPU = optData[i][MID_POINT];
+      newArray[SPU] = 0;
+      
+      for (let j = 1; j <= maxLevInc; ++j) {
+        const SPC = optData[i][j+MID_POINT];
+        newArray[SPC] = (SPC-SPU) * Math.log10(optData[i][j-1]);
       }
-      var SPReq=0;
-      if (tree.length>=2) SPReq=3;
-      if (tree.length>=5) SPReq=20;
-      if (tree.length>=8) SPReq=50;
-      if (tree.length>=11) SPReq=100;
-      var goodMasks=[0,1,1,1,1,1,1,1];
-      if (tree.length==1) goodMasks=[1,1,1,1,1,1,1,1];
-      if (tree.length>=5 && tree.length<11) goodMasks=[0,0,0,0,1,1,1,1];
-      if (i==10 || i==32) goodMasks=[0,1,0,1,0,1,0,1]; //T5 right
-      if (i==54) goodMasks = [0,0,1,1,0,0,1,1]; //T5 mid
-      if (i==43 || i==65) goodMasks=[0,0,0,0,1,1,1,1]; //T5 left
-      tree.push(this.mergeEff(newArray,tree[tree.length-1][0],SPReq,goodMasks));
+      
+      // Determine SPReq based on tree length
+      let SPReq = 0;
+      if (tree.length >= 2) SPReq = 3;
+      if (tree.length >= 5) SPReq = 20;
+      if (tree.length >= 8) SPReq = 50;
+      if (tree.length >= 11) SPReq = 100;
+      
+      // Determine goodMasks based on conditions
+      let goodMasks;
+      if (tree.length === 1) {
+        goodMasks = allMask;
+      } else if (tree.length >= 5 && tree.length < 11) {
+        goodMasks = T5LeftMask;
+      } else if (i === 10 || i === 32) {
+        goodMasks = T5RightMask; //T5 right
+      } else if (i === 54) {
+        goodMasks = T5MidMask; //T5 mid
+      } else if (i === 43 || i === 65) {
+        goodMasks = T5LeftMask; //T5 left
+      } else {
+        goodMasks = [0,1,1,1,1,1,1,1];
+      }
+      
+      tree.push(this.mergeEff(newArray, tree[tree.length-1][0], SPReq, goodMasks));
     }
     trees.push(tree);
-    var totSP = SP;
-    var prefTrees=[[baseB,baseB]];
-    for (var i=0;i<trees.length;++i)
-    {
-      var oldVal=this.intoOneFastc(prefTrees[i][0],prefTrees[i][1],[0,1,2,3,4,5,6,7])[0];
-      prefTrees.push(this.mergeTrees(trees[i][trees[i].length-1][0],oldVal,totSP));
+    
+    let totSP = SP;
+    const prefTrees = [[baseB, baseB]];
+    
+    for (let i = 0; i < trees.length; ++i) {
+      const oldVal = this.intoOneFastc(prefTrees[i][0], standardMasks)[0];
+      prefTrees.push(this.mergeTrees(trees[i][trees[i].length-1][0], oldVal, totSP));
     }
-    let mode = document.querySelector('.optimizeMode').getAttribute("data-maxCumlEff") === 'true';
+    
+    // Check for optimize mode
+    const mode = document.querySelector('.optimizeMode').getAttribute("data-maxCumlEff") === 'true';
     if (mode) {
-      let effVals = this.intoOneFastc(prefTrees[trees.length][0], prefTrees[trees.length][1], [0,1,2,3,4,5,6,7])[0];
-      let SPused = Number(PageHelper.spUsed());
+      const effVals = this.intoOneFastc(prefTrees[trees.length][0], standardMasks)[0];
+      const SPused = Number(PageHelper.spUsed());
       let maxCumEff = effVals[totSP] / (totSP - SPused);
-      let effValsLength = effVals.length;
       
-      for (let i = totSP + 1; i < effValsLength; ++i) {
-        let currentEff = effVals[i] / (i - SPused);
+      for (let i = totSP + 1; i < effVals.length; ++i) {
+        const currentEff = effVals[i] / (i - SPused);
         maxCumEff = Math.max(maxCumEff, currentEff);
       }
       
@@ -669,42 +720,50 @@ class Optimize {
         }
       }
     }
-    let levels=[];
-    var oldLevels=currLevels;
-    for (var i=trees.length;i>=1;--i)
-    {
-      var vaalFast=this.intoOneFastd(prefTrees[i][0],prefTrees[i][1],[0,1,2,3,4,5,6,7],totSP);
-      var totSPinTree=vaalFast[0];
-      var usedMasks=[vaalFast[1]];
-      for (var j=trees[i-1].length-1;j>=1;--j)
-      {
-        var curValFast=this.intoOneFastd(trees[i-1][j][0],trees[i-1][j][1],usedMasks,totSPinTree);
-        var SPHere=curValFast[0];
-        var curMask=curValFast[1];
-        var levHere=0;
-        while (optData[goodRows-levels.length-1][levHere+45]!=SPHere)
-        {
+    
+    const levels = [];
+    const oldLevels = currLevels;
+    
+    for (let i = trees.length; i >= 1; --i) {
+      const vaalFast = this.intoOneFastd(prefTrees[i][0], prefTrees[i][1], standardMasks, totSP);
+      let totSPinTree = vaalFast[0];
+      let usedMasks = [vaalFast[1]];
+      
+      for (let j = trees[i-1].length-1; j >= 1; --j) {
+        const curValFast = this.intoOneFastd(trees[i-1][j][0], trees[i-1][j][1], usedMasks, totSPinTree);
+        const SPHere = curValFast[0];
+        const curMask = curValFast[1];
+        
+        let levHere = 0;
+        while (levHere < optData[0].length && optData[goodRows-levels.length-1][levHere+MID_POINT] !== SPHere) {
           ++levHere;
         }
-        totSPinTree-=SPHere;
+        
+        totSPinTree -= SPHere;
         levels.push(levHere);
-        var cand=Math.floor(curMask/2);
-        var minMask=0;
-        if (j>1) minMask=1;
-        if (j>=5 && j<11) minMask=4;
-        usedMasks=[];
-        if (cand>=minMask || SPHere==0) usedMasks.push(cand);
+        
+        const cand = Math.floor(curMask/2);
+        let minMask = 0;
+        if (j > 1) minMask = 1;
+        if (j >= 5 && j < 11) minMask = 4;
+        
+        usedMasks = [];
+        if (cand >= minMask || SPHere === 0) usedMasks.push(cand);
         usedMasks.push(cand+4);
       }
-      totSPinTree=vaalFast[0];
-      totSP-=totSPinTree;
+      
+      totSP -= vaalFast[0];
     }
-    var newLevels=[];
-    for (var i=0;i<goodRows;++i)
-    {
-      if (oldLevels[i].length===0) newLevels.push([levels[goodRows-i-1]]);
-      else newLevels.push([Number(levels[goodRows-i-1])+Number(oldLevels[i][0])]);
+    
+    const newLevels = [];
+    for (let i = 0; i < goodRows; ++i) {
+      if (oldLevels[i].length === 0) {
+        newLevels.push([levels[goodRows-i-1]]);
+      } else {
+        newLevels.push([Number(levels[goodRows-i-1]) + Number(oldLevels[i][0])]);
+      }
     }
+    
     return newLevels;
   }
 }
@@ -816,8 +875,8 @@ class PageHelper {
         let sum = 0;
         for (let i = 0; i < branches.length; i++) {
             if (branches[i][0] == branch) {
-                sum += optData[i][45];
-                sumTotal += optData[i][45];
+                sum += optData[i][MID_POINT];
+                sumTotal += optData[i][MID_POINT];
             } 
         }
         treeTotals.push(sum);
@@ -844,7 +903,7 @@ class PageHelper {
     let sumTotal = 0;
 
     for (let i = 0; i < optData.length; i++) {
-      sumTotal += optData[i][45];
+      sumTotal += optData[i][MID_POINT];
     }
     return sumTotal;
   }
@@ -979,6 +1038,8 @@ class PageHelper {
   static toggleQol(element) {
     let mode = element.getAttribute("data-qol") === 'true';
     element.setAttribute("data-qol", String(!mode));
+    playerstats["AutoQol"] = !mode;
+    PageHelper.save();
     element.innerHTML = mode ? 'Auto QoL: Off' : 'Auto QoL: On';
   }
 
@@ -1055,30 +1116,56 @@ class PageHelper {
 }
 
   static baselineQol() {
-    let dmg = player.typeDamage;
-    let gold = player.typeGold;
-    let sp = parseInt(player.SkillPoints || 0);
-    let currLevels = player.currLevels;
-    let skillArr = [];
+    const dmg = player.typeDamage; // get player damage type
+    const gold = player.typeGold; // get player gold type
+    const sp = Number(player.SkillPoints) || 0; // get player skill points
+    const currLevels = player.currLevels; // get player skill levels
+    const skillIds = Object.keys(skillInfo); // get skill IDs
+    const skillIdToIndex = Object.fromEntries(skillIds.map((id, index) => [id, index]));
+    const skillArr = []; // array to hold skill levels
+    const build = baseline[dmg][gold]; // get baseline build for player type
 
-    let build = baseline[dmg][gold];
-
-    let baselines = Object.keys(build).map(Number);
+    const baselines = Object.keys(build).map(Number);
     
-    let index = this.binarySearch(baselines, sp);
-    let qol_baselines = build[baselines[index]];
+    let sp_index = this.binarySearch(baselines, sp);
+    let qol_baselines = build[baselines[sp_index]];
+    if (!this.isBaselineValid(qol_baselines, currLevels)) return; 
     
     for (const [i, { Name: skillName }] of Object.entries(skillInfo)) {
-      const index = Object.keys(skillInfo).indexOf(i);
-      const curr_level = parseInt(currLevels[index]);
+      const index = skillIdToIndex[i];
+      const curr_level = parseInt(currLevels[index]) || 0;
       const level = parseInt(qol_baselines[i] || 0);
 
       const value = !playerskills[skillName].Selection ? curr_level : Math.max(level, curr_level);
-      
+
       skillArr.push(value);
     }
 
     this.toTree(skillArr);  
+  }
+
+  static isBaselineValid(baselineLevels, currLevels) {
+    const skillIds = Object.keys(skillInfo); // get skill IDs
+    const skillIdToIndex = Object.fromEntries(skillIds.map((id, index) => [id, index]));
+    const total_sp = Number(player.SkillPoints) || 0;
+    const curr_sp = this.treeSP().reduce((a, b) => a + b, 0); // get current SP used
+    const sp_avail = total_sp - curr_sp; // get available SP to spend
+
+    let baselineSpCost = 0;
+    for (const i in baselineLevels) {
+      const skillIndex = skillIdToIndex[i]; // get index of skill ID
+      const currLevel = parseInt(currLevels[skillIndex]?.[0] || 0); // get current skill level
+      const baselineLevel = parseInt(baselineLevels[i] || 0); // get baseline skill level
+      
+      if (currLevel > baselineLevel) {
+        continue;
+      }
+
+      const spCost = getCumulativeSP[i][baselineLevel] - getCumulativeSP[i][currLevel];
+      baselineSpCost += spCost;
+    }
+
+    return sp_avail >= baselineSpCost;
   }
 
   static importSave(string) { // handle importing of player data or build export
@@ -1393,7 +1480,7 @@ class PageHelper {
     }
 
     curDT = damageTypes[curDT] || curDT;
-    curGT = goldTypes[curGT] || CustomElementRegistry;
+    curGT = goldTypes[curGT] || curGT;
 
     let buildData = ["rawrzopti", curDT, curGT, buildVer, SP, levels];
     buildData = btoa(JSON.stringify(buildData));
@@ -1554,6 +1641,11 @@ class PageHelper {
           } else {
               $(key).value = stats[key];
           }
+      }
+
+      let autoQolSetting = stats["AutoQol"];
+      if (!autoQolSetting) {
+        this.toggleQol(document.querySelector('.autoQol'));
       }
 
       let levels = [];
@@ -1960,7 +2052,8 @@ window.addEventListener('change', function() {
 
 class Notification {
   static notify = {
-    info: (text, duration) => this.showNotification(text, "notification--info", duration)
+    info: (text, duration) => this.showNotification(text, "notification--info", duration),
+    warning: (text, duration) => this.showNotification(text, "notification--warning", duration),
   };
 
   static showNotification(text, elementClass, duration = 2000) {
