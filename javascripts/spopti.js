@@ -359,13 +359,21 @@ class Player {
     let LS_Next = 1.0;
     let LS_Curr = 1.0;
 
+    let powerCurr = 1;
+    let powerNext = 1;
+
     for (let i = 0; i < LS_Attempts; i++) {
+        LS_Curr *= 1 - currA * powerCurr;
+        LS_Next *= 1 - nextA * powerNext;
+        powerCurr *= currB;
+        powerNext *= nextB;
+
+        /*
         let next = 1 - (nextA * (nextB ** i));
         let curr = 1 - (currA * (currB ** i));
-        LS_Next *= next;
-        LS_Curr *= curr;
+        */
     }
-
+    
     LS_Next = 1 / LS_Next;
     LS_Curr = 1 / LS_Curr;
 
