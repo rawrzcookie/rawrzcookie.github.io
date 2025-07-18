@@ -213,7 +213,7 @@ class Player {
     let curr;
     let next;
 
-    const reductionFactor = reduction / cost;
+    let reductionFactor = reduction / cost;
 
     switch (id) {
         // if multicasts
@@ -277,8 +277,9 @@ class Player {
           efficiency = next / curr;
           break;
 
-        // Loaded Dice
+        // Loaded Dice, Quick Fortune
           case "LoadedDice":
+          case "QuickFortune":
           reduction_2 = goldWeight;
           next = (nextA ** (reductionFactor)) * (nextB ** (reduction_2 / cost));
           curr = ((currA || 1) ** (reductionFactor)) * ((currB || 1) ** (reduction_2 / cost));
@@ -302,6 +303,7 @@ class Player {
           break;
 
         case "TerrifyingPact": // Terrifying Pact
+          reductionFactor = playerskills["Forbidden Contract"]["Selection"] === true ? reductionFactor : 0; // if FoCo is enabled
           reduction_2 = playerskills["Royal Contract"]["Selection"] === true ? 1 : 0; // if RoCo is enabled
           next = (nextA ** (reductionFactor)) * (nextB ** (reduction_2 / cost));
           curr = ((currA || 1) ** (reductionFactor)) * ((currB || 1) ** (reduction_2 / cost));
@@ -826,7 +828,7 @@ class PageHelper {
     let dmg = $('typeDamage').value;
     let gold = $('typeGold').value;
     let buildName = dmg + " " + gold;
-    document.querySelector('#buildName').innerHTML = buildName;
+    document.querySelector('#buildName').firstChild.nodeValue = buildName;
   }
 
   static resetTree() { // reset skill levels in the tree
@@ -882,10 +884,12 @@ class PageHelper {
     for (let branch of uniqueBranch) {
         let sum = 0;
         for (let i = 0; i < branches.length; i++) {
-            if (branches[i][0] == branch) {
+          if (branches[i][0] == branch) {
+            if (optData[i] && optData[i][MID_POINT] !== undefined) {
                 sum += optData[i][MID_POINT];
                 sumTotal += optData[i][MID_POINT];
-            } 
+            }
+          } 
         }
         treeTotals.push(sum);
     }
@@ -916,23 +920,36 @@ class PageHelper {
     return sumTotal;
   }
 
-  static toTree(levels) { // take array of skill levels and apply them to the tree
-    let i;    
-    let gridItems; 
-
-    gridItems = document.querySelectorAll('.grid-item');
-    i = 0;
-
-    gridItems.forEach((item) => {
-    let input = item.querySelector('input');
-    if (input) {
-        input.value = (levels[i] == 0) ? "" : levels[i];
-        i++;
-    }
-    })
+  
+static toTree(levels) { // take array of skill levels and apply them to the tree
+    let i = 0;
+    
+    // Loop through each skill in skillInfo to match with the levels array
+    Object.keys(skillInfo).forEach(talentId => {
+        const skill = skillInfo[talentId];
+        const branch = skill.Branch; // Match with the treeName id
+        const slot = skill.Slot;
+        
+        // Find the grid-container that contains the treeName with the matching branch id
+        const treeNameElement = document.querySelector(`.trees .grid-item.treeName#${branch}`);
+        
+        if (treeNameElement) {
+            // Find the input element with the specific slot within the same grid-container
+            const gridContainer = treeNameElement.parentElement;
+            const inputElement = gridContainer.querySelector(`input#slot${slot}`);
+            
+            if (inputElement && i < levels.length) {
+                inputElement.value = (levels[i] == 0) ? "" : levels[i];
+                i++;
+            } else if (!inputElement) {
+                console.warn(`Could not find input slot${slot} for ${talentId} in branch ${branch}`);
+            }
+        } else {
+            console.warn(`Could not find treeName element with id ${branch} for ${talentId}`);
+        }
+    });
 
     // save sequence
-
     save();
     this.buildExport();
     this.treeSP();
@@ -1049,6 +1066,12 @@ class PageHelper {
     playerstats["AutoQol"] = !mode;
     PageHelper.save();
     element.innerHTML = mode ? 'Auto QoL: Off' : 'Auto QoL: On';
+
+    // Show/hide the icon based on QoL mode
+    let icon = document.querySelector('#buildName span');
+    if (icon) {
+      icon.style.display = !mode ? 'inline' : 'none';
+    }
   }
 
   static doAll(element) { // lock/unlock/select/deselect all skills
@@ -1552,16 +1575,30 @@ class PageHelper {
   }
 
   static skillImages() {
-    // Get all the div elements with the class .grid-item that have an input child
-    const gridItemsWithInput = document.querySelectorAll('.trees .grid-item input');
-    let talentIds = Object.keys(skillInfo);
-    let i = 0;
-
-    // Loop through the selected elements and apply the style
-    gridItemsWithInput.forEach((item, index) => {
-      let name = talentIds[index];
-      item.parentElement.style.backgroundImage = `linear-gradient(rgba(37,37,37,0.6), rgba(37,37,37,0.6)), url('images/skillicons/${name}.png')`;
-      item.parentElement.style.backgroundSize = "cover";
+    // Loop through each skill in skillInfo
+    Object.keys(skillInfo).forEach(talentId => {
+        const skill = skillInfo[talentId];
+        const branch = skill.Branch;
+        const slot = skill.Slot;
+        
+        // Find the grid-container that contains the treeName with the matching branch id
+        const treeNameElement = document.querySelector(`.trees .grid-item.treeName#${branch}`);
+        
+        if (treeNameElement) {
+            // Find the input element with the specific slot within the same grid-container
+            const gridContainer = treeNameElement.parentElement;
+            const inputElement = gridContainer.querySelector(`input#slot${slot}`);
+            
+            if (inputElement) {
+                // Apply the background image to the parent element
+                inputElement.parentElement.style.backgroundImage = `linear-gradient(rgba(37,37,37,0.6), rgba(37,37,37,0.6)), url('images/skillicons/${talentId}.png')`;
+                inputElement.parentElement.style.backgroundSize = "cover";
+            } else {
+                console.warn(`Could not find input slot${slot} for ${talentId} in branch ${branch}`);
+            }
+        } else {
+            console.warn(`Could not find treeName element with id ${branch} for ${talentId}`);
+        }
     });
   }
 
@@ -1666,21 +1703,35 @@ class PageHelper {
           locked.push(playerLevels[key]["Locked"]);
       }
 
-      let gridItems = document.querySelectorAll('.grid-item');
+      //let gridItems = document.querySelectorAll('.grid-item');
       let i = 0;
 
-      gridItems.forEach((item) => {
-      let input = item.querySelector('input');
-      if (input) {
-          input.value = levels[i];
-          input.setAttribute('data-select', selections[i]);
-          input.setAttribute('data-lock', locked[i])
-          i++;
-      }
+      // Loop through each skill in skillInfo to match with the arrays
+      Object.keys(skillInfo).forEach(talentId => {
+          const skill = skillInfo[talentId];
+          const branch = skill.Branch; // Match with the treeName id
+          const slot = skill.Slot;
+          
+          // Find the grid-container that contains the treeName with the matching branch id
+          const treeNameElement = document.querySelector(`.trees .grid-item.treeName#${branch}`);
+          
+          if (treeNameElement) {
+              // Find the input element with the specific slot within the same grid-container
+              const gridContainer = treeNameElement.parentElement;
+              const inputElement = gridContainer.querySelector(`input#slot${slot}`);
+              
+              if (inputElement && i < levels.length) {
+                  inputElement.value = levels[i];
+                  inputElement.setAttribute('data-select', selections[i]);
+                  inputElement.setAttribute('data-lock', locked[i]);
+                  i++;
+              } else if (!inputElement) {
+                  console.warn(`Could not find input slot${slot} for ${talentId} in branch ${branch}`);
+              }
+          } else {
+              console.warn(`Could not find treeName element with id ${branch} for ${talentId}`);
+          }
       });
-
-      let exportString = this.buildExport();
-      document.querySelector('#exportString').innerHTML=exportString;
     }
   }
 }
@@ -2074,8 +2125,4 @@ class Notification {
     container.appendChild(el);
     setTimeout(() => el.remove(), duration);
   }
-}
-
-function test() {
-  console.log("hiff");
 }

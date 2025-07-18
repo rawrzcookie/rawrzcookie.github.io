@@ -604,6 +604,17 @@ const reductions = {
       "HoG": null,
       "Chesterson": null
    },
+   "QuickFortune": {
+      "Clan Ship": null,
+      "Shadow Clone": null,
+      "Heavenly Strike": null,
+      "Pet": null,
+      "Dagger": null,
+      "Gold Gun": null,
+      "Fairy": null,
+      "HoG": null,
+      "Chesterson": null
+   },
    "Transmutation": {
       "Clan Ship": null,
       "Shadow Clone": null,
@@ -721,6 +732,17 @@ const reductions = {
       "Pet": null,
       "Dagger": null,
       "Gold Gun": null,
+      "Fairy": null,
+      "HoG": null,
+      "Chesterson": null
+   },
+   "PhilosophersFlux": {
+      "Clan Ship": 1,
+      "Shadow Clone": 1,
+      "Heavenly Strike": 1,
+      "Pet": 1,
+      "Dagger": 1,
+      "Gold Gun": 1,
       "Fairy": null,
       "HoG": null,
       "Chesterson": null

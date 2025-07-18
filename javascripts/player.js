@@ -364,6 +364,12 @@ var playerInfo = {
       "Selection": true,
       "Locked": false
       },
+    "Quick Fortune": {
+      "ID": "QuickFortune",
+      "Level": "",
+      "Selection": true,
+      "Locked": false
+      },
     "Transmutation": {
       "ID": "Transmutation",
       "Level": "",
@@ -426,6 +432,12 @@ var playerInfo = {
       },
     "Explosives Expert": {
       "ID": "ExplosivesExpert",
+      "Level": "",
+      "Selection": true,
+      "Locked": false
+      },
+    "Philosophers Flux": {
+      "ID": "PhilosophersFlux",
       "Level": "",
       "Selection": true,
       "Locked": false
