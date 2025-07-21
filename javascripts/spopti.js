@@ -300,10 +300,14 @@ class Player {
           break;
 
         case "TerrifyingPact": // Terrifying Pact
-          reductionFactor = playerskills["Forbidden Contract"]["Selection"] === true ? reductionFactor : 0; // if FoCo is enabled
-          reduction_2 = playerskills["Royal Contract"]["Selection"] === true ? 1 : 0; // if RoCo is enabled
-          next = (nextA ** (reductionFactor)) * (nextB ** (reduction_2 / cost));
-          curr = ((currA || 1) ** (reductionFactor)) * ((currB || 1) ** (reduction_2 / cost));
+          const focoActive = playerskills["Forbidden Contract"]["Selection"] === true || playerskills["Forbidden Contract"]["Level"] >= 1;
+          const rocoActive = playerskills["Royal Contract"]["Selection"] === true || playerskills["Royal Contract"]["Level"] >= 1;
+
+          const focoReduction = focoActive ? reductionFactor : 0;
+          const rocoReduction = rocoActive ? 1 : 0;
+
+          next = (nextA ** focoReduction) * (nextB ** (rocoReduction / cost));
+          curr = ((currA || 1) ** focoReduction) * ((currB || 1) ** (rocoReduction / cost));
           efficiency = next / curr;
           break;
 
