@@ -80,16 +80,7 @@ class Player {
 
   getCurrLevels() {
     this.setStats();
-    let y = [];
-    let x = document.querySelectorAll('.grid-item');
-    x.forEach((item) => {
-      let input = item.querySelector('input');
-      if (input) {
-          y.push([input.value]);
-      }
-      });
-      
-    return y;
+    return PageHelper.processSkills(input => [input.value], [0]);
   }
 
   effArray() {
@@ -107,8 +98,11 @@ class Player {
     
     const skillArray = [];
 
-    for (const skill in playerskills) {
-        const talentID = playerskills[skill]['ID'];
+    for (const talentID in skillInfo) {
+        const skill = skillInfo[talentID]['Name'];
+        if (!(skill in playerskills)) {
+            continue;
+        }
         const skillData = skillInfo[talentID];
         const mythic = branchToMythicMap[skillData.Branch] || 1;
         
@@ -171,8 +165,11 @@ class Player {
   
     const effectArr = [];
 
-    for (const skill in playerskills) {
-      const talentID = playerskills[skill]['ID'];
+    for (const talentID in skillInfo) {
+      const skill = skillInfo[talentID]['Name'];
+      if (!(skill in playerskills)) {
+          continue;
+      }
       const skillData = skillInfo[talentID];
       const mythic = branchToMythicMap[skillData.Branch] || 1;
 
@@ -651,11 +648,23 @@ class Optimize {
     let tree = [[baseB,[]]];
     
     // Cache common mask arrays
-    const T5RightMask = [0,1,0,1,0,1,0,1]; //T5 right; 1, 3, 5, 7
-    const T5MidMask = [0,0,1,1,0,0,1,1]; //T5 mid; 2, 3, 6, 7
-    const T5LeftMask = [0,0,0,0,1,1,1,1]; //T5 left; 4, 5, 6, 7
+    const T5Prev1 = [0,1,0,1,0,1,0,1]; //T5 right; 1, 3, 5, 7
+    const T5Prev2 = [0,0,1,1,0,0,1,1]; //T5 mid; 2, 3, 6, 7
+    const T5Prev3 = [0,0,0,0,1,1,1,1]; //T5 left; 4, 5, 6, 7
     const allMask = [1,1,1,1,1,1,1,1];
     const standardMasks = [0,1,2,3,4,5,6,7];
+    
+    const spIndexGroups = {
+      Prev1: [10, 21, 32],
+      Prev2: [54, 55],
+      Prev3: [43, 66, 67]
+    }
+
+    const maskMap = {
+      Prev1: T5Prev1,
+      Prev2: T5Prev2,
+      Prev3: T5Prev3
+    };
     
     for (let i = 0; i < goodRows; ++i) {
       if (i > 0 && branches[i][0] != branches[i-1][0]) {
@@ -688,13 +697,13 @@ class Optimize {
       if (tree.length === 1) {
         goodMasks = allMask;
       } else if (tree.length >= 5 && tree.length < 11) {
-        goodMasks = T5LeftMask;
-      } else if (i === 10 || i === 32) {
-        goodMasks = T5RightMask; //T5 right
-      } else if (i === 54) {
-        goodMasks = T5MidMask; //T5 mid
-      } else if (i === 43 || i === 65) {
-        goodMasks = T5LeftMask; //T5 left
+        goodMasks = T5Prev3;
+      } else if (spIndexGroups.Prev1.includes(i)) {
+        goodMasks = maskMap.Prev1; //T5 right
+      } else if (spIndexGroups.Prev2.includes(i)) {
+        goodMasks = maskMap.Prev2; //T5 mid
+      } else if (spIndexGroups.Prev3.includes(i)) {
+        goodMasks = maskMap.Prev3; //T5 left
       } else {
         goodMasks = [0,1,1,1,1,1,1,1];
       }
@@ -780,7 +789,22 @@ class Optimize {
 
 class PageHelper {
 
-  static setMaxLevels() { // get max skill levels from skillInfo
+  static findSkillInput(talentId) {
+    const skill = skillInfo[talentId];
+    const branch = skill.Branch;
+    const slot = skill.Slot;
+    const treeNameElement = document.querySelector(`.trees .grid-item.treeName#${branch}`);
+    return treeNameElement?.parentElement?.querySelector(`input#slot${slot}`); // use ?. optional chaining rather than checking null for each element
+  }
+
+  static processSkills(callback, defaultValue = null) {
+    return Object.keys(skillInfo).map(talentId => {
+        const input = this.findSkillInput(talentId);
+        return input ? callback(input, talentId) : defaultValue;
+    });
+  }
+
+  static getMaxLevels() { // get max skill levels from skillInfo
     let max = [];
     for (let talentID in skillInfo) {
         let maxLevel = skillInfo[talentID]["MaxLevel"];
@@ -790,21 +814,15 @@ class PageHelper {
   }
 
   static setMinMax() { // apply min and max values for each skill
-    // Select all 'div' elements with class "grid-item"
-    let gridItems = document.querySelectorAll('.grid-item');
-    let maxLevels = this.setMaxLevels();
-    let i = 0;
-
-    // Loop through each 'div' element and select its 'input' child element
-    gridItems.forEach((item) => {
-    let input = item.querySelector('input');
-    if (input) {
-        let maxLevel = maxLevels[i];
-        input.setAttribute("min", "0");
-        input.setAttribute("max", maxLevel);
-        input.setAttribute("oninput", "PageHelper.checkValue(this);");
-        i++;
-    }
+    const maxLevels = this.getMaxLevels();
+    
+    Object.keys(skillInfo).forEach((talentId, index) => {
+        const input = this.findSkillInput(talentId);
+        if (input && index < maxLevels.length) {
+            input.setAttribute("min", "0");
+            input.setAttribute("max", maxLevels[index]);
+            input.setAttribute("oninput", "PageHelper.checkValue(this);");
+        }
     });
   }
 
@@ -841,30 +859,21 @@ class PageHelper {
       document.getElementById("selectSettings").style.display = "none";
     }
 
-    let gridItems;
-    let locks = player.currLocks;
-    let i = 0;
-    
     // reset skill levels
-    gridItems = document.querySelectorAll('.grid-item');
-
-    gridItems.forEach((item) => {
-      let input = item.querySelector('input');
-      if (input) { // select only input fields
-        let locked = locks[i][0];
-        if (!locked) { // only reset if unlocked
-          input.value = 0;
+    for (let talentId of Object.keys(skillInfo)) {
+        const input = this.findSkillInput(talentId);
+        if (input) {
+            let locked = input.getAttribute("data-lock") === 'true';
+            if (!locked) { // only reset if unlocked
+                input.value = 0;
+            }
         }
-        i++;
-      }
-    });
+    }
 
     // reset tree SP totals
-    gridItems = document.querySelectorAll('.spTotal');
-
-    gridItems.forEach((item) => {
+    document.querySelectorAll('.spTotal').forEach((item) => {
         item.innerHTML = 0;
-    })
+    });
 
     // save sequence
 
@@ -921,31 +930,13 @@ class PageHelper {
   }
 
   
-static toTree(levels) { // take array of skill levels and apply them to the tree
-    let i = 0;
+  static toTree(levels) { // take array of skill levels and apply them to the tree
     
     // Loop through each skill in skillInfo to match with the levels array
-    Object.keys(skillInfo).forEach(talentId => {
-        const skill = skillInfo[talentId];
-        const branch = skill.Branch; // Match with the treeName id
-        const slot = skill.Slot;
-        
-        // Find the grid-container that contains the treeName with the matching branch id
-        const treeNameElement = document.querySelector(`.trees .grid-item.treeName#${branch}`);
-        
-        if (treeNameElement) {
-            // Find the input element with the specific slot within the same grid-container
-            const gridContainer = treeNameElement.parentElement;
-            const inputElement = gridContainer.querySelector(`input#slot${slot}`);
-            
-            if (inputElement && i < levels.length) {
-                inputElement.value = (levels[i] == 0) ? "" : levels[i];
-                i++;
-            } else if (!inputElement) {
-                console.warn(`Could not find input slot${slot} for ${talentId} in branch ${branch}`);
-            }
-        } else {
-            console.warn(`Could not find treeName element with id ${branch} for ${talentId}`);
+    Object.keys(skillInfo).forEach((talentId, index) => {
+        const input = this.findSkillInput(talentId);
+        if (input && index < levels.length) {
+            input.value = (levels[index] == 0) ? "" : levels[index];
         }
     });
 
@@ -956,6 +947,12 @@ static toTree(levels) { // take array of skill levels and apply them to the tree
   }
 
   static saveSkillInfo() {  // get info for each skill and save to playerInfo
+    playerskills = Object.assign({}, 
+        playerInfo.skills, // Default structure
+        playerskills       // Existing data overwrites defaults
+    );
+    user.skills = playerskills;
+
     let skillinfo = this.currSkillInfo();
     let playerLevels = skillinfo[0];
     let selections = skillinfo[1];
@@ -971,27 +968,13 @@ static toTree(levels) { // take array of skill levels and apply them to the tree
         talent["Locked"] = locked;
         i++;
     });
-}
+  }
 
   static currSkillInfo() { // obtain info for each skill
-    let currLevels = [];
-    let currSelections = [];
-    let currLocks = [];
-    // Select all 'div' elements with class "grid-item"
-    let gridItems = document.querySelectorAll('.grid-item');
-
-    // Loop through each 'div' element and select its 'input' child element
-    gridItems.forEach((item) => {
-    let input = item.querySelector('input');
-    if (input) {
-      let selected = input.getAttribute("data-select") === 'true';
-      let locked = input.getAttribute("data-lock") === 'true';
-      currLevels.push([input.value]);
-      currSelections.push([selected]);
-      currLocks.push([locked]);
-    }
-    });
-
+    const currLevels = this.processSkills(input => [input.value], [0]);
+    const currSelections = this.processSkills(input => [input.getAttribute("data-select") === 'true'], [false]);
+    const currLocks = this.processSkills(input => [input.getAttribute("data-lock") === 'true'], [false]);
+    
     return [currLevels, currSelections, currLocks];
   }
 
@@ -1018,34 +1001,44 @@ static toTree(levels) { // take array of skill levels and apply them to the tree
     this.buildExport();
   }
 
-  static toggleBtn(type) { // Toggle between value and checkbox for all input elements
-    document.querySelectorAll('.grid-item input').forEach(function(input) {
-      if (input.type === 'number') {
-        // Store the original value in a data attribute
-        input.setAttribute('data-original-value', input.value);
-        input.setAttribute('data-type', type);
-        input.setAttribute('onclick', 'PageHelper.checkboxCheck(this)');
-        // Change the input type to checkbox
-        input.type = 'checkbox';
-      } else if (input.type === 'checkbox') {
-        if (input.getAttribute('data-type') === type) {
-          // Retrieve the original value from the data attribute
-          input.value = input.getAttribute('data-original-value');
-          // Change the input type back to number
-          input.type = 'number';
-          input.setAttribute('data-type', 'number')
-        } else {
-          input.setAttribute('data-type', type);
-          if (type === 'lock') {
-            // select then lock
-            document.getElementById('selectSettings').style.display = "none";
-          } else if (type === 'select') {
-            // lock then select
-            document.getElementById('lockSettings').style.display = "none";
-          }
-        }
+  static toggleBtn(type) {
+  const inputs = document.querySelectorAll('.grid-item input');
+
+  inputs.forEach(input => {
+    const currentType = input.type;
+    const currentDataType = input.getAttribute('data-type');
+
+    const isCheckbox = currentType === 'checkbox';
+    const isNumber = currentType === 'number';
+
+    // Handle number => checkbox toggle
+    if (isNumber) {
+      input.setAttribute('data-original-value', input.value);
+      input.setAttribute('data-type', type);
+      input.type = 'checkbox';
+      input.setAttribute('onclick', 'PageHelper.checkboxCheck(this)');
+      return;
+    }
+
+    // Handle checkbox => number toggle (when reverting)
+    if (isCheckbox && currentDataType === type) {
+      input.value = input.getAttribute('data-original-value') || 0;
+      input.type = 'number';
+      input.setAttribute('data-type', 'number');
+      return;
+    }
+
+    // Handle staying as checkbox but changing its mode
+    if (isCheckbox && currentDataType !== type) {
+      input.setAttribute('data-type', type);
+
+      if (type === 'lock') {
+        document.getElementById('selectSettings').style.display = 'none';
+      } else if (type === 'select') {
+        document.getElementById('lockSettings').style.display = 'none';
       }
-    });
+    }
+  });
   }
 
   static checkboxCheck(element) { // handle locking and selecting of skills
@@ -1575,29 +1568,11 @@ static toTree(levels) { // take array of skill levels and apply them to the tree
   }
 
   static skillImages() {
-    // Loop through each skill in skillInfo
     Object.keys(skillInfo).forEach(talentId => {
-        const skill = skillInfo[talentId];
-        const branch = skill.Branch;
-        const slot = skill.Slot;
-        
-        // Find the grid-container that contains the treeName with the matching branch id
-        const treeNameElement = document.querySelector(`.trees .grid-item.treeName#${branch}`);
-        
-        if (treeNameElement) {
-            // Find the input element with the specific slot within the same grid-container
-            const gridContainer = treeNameElement.parentElement;
-            const inputElement = gridContainer.querySelector(`input#slot${slot}`);
-            
-            if (inputElement) {
-                // Apply the background image to the parent element
-                inputElement.parentElement.style.backgroundImage = `linear-gradient(rgba(37,37,37,0.6), rgba(37,37,37,0.6)), url('images/skillicons/${talentId}.png')`;
-                inputElement.parentElement.style.backgroundSize = "cover";
-            } else {
-                console.warn(`Could not find input slot${slot} for ${talentId} in branch ${branch}`);
-            }
-        } else {
-            console.warn(`Could not find treeName element with id ${branch} for ${talentId}`);
+        const input = this.findSkillInput(talentId);
+        if (input) {
+            input.parentElement.style.backgroundImage = `linear-gradient(rgba(37,37,37,0.6), rgba(37,37,37,0.6)), url('images/skillicons/${talentId}.png')`;
+            input.parentElement.style.backgroundSize = "cover";
         }
     });
   }
@@ -1619,30 +1594,34 @@ static toTree(levels) { // take array of skill levels and apply them to the tree
   }
 
   static toEffTable() {
-    let sortedMaxEffs = player.nextLevels();
-    let table = document.querySelector('.effTable');
-    let tableCols = sortedMaxEffs[0].length;
-    let tableRows = sortedMaxEffs.length;
+    const sortedMaxEffs = player.nextLevels(); // assumed to be [rows][cols]
+    const table = document.querySelector('.effTable');
 
+    // Keep the header: clear everything else from tbody
+    const tbody = table.querySelector('tbody');
 
-    while (table.rows.length > 1) {
-      table.deleteRow(1);
+    // Remove all <tr> elements after the first one (the header)
+    while (tbody.rows.length > 1) {
+      tbody.deleteRow(1);
     }
 
-    // Iterate over the array
+    // Dimensions
+    const tableRows = sortedMaxEffs.length;
+    const tableCols = sortedMaxEffs[0].length;
+
+    // Build HTML string instead of creating DOM nodes one by one
+    let html = '';
+
     for (let i = 0; i < tableCols; i++) {
-        // Create a new row
-        let row = table.insertRow();
-
-        // Iterate over the inner array
-        for (let j = 0; j < tableRows; j++) {
-            // Create a new cell
-            let cell = row.insertCell();
-
-            // Add the value from the array to the cell
-            cell.textContent = sortedMaxEffs[j][i];
-        }
+      html += '<tr>';
+      for (let j = 0; j < tableRows; j++) {
+        html += `<td>${sortedMaxEffs[j][i]}</td>`;
+      }
+      html += '</tr>';
     }
+
+    // insert table
+    tbody.insertAdjacentHTML('beforeend', html);
   }
 
   static downloadImg() {
@@ -1703,33 +1682,16 @@ static toTree(levels) { // take array of skill levels and apply them to the tree
           locked.push(playerLevels[key]["Locked"]);
       }
 
-      //let gridItems = document.querySelectorAll('.grid-item');
-      let i = 0;
-
       // Loop through each skill in skillInfo to match with the arrays
-      Object.keys(skillInfo).forEach(talentId => {
-          const skill = skillInfo[talentId];
-          const branch = skill.Branch; // Match with the treeName id
-          const slot = skill.Slot;
+      Object.keys(skillInfo).forEach((talentId, index) => {
+          const inputElement = this.findSkillInput(talentId);
           
-          // Find the grid-container that contains the treeName with the matching branch id
-          const treeNameElement = document.querySelector(`.trees .grid-item.treeName#${branch}`);
-          
-          if (treeNameElement) {
-              // Find the input element with the specific slot within the same grid-container
-              const gridContainer = treeNameElement.parentElement;
-              const inputElement = gridContainer.querySelector(`input#slot${slot}`);
-              
-              if (inputElement && i < levels.length) {
-                  inputElement.value = levels[i];
-                  inputElement.setAttribute('data-select', selections[i]);
-                  inputElement.setAttribute('data-lock', locked[i]);
-                  i++;
-              } else if (!inputElement) {
-                  console.warn(`Could not find input slot${slot} for ${talentId} in branch ${branch}`);
-              }
-          } else {
-              console.warn(`Could not find treeName element with id ${branch} for ${talentId}`);
+          if (inputElement && index < levels.length) {
+              inputElement.value = levels[index];
+              inputElement.setAttribute('data-select', selections[index]);
+              inputElement.setAttribute('data-lock', locked[index]);
+          } else if (!inputElement) {
+              console.warn(`Could not find input for ${talentId}`);
           }
       });
     }

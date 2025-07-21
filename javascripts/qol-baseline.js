@@ -3537,12 +3537,14 @@ const baseline = {
         "HoG": {
             "0": {},
             "199": {
+                "PetGoldQTE": 1,
                 "GoldGun": 14,
                 "MagnumOpus": 4,
                 "AuricShot": 5,
                 "ExplosivesExpert": 1
             },
             "250": {
+                "PetGoldQTE": 1,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "GoldGun": 14,
@@ -3551,6 +3553,7 @@ const baseline = {
                 "ExplosivesExpert": 1
             },
             "301": {
+                "PetGoldQTE": 1,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "GoldGun": 14,
@@ -3559,6 +3562,7 @@ const baseline = {
                 "ExplosivesExpert": 1
             },
             "401": {
+                "PetGoldQTE": 2,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "GoldGun": 14,
@@ -3568,7 +3572,7 @@ const baseline = {
                 "ExplosivesExpert": 1
             },
             "500": {
-                "FairyChance": 4,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "GoldGun": 14,
@@ -3578,7 +3582,7 @@ const baseline = {
                 "ExplosivesExpert": 1
             },
             "598": {
-                "FairyChance": 4,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
@@ -3589,7 +3593,7 @@ const baseline = {
                 "ExplosivesExpert": 1
             },
             "698": {
-                "FairyChance": 4,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
@@ -3601,7 +3605,7 @@ const baseline = {
                 "ExplosivesExpert": 1
             },
             "800": {
-                "FairyChance": 4,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
@@ -3613,7 +3617,7 @@ const baseline = {
                 "ExplosivesExpert": 1
             },
             "901": {
-                "FairyChance": 5,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
@@ -3625,7 +3629,7 @@ const baseline = {
                 "ExplosivesExpert": 1
             },
             "1003": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
@@ -3637,7 +3641,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "1504": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
@@ -3649,7 +3653,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "2002": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
@@ -3661,7 +3665,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "2502": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3673,7 +3677,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "3000": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3685,7 +3689,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "3500": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3697,7 +3701,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "4000": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3709,7 +3713,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "4500": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3721,7 +3725,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "5000": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3733,7 +3737,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "5500": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3745,7 +3749,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "6002": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3757,7 +3761,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "6500": {
-                "FairyChance": 9,
+                "PetGoldQTE": 4,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3769,7 +3773,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "7000": {
-                "FairyChance": 9,
+                "PetGoldQTE": 5,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3781,7 +3785,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "7500": {
-                "FairyChance": 9,
+                "PetGoldQTE": 6,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3793,7 +3797,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "8000": {
-                "FairyChance": 9,
+                "PetGoldQTE": 6,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3805,7 +3809,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "8500": {
-                "FairyChance": 9,
+                "PetGoldQTE": 8,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3817,7 +3821,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "9000": {
-                "FairyChance": 9,
+                "PetGoldQTE": 10,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3829,7 +3833,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "9500": {
-                "FairyChance": 9,
+                "PetGoldQTE": 12,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3841,7 +3845,7 @@ const baseline = {
                 "ExplosivesExpert": 9
             },
             "10000": {
-                "FairyChance": 9,
+                "PetGoldQTE": 14,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
@@ -3852,7 +3856,7 @@ const baseline = {
                 "AuricShot": 20,
                 "ExplosivesExpert": 9
             }
-        },
+            },
         "Chesterson": {
             "0": {},
             "199": {
