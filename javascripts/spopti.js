@@ -663,12 +663,6 @@ class Optimize {
       Prev2: [54, 55],
       Prev3: [43, 66, 67]
     }
-
-    const maskMap = {
-      Prev1: T5Prev1,
-      Prev2: T5Prev2,
-      Prev3: T5Prev3
-    };
     
     for (let i = 0; i < goodRows; ++i) {
       if (i > 0 && branches[i][0] != branches[i-1][0]) {
@@ -703,11 +697,11 @@ class Optimize {
       } else if (tree.length >= 5 && tree.length < 11) {
         goodMasks = T5Prev3;
       } else if (spIndexGroups.Prev1.includes(i)) {
-        goodMasks = maskMap.Prev1; //T5 right
+        goodMasks = T5Prev1; //T5 right
       } else if (spIndexGroups.Prev2.includes(i)) {
-        goodMasks = maskMap.Prev2; //T5 mid
+        goodMasks = T5Prev2; //T5 mid
       } else if (spIndexGroups.Prev3.includes(i)) {
-        goodMasks = maskMap.Prev3; //T5 left
+        goodMasks = T5Prev3; //T5 left
       } else {
         goodMasks = [0,1,1,1,1,1,1,1];
       }
@@ -764,14 +758,29 @@ class Optimize {
         
         totSPinTree -= SPHere;
         levels.push(levHere);
-        
+
+        const getValidMasksForSkill = (skillIndex, treePosition) => {
+          if (treePosition === 1) {
+            return [0,1,2,3,4,5,6,7]; // allMask
+          } else if (treePosition >= 5 && treePosition < 11) {
+            return [4,5,6,7]; // minMask 4
+          } else if (spIndexGroups.Prev1.includes(skillIndex)) {
+            return [1,3,5,7]; // T5Prev1
+          } else if (spIndexGroups.Prev2.includes(skillIndex)) {
+            return [2,3,6,7]; // T5Prev2
+          } else if (spIndexGroups.Prev3.includes(skillIndex)) {
+            return [4,5,6,7]; // T5Prev3
+          } else {
+            return [1,2,3,4,5,6,7]; // default
+          }
+        };
+
+        const currentSkillIndex = goodRows - levels.length;
+        const validMasks = getValidMasksForSkill(currentSkillIndex, j);
         const cand = Math.floor(curMask/2);
-        let minMask = 0;
-        if (j > 1) minMask = 1;
-        if (j >= 5 && j < 11) minMask = 4;
-        
+
         usedMasks = [];
-        if (cand >= minMask || SPHere === 0) usedMasks.push(cand);
+        if (validMasks.includes(cand) || SPHere === 0) usedMasks.push(cand);
         usedMasks.push(cand+4);
       }
       
