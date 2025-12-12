@@ -109,6 +109,17 @@ const reductions = {
       "HoG": null,
       "Chesterson": null
    },
+   "TwilightBell": {
+      "Clan Ship": 0,
+      "Shadow Clone": 1,
+      "Heavenly Strike": 1,
+      "Pet": 0,
+      "Dagger": 0,
+      "Gold Gun": 0,
+      "Fairy": null,
+      "HoG": null,
+      "Chesterson": null
+   },
    "TwilightGatheringMultiCastSkill": {
       "Clan Ship": 0,
       "Shadow Clone": 1,
@@ -220,6 +231,17 @@ const reductions = {
       "Chesterson": null
    },
    "DualPetBoost": {
+      "Clan Ship": 0,
+      "Shadow Clone": 0,
+      "Heavenly Strike": 0,
+      "Pet": 1,
+      "Dagger": 0,
+      "Gold Gun": 0,
+      "Fairy": null,
+      "HoG": null,
+      "Chesterson": null
+   },
+   "SummonerAutoTap": {
       "Clan Ship": 0,
       "Shadow Clone": 0,
       "Heavenly Strike": 0,

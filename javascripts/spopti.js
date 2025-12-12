@@ -36,7 +36,7 @@ const EFFECTS_ARRAY_SIZE = (MAX_SKILL_LEVEL * 2) + 1;
 const MID_POINT = MAX_SKILL_LEVEL;
 
 function playerStats() {
-    const inputs = ["typeDamage", "typeGold", "goldWeight", "FB", "FF", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal", "CP", "sClone", "TimeToKill", "SkillPoints", "buildVersion", "MaxStage"];
+    const inputs = ["typeDamage", "typeGold", "goldWeight", "FB", "FF", "tFA", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal", "CP", "sClone", "TimeToKill", "SkillPoints", "buildVersion", "MaxStage"];
     inputs.reduce((_, input) => {
       playerstats[input] = $(input).type === "checkbox" ? $(input).checked : $(input).value;
     }, {});
@@ -59,6 +59,7 @@ class Player {
       this.goldWeight = playerstats["goldWeight"];
       this.FB = Number(playerstats["FB"] ? 1 : 0);
       this.FF = Number(playerstats["FF"] ? 1 : 0);
+      this.tFA = playerstats["tFA"];
       this.Shae = Number(playerstats["Shae"] ? 1.01 : 1);
       this.Ignus = Number(playerstats["Ignus"] ? 1.01 : 1);
       this.Ironheart = Number(playerstats["Ironheart"] ? 1.01 : 1);
@@ -209,6 +210,9 @@ class Player {
     let gold_2;
     let curr;
     let next;
+    let active_spells;
+    let curr_spell_damage;
+    let next_spell_damage;
 
     let reductionFactor = reduction / cost;
 
@@ -234,6 +238,16 @@ class Player {
           efficiency = next / curr;
           break;
 
+        case "TwilightBell": // Twilight Bell
+          active_spells = ["BurstDamage", "TwilightFairy"];
+          curr_spell_damage = this._spellDamage(active_spells, currB);
+          next_spell_damage = this._spellDamage(active_spells, nextB);
+
+          next = (nextA ** (reductionFactor)) * (next_spell_damage ** reductionFactor);
+          curr = ((currA || 1) ** (reductionFactor)) * ((curr_spell_damage || 1) ** (reductionFactor));
+          efficiency = next / curr;
+          break;
+
         case "PetBonusBoost": // Ember Arts
           reduction_2 = Number(reductions["TapDmg"][this.typeDamage]);
           next = (nextA ** (reductionFactor)) * (nextB ** (reduction_2 / cost));
@@ -244,6 +258,16 @@ class Player {
         case "BossDmgQTE": // Flash Zip
           next = (nextA ** (reductionFactor)) * ((nextB || 1) ** (reductionFactor));
           curr = ((currA || 1) ** (reductionFactor)) * ((currB || 1) ** (reductionFactor));
+          efficiency = next / curr;
+          break;
+
+        case "SummonerAutoTap": // Echoflurry Onslaught
+          active_spells = ["DualPet", "TapBoost"];
+          curr_spell_damage = this._spellDamage(active_spells, currB);
+          next_spell_damage = this._spellDamage(active_spells, nextB);
+
+          next = (nextA ** (reductionFactor)) * (next_spell_damage ** reductionFactor);
+          curr = ((currA || 1) ** (reductionFactor)) * ((curr_spell_damage || 1) ** (reductionFactor));
           efficiency = next / curr;
           break;
 
@@ -381,6 +405,21 @@ class Player {
     LS_Curr = 1 / LS_Curr;
 
     return [LS_Next, LS_Curr];
+  }
+
+  _spellDamage(spells, extraLevels) {
+    let damage = 1;
+    let currLevel = player.tFA ? 34 : 29; // index 0, max spell level of 30 or 35 (29 or 34)
+
+    for (const k of spells) {
+      const level = currLevel + extraLevels;
+      const base = spellInfo[k]["A" + level];
+      const reduction = spell_reductions[k][this.typeDamage];
+
+      damage *= base ** reduction;
+    }
+
+    return damage;
   }
 
   nextLevels() {
@@ -659,9 +698,9 @@ class Optimize {
     const standardMasks = [0,1,2,3,4,5,6,7];
     
     const spIndexGroups = {
-      Prev1: [10, 21, 32],
-      Prev2: [54, 55],
-      Prev3: [43, 66, 67]
+      Prev1: [11, 23, 34],
+      Prev2: [10, 56, 57],
+      Prev3: [22, 45, 68, 69]
     }
     
     for (let i = 0; i < goodRows; ++i) {
@@ -1236,14 +1275,16 @@ class PageHelper {
         let skillPoints = jsonObj["playerStats"]["Skill Points Owned"];
   
         // set skill levels
-        for (let i in skillsObj) {
-          skillArr.push([skillsObj[i]]);
+        for (let i in skillInfo) {
+          let level = skillsObj[i] || 0;
+          skillArr.push([parseInt(level)]);
         }
         
         // check for equipment sets
         let sets = [
           "MultiCast",
           "Valkyrie",
+          "DarkAngel",
           "FairyKnight",
           "FireKnight",
           "ElectricWarlord",
@@ -1252,7 +1293,7 @@ class PageHelper {
           "SteampunkKnight"
         ];
 
-        let inputs = ["FB", "FF", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal"]
+        let inputs = ["FB", "FF", "tFA", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal"]
   
         for (let i of sets) {
           let setObj = jsonObj["equipmentSets"];
@@ -1261,7 +1302,7 @@ class PageHelper {
         }
   
         // set shadowclone based off tfa
-        let tFA = jsonObj["equipmentSets"].includes("The Fallen Angel");
+        let tFA = jsonObj["equipmentSets"].includes("DarkAngel");
         $("sClone").value = (tFA) ? 35 : 30;
         
         $("MaxStage").value = maxstage;
@@ -1673,7 +1714,7 @@ class PageHelper {
       for (key in stats) {
           if ($(key) === null) {
               continue
-          } else if (["FB", "FF", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal"].includes(key)) {
+          } else if (["FB", "FF", "tFA", "Shae", "Ignus", "Ironheart", "Kor", "Styxsis", "Rygal"].includes(key)) {
               $(key).checked = stats[key];
           } else {
               $(key).value = stats[key];

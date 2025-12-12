@@ -216,6 +216,18 @@
                 </tr>
                 <tr>
                   <td class="stat">
+                    <span>The Fallen Angel
+                      <span class="tooltiptext">Mythic Set</span>
+                    </span>
+                  </td>
+                  <td class="statinput">
+                    <label>
+                      <input type="checkbox" id="tFA">
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stat">
                     <span>Shae (Knight)
                       <span class="tooltiptext">Mythic Set</span>
                     </span>
@@ -290,7 +302,7 @@
                     <input type="number" id="goldWeight" value="0.7"><br>
                   </td>
                 </tr>
-                <tr>
+                <tr class="hidden-input">
                   <td class="stat">
                     <span>Crafting Power Level
                       <span class="tooltiptext">From your profile window (mainly for Lightning Strike)</span></span>
@@ -299,7 +311,7 @@
                     <input type="number" id="CP" value="1"><br>
                   </td>
                 </tr>
-                <tr>
+                <tr class="hidden-input">
                   <td class="stat">
                     <span>Shadow Clone Level
                       <span class="tooltiptext">Highest spell level you can get (mainly for Lightning Strike)</span></span>
@@ -308,7 +320,7 @@
                     <input type="number" id="sClone" value="35"><br>
                   </td>
                 </tr>
-                <tr>
+                <tr class="hidden-input">
                   <td class="stat">
                     <span>Time To Kill
                       <span class="tooltiptext">In seconds; how long you want to wait to kill a boss (mainly for Lightning Strike)</span></span>
@@ -400,6 +412,7 @@
                 <div class="grid-item">
                 </div>
                 <div class="grid-item">
+                  <input type="number" id="slot11" value="0" data-select=true data-lock=false>
                 </div>
                 <div class="grid-item">
                   <input type="number" id="slot12" value="0" data-select=true data-lock=false>
@@ -441,6 +454,7 @@
                   <input type="number" id="slot9" value="0" data-select=true data-lock=false>
                 </div>
                 <div class="grid-item">
+                  <input type="number" id="slot10" value="0" data-select=true data-lock=false>
                 </div>
                 <div class="grid-item">
                 </div>
@@ -704,10 +718,11 @@
     </script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="javascripts\skills.js"></script>
+    <script src="javascripts\spells.js"></script>
     <script src="javascripts\reductions.js"></script>
     <script src="javascripts\qol-baseline.js"></script>
-    <script src="javascripts\spopti.js"></script>
     <script src="javascripts\player.js"></script>
+    <script src="javascripts\spopti.js"></script>
     <script src="javascripts\mana.js"></script>
 </body>
     </html>

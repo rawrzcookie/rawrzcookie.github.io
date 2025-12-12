@@ -94,6 +94,12 @@ var playerInfo = {
       "Selection": true,
       "Locked": false
       },
+    "Twilight Bell": {
+      "ID": "TwilightBell",
+      "Level": "",
+      "Selection": true,
+      "Locked": false
+      },
     "Eventide Afterglow": {
       "ID": "TwilightGatheringMultiCastSkill",
       "Level": "",
@@ -156,6 +162,12 @@ var playerInfo = {
       },
     "Summoning Circle": {
       "ID": "DualPetBoost",
+      "Level": "",
+      "Selection": true,
+      "Locked": false
+      },
+    "Echoflurry Onslaught": {
+      "ID": "SummonerAutoTap",
       "Level": "",
       "Selection": true,
       "Locked": false
