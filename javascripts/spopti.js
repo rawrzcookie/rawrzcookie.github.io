@@ -244,7 +244,9 @@ class Player {
           next_spell_damage = this._spellDamage(active_spells, nextB);
 
           next = (nextA ** (reductionFactor)) * (next_spell_damage ** reductionFactor);
-          curr = ((currA || 1) ** (reductionFactor)) * ((curr_spell_damage || 1) ** (reductionFactor));
+          curr = (returnValue === "curr" && currB === 0) 
+            ? 1 
+            : ((currA || 1) ** reductionFactor) * (curr_spell_damage ** reductionFactor);
           efficiency = next / curr;
           break;
 
@@ -267,7 +269,9 @@ class Player {
           next_spell_damage = this._spellDamage(active_spells, nextB);
 
           next = (nextA ** (reductionFactor)) * (next_spell_damage ** reductionFactor);
-          curr = ((currA || 1) ** (reductionFactor)) * ((curr_spell_damage || 1) ** (reductionFactor));
+          curr = (returnValue === "curr" && currB === 0) 
+            ? 1 
+            : ((currA || 1) ** reductionFactor) * (curr_spell_damage ** reductionFactor);
           efficiency = next / curr;
           break;
 
