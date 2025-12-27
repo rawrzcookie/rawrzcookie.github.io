@@ -702,8 +702,8 @@ class Optimize {
     const standardMasks = [0,1,2,3,4,5,6,7];
     
     const spIndexGroups = {
-      Prev1: [11, 23, 34],
-      Prev2: [10, 56, 57],
+      Prev1: [34],
+      Prev2: [10, 11, 23, 56, 57],
       Prev3: [22, 45, 68, 69]
     }
     
