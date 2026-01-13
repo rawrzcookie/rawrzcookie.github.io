@@ -243,10 +243,10 @@ class Player {
           curr_spell_damage = this._spellDamage(active_spells, currB);
           next_spell_damage = this._spellDamage(active_spells, nextB);
 
-          next = (nextA ** (reductionFactor)) * (next_spell_damage ** reductionFactor);
+          next = (nextA ** (reductionFactor)) * (next_spell_damage ** (1 / cost));
           curr = (returnValue === "curr" && currB === 0) 
             ? 1 
-            : ((currA || 1) ** reductionFactor) * (curr_spell_damage ** reductionFactor);
+            : ((currA || 1) ** reductionFactor) * (curr_spell_damage ** (1 / cost));
           efficiency = next / curr;
           break;
 
@@ -268,10 +268,10 @@ class Player {
           curr_spell_damage = this._spellDamage(active_spells, currB);
           next_spell_damage = this._spellDamage(active_spells, nextB);
 
-          next = (nextA ** (reductionFactor)) * (next_spell_damage ** reductionFactor);
+          next = (nextA ** (reductionFactor)) * (next_spell_damage ** (1 / cost));
           curr = (returnValue === "curr" && currB === 0) 
             ? 1 
-            : ((currA || 1) ** reductionFactor) * (curr_spell_damage ** reductionFactor);
+            : ((currA || 1) ** reductionFactor) * (curr_spell_damage ** (1 / cost));
           efficiency = next / curr;
           break;
 
@@ -308,6 +308,19 @@ class Player {
           reduction_2 = goldWeight;
           next = (nextA ** (reductionFactor)) * (nextB ** (reduction_2 / cost));
           curr = ((currA || 1) ** (reductionFactor)) * ((currB || 1) ** (reduction_2 / cost));
+          efficiency = next / curr;
+          break;
+
+        // Phantom Blades
+        case "PhantomBlades":
+          active_spells = ["CritBoost", "StreamOfBlades"];
+          curr_spell_damage = this._spellDamage(active_spells, currB);
+          next_spell_damage = this._spellDamage(active_spells, nextB);
+
+          next = (nextA ** (reductionFactor)) * (next_spell_damage ** (1 / cost));
+          curr = (returnValue === "curr" && currB === 0) 
+            ? 1 
+            : ((currA || 1) ** reductionFactor) * (curr_spell_damage ** (1 / cost));
           efficiency = next / curr;
           break;
 
@@ -358,6 +371,19 @@ class Player {
         case "KratosSummon": // Sprouting Salts
           next = ((nextA ** nextB) ** (reductionFactor));
           curr = ((currA ** currB || 1)) ** (reductionFactor);
+          efficiency = next / curr;
+          break;
+        
+        // AlchemistMastery
+        case "AlchemistMastery":
+          active_spells = ["HandOfMidas", "GoldenMissile"];
+          curr_spell_damage = this._spellDamage(active_spells, currB);
+          next_spell_damage = this._spellDamage(active_spells, nextB);
+
+          next = (nextA ** (reductionFactor)) * (next_spell_damage ** (1 / cost));
+          curr = (returnValue === "curr" && currB === 0) 
+            ? 1 
+            : ((currA || 1) ** reductionFactor) * (curr_spell_damage ** (1 / cost));
           efficiency = next / curr;
           break;
 
@@ -418,7 +444,7 @@ class Player {
     for (const k of spells) {
       const level = currLevel + extraLevels;
       const base = spellInfo[k]["A" + level];
-      const reduction = spell_reductions[k][this.typeDamage];
+      const reduction = spell_reductions[k][this.typeDamage] + (spell_reductions[k][this.typeGold] * this.goldWeight);
 
       damage *= base ** reduction;
     }
@@ -703,8 +729,8 @@ class Optimize {
     
     const spIndexGroups = {
       Prev1: [34],
-      Prev2: [10, 11, 23, 56, 57],
-      Prev3: [22, 45, 68, 69]
+      Prev2: [10, 11, 23],
+      Prev3: [22, 45, 56, 57, 58, 69, 70, 71]
     }
     
     for (let i = 0; i < goodRows; ++i) {

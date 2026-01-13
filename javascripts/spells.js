@@ -2610,7 +2610,7 @@ const spell_reductions = {
       "Heavenly Strike": 0,
       "Pet": 0,
       "Dagger": 0,
-      "Gold Gun": 0,
+      "Gold Gun": 1,
       "Fairy": null,
       "HoG": null,
       "Chesterson": null

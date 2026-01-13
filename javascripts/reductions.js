@@ -615,6 +615,17 @@ const reductions = {
       "HoG": null,
       "Chesterson": null
    },
+   "PhantomBlades": {
+      "Clan Ship": 0,
+      "Shadow Clone": 0,
+      "Heavenly Strike": 0,
+      "Pet": 0,
+      "Dagger": 1,
+      "Gold Gun": 0,
+      "Fairy": null,
+      "HoG": null,
+      "Chesterson": null
+   },
    "StreamOfBladesMultiCastSkill": {
       "Clan Ship": 0,
       "Shadow Clone": 0,
@@ -768,5 +779,16 @@ const reductions = {
       "Fairy": null,
       "HoG": null,
       "Chesterson": null
+   },
+   "AlchemistMastery": {
+      "Clan Ship": 0,
+      "Shadow Clone": 0,
+      "Heavenly Strike": 0,
+      "Pet": 0,
+      "Dagger": 0,
+      "Gold Gun": 1,
+      "Fairy": 1,
+      "HoG": 1,
+      "Chesterson": 1
    }
 }

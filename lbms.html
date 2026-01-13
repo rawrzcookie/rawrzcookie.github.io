@@ -31,36 +31,35 @@
 </head>
 
 <body onchange="save(), suggestion()" onload="load(), populate(), suggestion()" style=background-color:#313338>
-  <nav class="navbar">
-      <div class="titlename"><a href="index.html"><img class="rawrz" src="images/Circle Cookie Dino.png" height="60">rawrzcookie</a></div>
-      
-      <a href="#" class="toggle-button">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-      </a>
-      <div class="vl"></div>
-      <div class="navbar-links">
-          <ul>
-              <li><a href="spopti.html">Skill Tree Builder</a></li>
-              <li><a href="lbms.html">Mana Optimizer</a></li>
-              <li><a href="changelog.html">Changelog</a></li>
-              <li><a href="https://discord.gg/zhJt63Atn3" style="padding-bottom: 5px;"><img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg" height="20"></a></li>
-          </ul>
-      </div>
-  </nav>
+  <div class="page-container">
+    <nav class="navbar">
+        <div class="titlename"><a href="index.html"><img class="rawrz" src="images/Circle Cookie Dino.png" height="60">rawrzcookie</a></div>
+        
+        <a href="#" class="toggle-button">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </a>
+        <div class="vl"></div>
+        <div class="navbar-links">
+            <ul>
+                <li><a href="spopti.html">Skill Tree Builder</a></li>
+                <li><a href="lbms.html">Mana Optimizer</a></li>
+                <li><a href="https://discord.gg/zhJt63Atn3" style="padding-bottom: 5px;"><img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg" height="20"></a></li>
+            </ul>
+        </div>
+    </nav>
 
-  <div class="lb-ms">
     <div class="titlehead" style="height: auto !important;">
-      <h1 style=color:#FFFFFF>
+      <h1 style="color:#FFFFFF; text-align: center;">
         Limit Break & Mana Siphon Optimizer
       </h1>
-      <hr>
-      <p style=color:#FFFFFF>
+      <p style="color:#FFFFFF; text-align: center;">
         This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.
       </p>
+      <hr>
     </div>
-    
+      
     <div class="optimizer-container">
       <div class="tablestats" id="left">
         <span style=color:#FFFFFF;font-size:24px;>Stat Inputs: </span>
@@ -253,7 +252,11 @@
         </table>
       </div>
     </div>
-    </div>
+  </div>
+  
+  <footer>
+    &copy 2023 - 2026 rawrzcookie. All rights reserved. &nbsp; | &nbsp; <a href="privacy.html" style="color: #0088a9;">Privacy Policy</a>
+  </footer>
   </div>
 
   <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>

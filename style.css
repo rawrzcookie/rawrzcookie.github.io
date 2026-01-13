@@ -8,12 +8,23 @@
   scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.1);
 }
 
-body {
+html, body {
+  height: 100%;
   width: 100%;
   min-width: 380px;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+}
+
+footer {
+  position: relative;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.privacy-policy a {
+  color: #0088a9;
 }
 
 .mainlinks {
@@ -34,13 +45,21 @@ body {
   color:#0088a9;
 }
 
+.page-container {
+  display:flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .container {
+  flex: 1;
   padding: 1.5rem;
   color: #fafafa;
 }
 
 .navbar {
   display: flex;
+  flex:none;
   justify-content: flex-start;
   align-items: center;
   background-color: #23272a;
@@ -94,6 +113,7 @@ body {
 
 .optimizer-container {
   display: flex;
+  flex: 1;
   justify-content: center;
   height: 100%;
 }

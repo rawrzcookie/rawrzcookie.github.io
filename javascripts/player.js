@@ -29,7 +29,7 @@ var playerInfo = {
     "TimeToKill": "8",
     "WarCry": "",
     "SkillPoints": "0",
-    "buildVersion": "7.2.0",
+    "buildVersion": "7.18.0",
     "MaxStage": "",
     "AutoQol": true
   },
@@ -370,6 +370,12 @@ var playerInfo = {
       "Selection": true,
       "Locked": false
       },
+    "Phantom Blades": {
+      "ID": "PhantomBlades",
+      "Level": "",
+      "Selection": true,
+      "Locked": false
+      },
     "Mark of Death": {
       "ID": "StreamOfBladesMultiCastSkill",
       "Level": "",
@@ -450,6 +456,12 @@ var playerInfo = {
       },
     "Philosophers Flux": {
       "ID": "PhilosophersFlux",
+      "Level": "",
+      "Selection": true,
+      "Locked": false
+      },
+    "Ancient Mastery": {
+      "ID": "AlchemistMastery",
       "Level": "",
       "Selection": true,
       "Locked": false
