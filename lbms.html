@@ -9,45 +9,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Limit Break & Mana Siphon Optimizer">
-  <meta property="og:description" content="This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.">
+  <meta property="og:description"
+    content="This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.">
   <meta property="og:url" content="https://rawrzcookie.github.io/lbms.html">
   <meta property="og:image" content="https://i.imgur.com/LUAz5M6.png">
   <meta property="twitter:title" content="Limit Break & Mana Siphon Optimizer">
-  <meta property="twitter:description" content="This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.">
+  <meta property="twitter:description"
+    content="This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.">
   <meta property="twitter:image" content="https://i.imgur.com/LUAz5M6.png">
   <meta name="twitter:card" content="summary_large_image">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7920010104044650"
-     crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Y80TVE110"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'G-9Y80TVE110');
   </script>
-  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+    integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
 </head>
 
 <body onchange="save(), suggestion()" onload="load(), populate(), suggestion()" style=background-color:#313338>
   <div class="page-container">
     <nav class="navbar">
-        <div class="titlename"><a href="index.html"><img class="rawrz" src="images/Circle Cookie Dino.png" height="60">rawrzcookie</a></div>
-        
-        <a href="#" class="toggle-button">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </a>
-        <div class="vl"></div>
-        <div class="navbar-links">
-            <ul>
-                <li><a href="spopti.html">Skill Tree Builder</a></li>
-                <li><a href="lbms.html">Mana Optimizer</a></li>
-                <li><a href="https://discord.gg/zhJt63Atn3" style="padding-bottom: 5px;"><img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg" height="20"></a></li>
-            </ul>
-        </div>
+      <div class="titlename"><a href="index.html"><img class="rawrz" src="images/Circle Cookie Dino.png"
+            height="60">rawrzcookie</a></div>
+
+      <a href="#" class="toggle-button">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </a>
+      <div class="vl"></div>
+      <div class="navbar-links">
+        <ul>
+          <li><a href="spopti.html">Skill Tree Builder</a></li>
+          <li><a href="setup.html">Build Setup</a></li>
+          <li><a href="lbms.html">Mana Optimizer</a></li>
+          <li><a href="https://discord.gg/zhJt63Atn3" style="padding-bottom: 5px;"><img
+                src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg"
+                height="20"></a></li>
+        </ul>
+      </div>
     </nav>
 
     <div class="titlehead" style="height: auto !important;">
@@ -55,11 +62,12 @@
         Limit Break & Mana Siphon Optimizer
       </h1>
       <p style="color:#FFFFFF; text-align: center;">
-        This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon skills.
+        This tool calculates your average Mana Regen per Minute from various levels of the Limit Break and Mana Siphon
+        skills.
       </p>
       <hr>
     </div>
-      
+
     <div class="optimizer-container">
       <div class="tablestats" id="left">
         <span style=color:#FFFFFF;font-size:24px;>Stat Inputs: </span>
@@ -236,58 +244,74 @@
         <br>
         <button type="button" class="calculate" onclick="populate(); return false;">Calculate &rarr;</button>
         <button type="button" class="suggestbtn" onclick="suggestion(); return false;">Suggest Me &rarr;</button>
-      
-      <div id="siphon">Mana Siphon</div>
-      <div class="tableregen" id="tableregen" style="display: block">
-        <table id="table">
-          <thead>
-            <tr>
-            </tr>
-          </thead>
-          <tbody>
-            <th class="sticky-first-col" id="header-lb" rowspan="28">
-              <span>Limit Break</span>
-            </th>
-          </tbody>
-        </table>
+
+        <div id="siphon">Mana Siphon</div>
+        <div class="tableregen" id="tableregen" style="display: block">
+          <table id="table">
+            <thead>
+              <tr>
+              </tr>
+            </thead>
+            <tbody>
+              <th class="sticky-first-col" id="header-lb" rowspan="28">
+                <span>Limit Break</span>
+              </th>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
-  
-  <footer>
-    &copy 2023 - 2026 rawrzcookie. All rights reserved. &nbsp; | &nbsp; <a href="privacy.html" style="color: #0088a9;">Privacy Policy</a>
-  </footer>
+
+    <footer>
+      &copy 2023 - 2026 rawrzcookie. All rights reserved. &nbsp; | &nbsp; <a href="privacy.html"
+        style="color: #0088a9;">Privacy Policy</a>
+    </footer>
   </div>
 
   <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-      <style>
-        .floatingchat-container-wrap { left:unset; right: 10px; }
-        .floating-chat-kofi-popup-iframe { left:unset; right: 10px; }
-        .floatingchat-container-wrap-mobi { left:unset; right: 160px; }
-        .floating-chat-kofi-popup-iframe-mobi { left:unset; right: 10px; }
-        </style>
-      <script>
-        kofiWidgetOverlay.draw('rawrzcookie', {
-            'type': 'floating-chat',
-            'floating-chat.donateButton.text': 'Like It?',
-            'floating-chat.donateButton.background-color': '#00b9fe',
-            'floating-chat.donateButton.text-color': '#fff'
-        });
-      </script>
-    <script>
-        const toggleButton = document.getElementsByClassName('toggle-button')[0];
-        const navbarLinks = document.getElementsByClassName('navbar-links')[0];
+  <style>
+    .floatingchat-container-wrap {
+      left: unset;
+      right: 10px;
+    }
 
-        toggleButton.addEventListener('click', () => {
-            navbarLinks.classList.toggle('active')
-        })
-    </script>
-  </body>
-    
-    <br>
-    <br>
-    <br>
-    <br>
+    .floating-chat-kofi-popup-iframe {
+      left: unset;
+      right: 10px;
+    }
+
+    .floatingchat-container-wrap-mobi {
+      left: unset;
+      right: 160px;
+    }
+
+    .floating-chat-kofi-popup-iframe-mobi {
+      left: unset;
+      right: 10px;
+    }
+  </style>
+  <script>
+    kofiWidgetOverlay.draw('rawrzcookie', {
+      'type': 'floating-chat',
+      'floating-chat.donateButton.text': 'Like It?',
+      'floating-chat.donateButton.background-color': '#00b9fe',
+      'floating-chat.donateButton.text-color': '#fff'
+    });
+  </script>
+  <script>
+    const toggleButton = document.getElementsByClassName('toggle-button')[0];
+    const navbarLinks = document.getElementsByClassName('navbar-links')[0];
+
+    toggleButton.addEventListener('click', () => {
+      navbarLinks.classList.toggle('active')
+    })
+  </script>
+</body>
+
+<br>
+<br>
+<br>
+<br>
 
 <script type="text/javascript" src="javascripts/mana.js"></script>
 <script type="text/javascript" src="javascripts/lbms.js"></script>

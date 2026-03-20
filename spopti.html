@@ -2,42 +2,46 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="images/Circle Cookie Dino.png">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>Skill Tree Builder</title>
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Skill Tree Builder">
-    <meta property="og:description" content="This tool helps distribute your specified skill points for highest damage efficiency.">
-    <meta property="og:url" content="https://rawrzcookie.github.io/spopti.html">
-    <meta property="og:image" content="https://i.imgur.com/LUAz5M6.png">
-    <meta property="twitter:title" content="Skill Tree Builder">
-    <meta property="twitter:description" content="This tool helps distribute your specified skill points for highest damage efficiency.">
-    <meta property="twitter:image" content="https://i.imgur.com/LUAz5M6.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7920010104044650"
-     crossorigin="anonymous"></script>
-    <!-- Google tag (gtag.js) -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="images/Circle Cookie Dino.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Skill Tree Builder</title>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Skill Tree Builder">
+  <meta property="og:description"
+    content="This tool helps distribute your specified skill points for highest damage efficiency.">
+  <meta property="og:url" content="https://rawrzcookie.github.io/spopti.html">
+  <meta property="og:image" content="https://i.imgur.com/LUAz5M6.png">
+  <meta property="twitter:title" content="Skill Tree Builder">
+  <meta property="twitter:description"
+    content="This tool helps distribute your specified skill points for highest damage efficiency.">
+  <meta property="twitter:image" content="https://i.imgur.com/LUAz5M6.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7920010104044650"
+    crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Y80TVE110"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'G-9Y80TVE110');
   </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+    integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
+
 <body style=background-color:#313338>
   <div class="page-container">
     <nav class="navbar">
-      <div class="titlename"><a href="index.html"><img class="rawrz" src="images/Circle Cookie Dino.png" height="60">rawrzcookie</a></div>
-      <div class="notification-container" id="notification-container"></div>
-      
+      <div class="titlename"><a href="index.html"><img class="rawrz" src="images/Circle Cookie Dino.png"
+            height="60">rawrzcookie</a></div>
+
       <a href="#" class="toggle-button">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -47,15 +51,20 @@
       <div class="navbar-links">
         <ul>
           <li><a href="spopti.html">Skill Tree Builder</a></li>
+          <li><a href="setup.html">Build Setup</a></li>
           <li><a href="lbms.html">Mana Optimizer</a></li>
-          <li><a href="https://discord.gg/zhJt63Atn3" style="padding-bottom: 5px;"><img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg" height="20"></a></li>
+          <li><a href="https://discord.gg/zhJt63Atn3" style="padding-bottom: 5px;"><img
+                src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg"
+                height="20"></a></li>
         </ul>
       </div>
     </nav>
 
+    <div class="notification-container" id="notification-container"></div>
+
     <div class="titlehead">
       <h1 style="color:#FFFFFF; text-align: center;">
-          Skill Tree Builder
+        Skill Tree Builder
       </h1>
       <p style="color:#FFFFFF; text-align: center;">
         This tool helps you find an optimal way to spend your available skill points for highest damage efficiency.
@@ -64,32 +73,36 @@
       <noscript>Please enable JavaScript to use this application.</noscript>
       <p style="color:#FFFFFF; text-align: center;">
         <button type="button" class="instructionsbtn" onclick="return false;">Instructions &#9662;</button>
-        <div class="instructions">
-          <div id="instructions" style="display: none">
-            <p>Basic instructions:</p>
-            <ol>
-              <li>Enter your stats</li>
-              <li>Enter the desired levels for skills you want your build to have</li>
-              <li>Click on &#39;Optimize&#39; to efficiently distribute your remaining skill points</li>
-            </ol>
-            <p>Skill levels in the tree can be directly edited.</p>
-            <p><u>Auto QoL</u> are hard-coded suggestions that differ based on SP ranges. If you prefer a different value, toggle the skill off and enter your desired value, or enter a higher value.</p>
-            <p><u>Toggle Skills</u> enables selecting or deselecting of skills when optimizing. Toggle whether a skill should be included in the optimization. Disabled skills will be ignored.</p>
-            <p><u>Lock Skills</u> enables locking or unlocking of skills. Locking a skill prevents it from being reset when you reset the tree, but it does NOT keep the skill at a fixed level when optimizing.</p>
-            <p>Quality of Life (QoL) skills will be ignored when optimizing as they do not directly increase your damage.</p> 
-            <p>These can include, but are not limited to:</p>
-            <ul>
-              <li>Titan skip and Stage skip skills</li>
-              <li>Cooldown Reducing skills</li>
-              <li>Mana skills</li>
-              <li>Probability or chance increasing skills</li>
-            </ul>
-            <p></p>
-          </div>
+      <div class="instructions">
+        <div id="instructions" style="display: none">
+          <p>Basic instructions:</p>
+          <ol>
+            <li>Enter your stats</li>
+            <li>Enter the desired levels for skills you want your build to have</li>
+            <li>Click on &#39;Optimize&#39; to efficiently distribute your remaining skill points</li>
+          </ol>
+          <p>Skill levels in the tree can be directly edited.</p>
+          <p><u>Auto QoL</u> are hard-coded suggestions that differ based on SP ranges. If you prefer a different value,
+            toggle the skill off and enter your desired value, or enter a higher value.</p>
+          <p><u>Toggle Skills</u> enables selecting or deselecting of skills when optimizing. Toggle whether a skill
+            should be included in the optimization. Disabled skills will be ignored.</p>
+          <p><u>Lock Skills</u> enables locking or unlocking of skills. Locking a skill prevents it from being reset
+            when you reset the tree, but it does NOT keep the skill at a fixed level when optimizing.</p>
+          <p>Quality of Life (QoL) skills will be ignored when optimizing as they do not directly increase your damage.
+          </p>
+          <p>These can include, but are not limited to:</p>
+          <ul>
+            <li>Titan skip and Stage skip skills</li>
+            <li>Cooldown Reducing skills</li>
+            <li>Mana skills</li>
+            <li>Probability or chance increasing skills</li>
+          </ul>
+          <p></p>
         </div>
+      </div>
       </p>
     </div>
-    
+
     <div class="optimizer-container">
       <div id="myModal" class="modal">
         <div class="modal-content">
@@ -102,7 +115,7 @@
         </div>
       </div>
       <div class="lb-ms">
-        
+
         <div class="row">
           <div class="tablestats" id="left"><span style=color:#FFFFFF;font-size:24px;>Stat Inputs: </span><br>
             <div style="height: 10px; display: block;"></div>
@@ -116,7 +129,10 @@
                 </tr>
                 <tr>
                   <td class="buildStat">
-                    <textarea spellcheck="false" onfocusout="this.style.height = '20px || auto'; this.scrollTop = 0;" onclick="this.style.height = 'auto'; this.style.height = '200px'" oninput="this.style.height = 'auto'; this.style.height = '200px'; PageHelper.prettifyJSON(); //this.selectionEnd = 0;" placeholder="Paste data here." id="saveImport"></textarea>
+                    <textarea spellcheck="false" onfocusout="this.style.height = '20px || auto'; this.scrollTop = 0;"
+                      onclick="this.style.height = 'auto'; this.style.height = '200px'"
+                      oninput="this.style.height = 'auto'; this.style.height = '200px'; PageHelper.prettifyJSON(); //this.selectionEnd = 0;"
+                      placeholder="Paste data here." id="saveImport"></textarea>
                   </td>
                 </tr>
                 <tr>
@@ -150,12 +166,12 @@
                     <span>Gold Type</span>
                   </td>
                   <td class="statinput">
-                      <select aria-label="typeGold" name="typeGold" id="typeGold">
-                        <option value="Fairy">Fairy</option>
-                        <option value="HoG">HoG</option>
-                        <option value="Chesterson">Chesterson</option>
-                      </select><br>
-                    </td>
+                    <select aria-label="typeGold" name="typeGold" id="typeGold">
+                      <option value="Fairy">Fairy</option>
+                      <option value="HoG">HoG</option>
+                      <option value="Chesterson">Chesterson</option>
+                    </select><br>
+                  </td>
                 </tr>
                 <tr>
                   <td class="stat">
@@ -188,11 +204,11 @@
             <br>
             <button type="button" class="advanced">Advanced Options &#9662;</button>
             <br>
-            <div id="advancedOptions" style="display: none; border-collapse:collapse";>
+            <div id="advancedOptions" style="display: none; border-collapse:collapse" ;>
               <table class="stats" border="1" style="border-collapse: unset;">
                 <tbody>
                   <tr>
-                    <td class="stat"> 
+                    <td class="stat">
                       <span>Forsaken Battlemage
                         <span class="tooltiptext">Legendary Set</span>
                       </span>
@@ -204,7 +220,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td class="stat"> 
+                    <td class="stat">
                       <span>Flowering Falconer
                         <span class="tooltiptext">Legendary Set</span>
                       </span>
@@ -297,7 +313,8 @@
                   <tr>
                     <td class="stat">
                       <span>Gold Weight
-                        <span class="tooltiptext">Typically between 0.6 - 0.9. Higher value puts more to gold skills</span></span>
+                        <span class="tooltiptext">Typically between 0.6 - 0.9. Higher value puts more to gold
+                          skills</span></span>
                     </td>
                     <td class="statinput">
                       <input type="number" id="goldWeight" value="0.7"><br>
@@ -315,7 +332,8 @@
                   <tr class="hidden-input">
                     <td class="stat">
                       <span>Shadow Clone Level
-                        <span class="tooltiptext">Highest spell level you can get (mainly for Lightning Strike)</span></span>
+                        <span class="tooltiptext">Highest spell level you can get (mainly for Lightning
+                          Strike)</span></span>
                     </td>
                     <td class="statinput">
                       <input type="number" id="sClone" value="35"><br>
@@ -324,7 +342,8 @@
                   <tr class="hidden-input">
                     <td class="stat">
                       <span>Time To Kill
-                        <span class="tooltiptext">In seconds; how long you want to wait to kill a boss (mainly for Lightning Strike)</span></span>
+                        <span class="tooltiptext">In seconds; how long you want to wait to kill a boss (mainly for
+                          Lightning Strike)</span></span>
                     </td>
                     <td class="statinput">
                       <input type="number" id="TimeToKill" value="8" step="any"><br>
@@ -348,14 +367,16 @@
             </div>
             <div style="height: 5px; display: block;"></div>
             <div id="lockSettings" style="display: none">
-              <p style="color: #FFFFFF; font-size:small ;">Prevents skill from resetting. Does not keep a skill at a fixed level.</p>
+              <p style="color: #FFFFFF; font-size:small ;">Prevents skill from resetting. Does not keep a skill at a
+                fixed level.</p>
               <div class="buttons buttonsTwo">
                 <button type="button" class="unlockAll">Unlock All</button>
                 <button type="button" class="lockAll">Lock All</button>
               </div>
             </div>
             <div id="selectSettings" style="display: none">
-              <p style="color: #FFFFFF; font-size:small ;">Toggles skills to be included in the optimization. Disabled skills will be ignored.</p>
+              <p style="color: #FFFFFF; font-size:small ;">Toggles skills to be included in the optimization. Disabled
+                skills will be ignored.</p>
               <div class="buttons buttonsTwo">
                 <button type="button" class="deselectAll">Deselect All</button>
                 <button type="button" class="selectAll">Select All</button>
@@ -367,11 +388,9 @@
         <div class='skillTree'>
           <div NodeToImage>
             <div class="trees" id="trees">
-              <div class="buildStat" id="buildName">
-                Clan Ship Fairy
-                <span style="position: absolute; bottom: 0; right: 0; font-size: 0.8em; line-height: 1;">
-                    &#x1F501;
-                </span>
+              <div class="buildStat">
+                <span id="buildName">Clan Ship Fairy</span>
+                <span class="auto-qol-icon">🔁</span>
               </div>
               <div class="buildStat" id="buildSP">0 / 0 (0 SP Remaining)</div>
               <div class='grid-wrapper'>
@@ -642,7 +661,8 @@
               </div>
               <div class="buildStat" data-format="sci" id="totalEffect">Estimated Total Effect: </div>
             </div>
-            <textarea style="display: block" class="buildStat" id="exportString" style="overflow:hidden" readonly></textarea>
+            <textarea style="display: block" class="buildStat" id="exportString" style="overflow:hidden"
+              readonly></textarea>
           </div>
           <div style="height: 20px; display: block;"></div>
 
@@ -655,7 +675,8 @@
             </div>
             <div id="buildSave" style="display: none; border-collapse:collapse">
               <div class="buildSaveMode">
-                <select class="buildStat" style="height: 35px; font-weight: bold;" aria-label="buildSaveMode" name="buildSaveMode" id="buildSaveMode">
+                <select class="buildStat" style="height: 35px; font-weight: bold;" aria-label="buildSaveMode"
+                  name="buildSaveMode" id="buildSaveMode">
                   <option value="0">Save as New Build</option>
                 </select><br>
                 <textarea spellcheck="false" placeholder="Name your build" id="buildSaveName"></textarea>
@@ -670,7 +691,8 @@
             </div>
             <div id="buildDelete" style="display: none; border-collapse:collapse">
               <div class="buildDeleteMode">
-                <div class="buildStat" id="buildDeleteMode" style="line-height: 2; font-weight: bold;">Delete builds</div>
+                <div class="buildStat" id="buildDeleteMode" style="line-height: 2; font-weight: bold;">Delete builds
+                </div>
                 <div style="height: 5px; display: block;"></div>
                 <button class="builderDelete" style="font-size: 80%">Delete</button>
               </div>
@@ -679,58 +701,75 @@
 
           <div style="height: 10px; display: block;"></div>
           <button type="button" class="nextLevels">Efficiency Table &#9662;</button>
-            <table class="buildStat effTable" id="effTable" style="display: none;">
-              <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>From Level</th>
-                  <th>To Level</th>
-                  <th>Efficiency</th>
-                  <th>SP Cost</th>
-                </tr>
-              </tbody>
-            </table>
+          <table class="buildStat effTable" id="effTable" style="display: none;">
+            <tbody>
+              <tr>
+                <th>Name</th>
+                <th>From Level</th>
+                <th>To Level</th>
+                <th>Efficiency</th>
+                <th>SP Cost</th>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div style="height: 50px; display: block;"></div>
       </div>
     </div>
 
     <footer>
-      &copy 2023 - 2026 rawrzcookie. All rights reserved. &nbsp; | &nbsp; <a href="privacy.html" style="color: #0088a9;">Privacy Policy</a>
+      &copy 2023 - 2026 rawrzcookie. All rights reserved. &nbsp; | &nbsp; <a href="privacy.html"
+        style="color: #0088a9;">Privacy Policy</a>
     </footer>
   </div>
 
 
-    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-      <style>
-        .floatingchat-container-wrap { left:unset; right: 10px; }
-        .floating-chat-kofi-popup-iframe { left:unset; right: 10px; }
-        .floatingchat-container-wrap-mobi { left:unset; right: 160px; }
-        .floating-chat-kofi-popup-iframe-mobi { left:unset; right: 10px; }
-        </style>
-      <script>
-        kofiWidgetOverlay.draw('rawrzcookie', {
-            'type': 'floating-chat',
-            'floating-chat.donateButton.text': 'Like It?',
-            'floating-chat.donateButton.background-color': '#00b9fe',
-            'floating-chat.donateButton.text-color': '#fff'
-        });
-      </script>
-    <script>
-        const toggleButton = document.getElementsByClassName('toggle-button')[0];
-        const navbarLinks = document.getElementsByClassName('navbar-links')[0];
+  <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+  <style>
+    .floatingchat-container-wrap {
+      left: unset;
+      right: 10px;
+    }
 
-        toggleButton.addEventListener('click', () => {
-            navbarLinks.classList.toggle('active')
-        })
-    </script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <script src="javascripts\skills.js"></script>
-    <script src="javascripts\spells.js"></script>
-    <script src="javascripts\reductions.js"></script>
-    <script src="javascripts\qol-baseline.js"></script>
-    <script src="javascripts\player.js"></script>
-    <script src="javascripts\spopti.js"></script>
-    <script src="javascripts\mana.js"></script>
+    .floating-chat-kofi-popup-iframe {
+      left: unset;
+      right: 10px;
+    }
+
+    .floatingchat-container-wrap-mobi {
+      left: unset;
+      right: 160px;
+    }
+
+    .floating-chat-kofi-popup-iframe-mobi {
+      left: unset;
+      right: 10px;
+    }
+  </style>
+  <script>
+    kofiWidgetOverlay.draw('rawrzcookie', {
+      'type': 'floating-chat',
+      'floating-chat.donateButton.text': 'Like It?',
+      'floating-chat.donateButton.background-color': '#00b9fe',
+      'floating-chat.donateButton.text-color': '#fff'
+    });
+  </script>
+  <script>
+    const toggleButton = document.getElementsByClassName('toggle-button')[0];
+    const navbarLinks = document.getElementsByClassName('navbar-links')[0];
+
+    toggleButton.addEventListener('click', () => {
+      navbarLinks.classList.toggle('active')
+    })
+  </script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="javascripts\skills.js"></script>
+  <script src="javascripts\spells.js"></script>
+  <script src="javascripts\reductions.js"></script>
+  <script src="javascripts\qol-baseline.js"></script>
+  <script src="javascripts\player.js"></script>
+  <script src="javascripts\spopti.js"></script>
+  <script src="javascripts\mana.js"></script>
 </body>
-    </html>
+
+</html>
