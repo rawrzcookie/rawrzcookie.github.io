@@ -1238,16 +1238,25 @@ class PageHelper {
     let qol_baselines = build[baselines[sp_index]];
     if (!this.isBaselineValid(qol_baselines, currLevels)) return;
 
-    for (const [i, { Name: skillName }] of Object.entries(skillInfo)) {
-      // ignore skills that players have not unlocked yet by max stage
-      const stageReq = skillInfo[i].S0;
-      if (maxStage && maxStage < stageReq) continue;
-
+    for (const [i, skillData] of Object.entries(skillInfo)) {
       const index = skillIdToIndex[i];
-      const curr_level = parseInt(currLevels[index]) || 0;
-      const level = parseInt(qol_baselines[i] || 0);
+      const curr_level = Number(currLevels[index]) || 0;
 
-      const value = !playerskills[skillName].Selection ? curr_level : Math.max(level, curr_level);
+      const baselineLevel = qol_baselines[i];
+      const hasBaseline = baselineLevel !== undefined;
+
+      const meetsStageReq =
+        !maxStage || maxStage >= skillData.S0;
+
+      const isSelected =
+        playerskills[skillData.Name].Selection;
+
+      let value = curr_level;
+
+      if (hasBaseline && meetsStageReq && isSelected) {
+        const level = Number(baselineLevel) || 0;
+        value = Math.max(level, curr_level);
+      }
 
       skillArr.push(value);
     }
@@ -2161,20 +2170,26 @@ window.addEventListener('change', function () {
 })
 
 class Notification {
+  static container = document.getElementById("notification-container");
+
   static notify = {
-    info: (text, duration) => this.showNotification(text, "notification--info", duration),
-    warning: (text, duration) => this.showNotification(text, "notification--warning", duration),
+    info: (text, duration) => Notification.showInfo(text, duration),
+    warning: (text, duration) => Notification.showWarning(text, duration),
   };
 
   static showNotification(text, elementClass, duration = 2000) {
-    const template = document.createElement("div");
-    template.classList.add("notification");
-    const el = template.cloneNode();
+    const el = document.createElement("div");
+    el.classList.add("notification", elementClass);
     el.textContent = text;
-    el.classList.add(elementClass);
-    const container = document.getElementById("notification-container");
-    console.log(container);
-    container.appendChild(el);
+    Notification.container.appendChild(el);
     setTimeout(() => el.remove(), duration);
+  }
+
+  static showInfo(text, duration = 2000) {
+    this.showNotification(text, "notification--info", duration);
+  }
+
+  static showWarning(text, duration = 3000) {
+    this.showNotification(text, "notification--warning", duration);
   }
 }
