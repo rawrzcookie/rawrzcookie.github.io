@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="rawrzcookie's tools">
+    <meta property="og:description" content="A collection of tools for Tap Titans 2, made and compiled by rawrzcookie">
+    <meta property="og:url" content="https://rawrzcookie.github.io/">
+    <meta property="og:image" content="https://i.imgur.com/LUAz5M6.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="rawrzcookie's tools">
+    <meta property="twitter:description"
+        content="A collection of tools for Tap Titans 2, made and compiled by rawrzcookie">
+    <meta property="twitter:image" content="https://i.imgur.com/LUAz5M6.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/Circle Cookie Dino.png">
+    <title>rawrzcookie's tools</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7920010104044650"
+        crossorigin="anonymous"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Y80TVE110"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-9Y80TVE110');
+    </script>
+</head>
+
+<body class="nav" style=background-color:#313338>
+    <div class="page-container">
+        <nav class="navbar">
+            <div class="titlename"><a href="index.html"><img class="rawrz" src="images/Circle Cookie Dino.png"
+                        height="60">rawrzcookie</a></div>
+
+            <a href="#" class="toggle-button">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </a>
+            <div class="vl"></div>
+            <div class="navbar-links">
+                <ul>
+                    <li><a href="spopti.html">Skill Tree Builder</a></li>
+                    <li><a href="setup.html">Build Setup</a></li>
+                    <li><a href="gemstones.html">Gemstones</a></li>
+                    <li><a href="lbms.html">Mana Optimizer</a></li>
+                    <li><a href="https://discord.gg/zhJt63Atn3" style="padding-bottom: 5px;"><img
+                                src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg"
+                                height="20"></a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="titlehead">
+            <div class="maintitle" style="color:#E4E6EB; text-align: center;">
+                <h1>
+                    Gemstone Tool
+                </h1>
+            </div>
+            <hr>
+        </div>
+
+        <br>
+
+        <div class="optimizer-container">
+            <div class="lb-ms">
+                <div class="tablestats" id="left">
+                    <div class="content-container">
+                        <div class="content-header">
+                            <span class="content-name">Getting Started</span>
+                        </div>
+                        <div class="content-button-container">
+                            <button class="content-button" data-content="about">About </button>
+                            <button class="content-button" data-content="howto">How to Use</button>
+                            <button class="content-button" data-content="guide">Gemstone Guide</button>
+                        </div>
+
+                        <div id="about" class="content-panel" style="display: none;">
+                            <h3>About This Tool</h3>
+                            <p>This Tap Titans 2 Gemstone Tool helps players compare current and new
+                                gemstones to determine which gemstone is stronger</p>
+                        </div>
+
+                        <div id="howto" class="content-panel" style="display: none;">
+                            <h3>How to Use the Gemstone Optimizer</h3>
+                            <p>
+                            <ol>
+                                <li><strong>Select Damage/Gold Type</strong> - Choose your damage and
+                                    gold type.</li>
+                                <li><strong>Enter Current Gemstones</strong> - Input your current gemstone levels,
+                                    bonuses, and values in the "Current" column.
+                                    <br>
+                                    <strong>Tip:</strong> You can also paste your player export and automatically fill
+                                    in your current gemstones using "Import Data" in the "Tools" section.
+                                </li>
+                                <li><strong>Configure New Gemstones</strong> - Input the level and bonuses of new
+                                    gemstonesin the
+                                    "New" column to test potential upgrades.</li>
+                                <li><strong>Compare Totals</strong> - The tool automatically calculates and
+                                    highlights which gemstone is stronger (green border = better).</li>
+                                <li><strong>Lock Important Rows</strong> - Use the lock icon to keep specific
+                                    bonuses from changing when testing new configurations.</li>
+                                <li><strong>Take New</strong> - When you find a better setup, click "Take New" to
+                                    apply it to your current configuration.</li>
+                            </ol>
+                            <h4>Tips</h4>
+                            <ul>
+                                <li>Lock rows you don't want to change while experimenting</li>
+                                <li>Use "Reset Current" or "Reset New" to clear all current bonuses and start fresh</li>
+                            </ul>
+                            </p>
+                        </div>
+
+                        <div id="guide" class="content-panel" style="display: none;">
+                            <h3>Basic Gemstone Guide</h3>
+                            <p>Gemstones provide additional sources of damage and are unlocked either after reaching
+                                stage 150,000 or after 60 days played, whichever comes first.</p>
+
+                            <h4>Rarities</h4>
+                            <p>There are 5 different rarities of gemstones:
+                            <ul>
+                                <li>Common</li>
+                                <li>Uncommon</li>
+                                <li>Rare</li>
+                                <li>Legendary</li>
+                                <li>Mythic</li>
+                            </ul>
+                            Common and Uncommon will only have one row of bonuses.
+                            <br>
+                            Rare will have two rows of bonuses.
+                            <br>
+                            Legendary will have three rows of bonuses.
+                            <br>
+                            Mythic will have four rows of bonuses.
+                            <br>
+                            Higher tier rarities will appear and become more likely as you increase your Gemstone Level.
+                            </p>
+
+                            <h4>Priorities</h4>
+                            <p>
+                                The main factor that influences the effects of a gemstone's bonus is Level. The higher
+                                the gemstone's level, the stronger the bonuses.
+                                <br>
+                                Prioritizing <strong>Gemstone Level</strong> in the Mystic Research tree not only helps
+                                with stronger bonuses, but will also increase your chances of having higher rarity
+                                gemstones, which have more rows of bonuses
+                                <br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tablestats" id="left"><span style=color:#E4E6EB;font-size:24px;>Damage Type</span><br>
+                    <div style="height: 10px; display: block;"></div>
+                    <div class="buttons setup-buttons">
+                        <button type="button" class="HeavenlyStrike" data-value="HeavenlyStrike">Heavenly
+                            Strike</button>
+                        <button type="button" class="Pet" data-value="Pet">Pet</button>
+                        <button type="button" class="ClanShip" data-value="ClanShip">Clan Ship</button>
+                        <button type="button" class="ShadowClone" data-value="ShadowClone">Shadow Clone</button>
+                        <button type="button" class="Dagger" data-value="Dagger">Dagger</button>
+                        <button type="button" class="GoldGun" data-value="GoldGun">Gold Gun</button>
+                    </div>
+                </div>
+
+                <div style="height: 10px; display: block;"></div>
+
+                <div class="tablestats" id="left"><span style=color:#E4E6EB;font-size:24px;>Gold Type</span><br>
+                    <div style="height: 10px; display: block;"></div>
+                    <div class="buttons setup-buttons">
+                        <button type="button" class="Fairy" data-value="Fairy">Fairy</button>
+                        <button type="button" class="HeartOfGold" data-value="HeartOfGold">Heart of Gold</button>
+                        <button type="button" class="Chesterson" data-value="Chesterson">Chesterson</button>
+                    </div>
+                </div>
+
+                <div class="tablestats" id="left">
+                    <div class="extras-container">
+                        <div class="extras-header">
+                            <span class="extras-name">Tools</span>
+                        </div>
+                        <div class="extras-button-container">
+                            <button class="extras-button" data-action="reset-all">Reset All</button>
+                            <button class="extras-button" data-action="lock-all">Lock All</button>
+                            <button class="extras-button" data-action="unlock-all">Unlock All</button>
+                            <button class="extras-button" data-action="collapse-all">Collapse All</button>
+                            <button class="extras-button" data-action="expand-all">Expand All</button>
+                            <button type="button" class="import">Import Data</button>
+                        </div>
+                        <table id="import" style="display: none; border-collapse:collapse; color: black">
+                            <tbody>
+                                <tr>
+                                    <th class="buildStat">
+                                        Paste data and click Import
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td class="buildStat">
+                                        <textarea spellcheck="false"
+                                            onfocusout="this.style.height = '20px || auto'; this.scrollTop = 0;"
+                                            onclick="this.style.height = 'auto'; this.style.height = '200px'"
+                                            oninput="this.style.height = 'auto'; this.style.height = '200px'; prettifyJSON(); //this.selectionEnd = 0;"
+                                            placeholder="Paste data here." id="saveImport"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="buildStat">
+                                        <a id="importButton">Click to Import</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tablestats" id="left">
+                    <span class="gemstone-title">Gemstones</span><br>
+                    <div class="gemstone-container">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div style="height: 50px; display: block;"></div>
+
+    <footer>
+        &copy 2023 - 2026 rawrzcookie. All rights reserved. &nbsp; | &nbsp; <a href="privacy.html"
+            style="color: #0088a9;">Privacy Policy</a>
+    </footer>
+    </div>
+
+
+
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+    <style>
+        .floatingchat-container-wrap {
+            left: unset;
+            right: 10px;
+        }
+
+        .floating-chat-kofi-popup-iframe {
+            left: unset;
+            right: 10px;
+        }
+
+        .floatingchat-container-wrap-mobi {
+            left: unset;
+            right: 160px;
+        }
+
+        .floating-chat-kofi-popup-iframe-mobi {
+            left: unset;
+            right: 10px;
+        }
+    </style>
+    <script>
+        kofiWidgetOverlay.draw('rawrzcookie', {
+            'type': 'floating-chat',
+            'floating-chat.donateButton.text': 'Like It?',
+            'floating-chat.donateButton.background-color': '#00b9fe',
+            'floating-chat.donateButton.text-color': '#fff'
+        });
+    </script>
+    <script>
+        const toggleButton = document.getElementsByClassName('toggle-button')[0];
+        const navbarLinks = document.getElementsByClassName('navbar-links')[0];
+
+        toggleButton.addEventListener('click', () => {
+            navbarLinks.classList.toggle('active')
+        })
+    </script>
+    <script src="javascripts\gemstone_info.js"></script>
+    <script src="javascripts\gemstone.js"></script>
+</body>
+
+</html>

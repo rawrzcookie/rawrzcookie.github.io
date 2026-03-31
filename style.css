@@ -384,6 +384,7 @@ table.suggestion {
   grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: 1fr;
   gap: 10px;
+
 }
 
 .setup-buttons {
@@ -405,7 +406,7 @@ button {
   border: none;
   border-radius: 15px;
   box-shadow: 0 9px #999;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   background-color: #202225
 }
 
@@ -875,20 +876,19 @@ label {
   border: 0.1rem solid;
   margin-top: 0.3rem;
   padding: 0.8rem 1.5rem;
+  text-align: left;
+  width: 100%;
 }
 
 .notification--info {
   background-color: #48d0e8;
   border-color: #498fcc;
-  text-align: left;
-  width: 100%;
+
 }
 
 .notification--warning {
   background-color: #ffd166;
   border-color: #efb366;
-  text-align: left;
-  width: 100%;
 }
 
 #artifact-display {
@@ -991,7 +991,8 @@ label {
 
 .artifact-title,
 .spells-title,
-.equipment-title {
+.equipment-title,
+.gemstone-title {
   color: #E4E6EB;
   font-size: 24px;
   display: inline-block;
@@ -1106,4 +1107,356 @@ label {
   font-size: 11px;
   margin-left: 8px;
   margin-bottom: 1px;
+}
+
+/* ===== Shared Base Styles ===== */
+.gemstone-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gemstone-item {
+  padding: 6px;
+  border: 2px solid #141414;
+  border-radius: 6px;
+  color: white;
+}
+
+.gemstone-header {
+  border-bottom: 1px solid white;
+  padding-bottom: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.gemstone-icon {
+  width: 10%;
+  padding: 2px;
+}
+
+.gemstone-name {
+  flex: 1;
+  padding: 2px;
+}
+
+.collapse-toggle {
+  font-size: 14px;
+  transition: transform 0.2s ease;
+  opacity: 0.7;
+}
+
+.gemstone-header:hover .collapse-toggle {
+  opacity: 1;
+}
+
+/* When collapsed, hide the inputs */
+.gemstone-item.collapsed .gemstone-inputs, 
+.gemstone-item.collapsed .gemstone-button-container {
+  display: none;
+}
+
+.gemstone-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+/* ===== Side Containers ===== */
+.gemstone-current,
+.gemstone-new {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4px;
+}
+
+.gemstone-current {
+}
+
+.gemstone-new {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== Shared Component Styles ===== */
+.gemstone-side-label {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+/* Level input container */
+.gemstone-level {
+  background-color: #23272A;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+  width: 100%;
+  padding: 6px;
+}
+
+.gemstone-level label {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.level-input {
+  width: 100%;
+  font-size: 11px;
+  color: #E4E6EB;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  padding: 4px;
+  outline: none;
+}
+
+/* Bonus row container */
+.gemstone-bonus-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 4px;
+  width: 100%;
+  margin-bottom: 6px;
+  background-color: #23272A;
+  border: 1px solid #000000;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+/* Lock checkbox */
+.lock-checkbox {
+  grid-row: 1;
+  grid-column: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.lock-checkbox::before {
+  content: "🔑";
+  font-size: 10px;
+}
+
+.lock-checkbox:checked::before {
+  content: "🔒";
+}
+
+/* Bonus select */
+.bonus-select {
+  grid-row: 1;
+  grid-column: 2;
+  color: #E4E6EB;
+  font-size: 10px;
+  width: 100%;
+  height: 22px;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.bonus-select option {
+  color: #000000;
+  text-align: left;
+  direction: ltr;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin: 0;
+}
+
+/* Remove default browser left padding */
+.bonus-select {
+  text-indent: 0;
+}
+
+/* For Firefox */
+@-moz-document url-prefix() {
+  .bonus-select {
+    padding-left: 4px;
+  }
+}
+
+/* Shared styles for value display elements */
+.bonus-value,
+.bonus-calc {
+  grid-row: 2;
+  grid-column: 1 / span 2;
+  width: 100%;
+  font-size: 11px;
+  padding: 4px 4px 4px 8px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+/* Bonus value specific */
+.bonus-value {
+  color: #E4E6EB;
+}
+
+/* Bonus calc specific */
+.bonus-calc {
+  text-align: left;
+}
+
+.gemstone-est-total {
+  background-color: #23272A;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 0;
+}
+
+.gemstone-est-total label {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.est-total-calc {
+  grid-column: 1 / span 2;
+  width: 100%;
+  font-size: 11px;
+  padding: 4px 4px 4px 8px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.est-total-calc.better {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.est-total-calc.worse {
+    color: #e06c75;
+}
+
+.gemstone-current.better,
+.gemstone-new.better {
+    box-shadow: inset 0 0 0 2px #28a745;
+    border-radius: 6px;
+}
+
+.gemstone-current.worse,
+.gemstone-new.worse {
+    box-shadow: inset 0 0 0 2px #e06c75;
+    border-radius: 6px;
+}
+
+.gemstone-button-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 10px;
+  padding: 10px 0px 0px;
+  margin-bottom: -6px;
+}
+
+.gemstone-button-container button {
+  padding: 5px 10px;
+  font-size: 11px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px #999;
+  margin-bottom: 15px;
+  background-color: #202225;
+}
+
+.gemstone-button-container-all {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 10px;
+  padding: 10px 0px 0px 10px;
+  margin-bottom: 6px;
+}
+
+.extras-container,
+.content-container {
+  padding: 6px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  border: 2px solid #141414;
+  border-radius: 6px;
+  color: white;
+}
+
+.extras-container.collapsed .extras-button-container,
+.extras-container.collapsed table {
+  display: none;
+}
+
+.extras-header,
+.content-header {
+  border-bottom: 1px solid white;
+  padding-bottom: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.extras-name,
+.content-name {
+  flex: 1;
+  padding: 2px;
+}
+
+.extras-button-container,
+.content-button-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 10px;
+  padding: 10px 0px 0px;
+  margin-bottom: -6px;
+}
+
+.extras-button-container button,
+.content-button-container button {
+  padding: 8px 12px;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px #999;
+  margin-bottom: 15px;
+  background-color: #202225;
+}
+
+.content-panel {
+  padding: 4px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.content-panel strong {
+  font-weight: 600;
 }
