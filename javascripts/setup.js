@@ -19,6 +19,7 @@ const BONUS_TYPE_GOLD = {
   MULTI_TITAN: "Multiple Titan",
   PRIZE: "Prize Gold",
   LEGACY: "Legacy Gold",
+  HAYST: "All Gold During Hayst"
 };
 
 // ===== JSON =====
@@ -72,6 +73,14 @@ const armorByGoldType = {
     "Unique": {
       "Name": "Rosabella's Uniform",
       "Secondary": [BONUS_TYPE_GOLD.PRIZE, BONUS_TYPE_GOLD.HEART_OF_GOLD, BONUS_TYPE_GOLD.SPECIALTY]
+    },
+  },
+  "Chesterson": {
+    "Primary": [BONUS_TYPE_GOLD.ALL, BONUS_TYPE_GOLD.JACKPOT, BONUS_TYPE_GOLD.CHESTERSON],
+    "Secondary": [BONUS_TYPE_GOLD.MULTI_TITAN, BONUS_TYPE_GOLD.JACKPOT, BONUS_TYPE_GOLD.HAND_OF_MIDAS],
+    "Unique": {
+      "Name": "Jayce's Armor",
+      "Secondary": [BONUS_TYPE_GOLD.HAYST, BONUS_TYPE_GOLD.MULTI_TITAN, BONUS_TYPE_GOLD.JACKPOT]
     },
   }
 };
