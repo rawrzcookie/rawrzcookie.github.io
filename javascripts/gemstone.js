@@ -1230,6 +1230,14 @@ function gemstoneTakeNew(gemstoneItem) {
 
     if (!currentSide || !newSide) return;
 
+    const currentLevelInput = currentSide.querySelector('.level-input');
+    const newLevelInput = newSide.querySelector('.level-input');
+
+    // Copy level from New to Current
+    if (currentLevelInput && newLevelInput) {
+        currentLevelInput.value = newLevelInput.value;
+    }
+
     const currentBonusRows = currentSide.querySelectorAll('.gemstone-bonus-row');
     const newBonusRows = newSide.querySelectorAll('.gemstone-bonus-row');
 
