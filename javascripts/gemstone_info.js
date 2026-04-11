@@ -241,6 +241,18 @@ const GEMSTONE_INFO = {
             "weight": 5
           },
           {
+            "bonusType": "DamagePerEventSet",
+            "weight": 1
+          },
+          {
+            "bonusType": "DamagePerLegendarySet",
+            "weight": 1
+          },
+          {
+            "bonusType": "DamagePerMythicSet",
+            "weight": 1
+          },
+          {
             "bonusType": "DualPetAmount",
             "weight": 5
           },
@@ -412,6 +424,18 @@ const GEMSTONE_INFO = {
           {
             "bonusType": "CritDamage",
             "weight": 5
+          },
+          {
+            "bonusType": "DamagePerEventSet",
+            "weight": 1
+          },
+          {
+            "bonusType": "DamagePerLegendarySet",
+            "weight": 1
+          },
+          {
+            "bonusType": "DamagePerMythicSet",
+            "weight": 1
           },
           {
             "bonusType": "DualPetAmount",
