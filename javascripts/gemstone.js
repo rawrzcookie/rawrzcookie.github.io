@@ -19,6 +19,21 @@ const gemstoneIdToName = {
     "9": "gold Gun Gem"
 }
 
+const DAMAGE_TYPES = [
+    'HeavenlyStrike',
+    'Pet',
+    'ClanShip',
+    'ShadowClone',
+    'Dagger',
+    'GoldGun'
+]
+
+const GOLD_TYPES = [
+    'Fairy',
+    'HeartOfGold',
+    'Chesterson'
+]
+
 function clearGroupSelection(buttons) {
     buttons.forEach(btn => btn.classList.remove('selected'));
 }
@@ -47,10 +62,110 @@ function setupDamageGoldTypeButtons() {
                 selectedGoldType = value;
             }
 
+            refreshUI();
+
+            /*
+            updateAllEffectiveCalcs();
             updateAllGemstoneTotals();
+            updateSummaryTable();
             triggerSave();
+            */
         });
     });
+}
+
+async function getEquipmentSetCounts() {
+    const url = "https://raw.githubusercontent.com/rawrzcookie/TT2_CSV/refs/heads/main/csv/EquipmentSetInfo.csv";
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status} for URL: ${url}`);
+        }
+
+        const csvText = await response.text();
+        if (!csvText || csvText.trim() === '') {
+            console.warn(`CSV file is empty: ${url}, keeping default reductions`);
+            return null;
+        }
+
+        return new Promise((resolve) => {
+            Papa.parse(csvText, {
+                header: true,
+                skipEmptyLines: true,
+                complete: (results) => onParseComplete(resolve, results, url)
+            });
+        });
+    } catch (error) {
+        console.error('Error fetching equipment set data:', url, error);
+        return null;
+    }
+}
+
+function onParseComplete(resolve, results, url) {
+    if (!results.data || results.data.length === 0) {
+        console.warn(`No data in CSV from ${url}, keeping default reduction values`);
+        resolve(null);
+        return;
+    }
+
+    if (!results.meta.fields || !results.meta.fields.includes('SetType')) {
+        console.error(`CSV from ${url} missing expected "SetType" column, keeping default reductions`);
+        resolve(null);
+        return;
+    }
+
+    // Count all set types
+    const Set_Total_Count = {
+        Mythic: 0,
+        Legendary: 0,
+        Rare: 0,
+        Event: 0,
+        Unique: 0
+    };
+
+    // Loop through each row and count
+    for (let i = 0; i < results.data.length; i++) {
+        const row = results.data[i];
+        const setType = row.SetType;
+
+        if (setType === 'Mythic') Set_Total_Count.Mythic++;
+        if (setType === 'Legendary') Set_Total_Count.Legendary++;
+        if (setType === 'Rare') Set_Total_Count.Rare++;
+        if (setType === 'Event') Set_Total_Count.Event++;
+        if (setType === 'Unique') Set_Total_Count.Unique++;
+    }
+
+    //console.log('Set_Total_Count:', Set_Total_Count);
+
+    // Step 3: Helper function to update damage bonuses
+    function updateDamageBonus(bonusName, count) {
+        for (let i = 0; i < DAMAGE_TYPES.length; i++) {
+            const damageType = DAMAGE_TYPES[i];
+            GEMSTONE_REDUCTIONS[bonusName][damageType] = count;
+        }
+    }
+
+    // Helper function to update gold bonuses (sets to 0)
+    function updateGoldBonus(bonusName) {
+        for (let i = 0; i < GOLD_TYPES.length; i++) {
+            const goldType = GOLD_TYPES[i];
+            GEMSTONE_REDUCTIONS[bonusName][goldType] = 0;
+        }
+    }
+
+    // Update reductions
+    updateDamageBonus('DamagePerEventSet', Set_Total_Count.Event);
+    updateGoldBonus('DamagePerEventSet');
+
+    updateDamageBonus('DamagePerLegendarySet', Set_Total_Count.Legendary);
+    updateGoldBonus('DamagePerLegendarySet');
+
+    updateDamageBonus('DamagePerMythicSet', Set_Total_Count.Mythic);
+    updateGoldBonus('DamagePerMythicSet');
+
+    //console.log('Updated GEMSTONE_REDUCTIONS:', GEMSTONE_REDUCTIONS);
+    resolve(Set_Total_Count);
 }
 
 function getGemstoneBonusTypes(gemstone, index) {
@@ -194,6 +309,7 @@ function syncLockedRows(gemstoneItem) {
                 const selectElement = currentRow.querySelector('.bonus-select');
                 const valueInput = currentRow.querySelector('.bonus-value');
                 const newCalc = newRow.querySelector('.bonus-calc');
+                const newEffectSpan = newRow.querySelector('.effective-calc');
 
                 if (newSelect && selectElement.value) {
                     newSelect.value = selectElement.value;
@@ -202,6 +318,7 @@ function syncLockedRows(gemstoneItem) {
                     newCalc.textContent = valueInput.value;
                     if (valueInput.dataset.logValue) {
                         newCalc.dataset.logValue = valueInput.dataset.logValue;
+                        newEffectSpan.dataset.logValue = 0;
                     }
                 }
 
@@ -244,12 +361,18 @@ function clearBonusRow(row, isNewSide) {
 
     const bonusCalc = row.querySelector('.bonus-calc');
     const bonusValueInput = row.querySelector('.bonus-value');
+    const effectiveCalc = row.querySelector('.effective-calc');
     const displayElement = bonusCalc || bonusValueInput;
 
     if (displayElement) {
         displayElement.textContent = isNewSide ? '—' : '';
         delete displayElement.dataset.logValue;
         if (bonusValueInput) bonusValueInput.value = '';
+    }
+
+    if (effectiveCalc) {
+        effectiveCalc.textContent = '';
+        delete effectiveCalc.dataset.logValue;
     }
 }
 
@@ -282,8 +405,11 @@ function storeCurrentSideValue(valueInput) {
 
 function handleLockedCurrentRow(bonusRow, gemstoneItem) {
     const bonusValueInput = bonusRow.querySelector('.bonus-value');
+    const effectSpan = bonusRow.querySelector('.effective-calc');
+    const selectElement = bonusRow.querySelector('.bonus-select');
     if (bonusValueInput) {
         storeCurrentSideValue(bonusValueInput);
+        updateEffectiveCalc(bonusRow);
     }
 
     // Copy to New side
@@ -296,6 +422,7 @@ function handleLockedCurrentRow(bonusRow, gemstoneItem) {
         const valueInput = bonusRow.querySelector('.bonus-value');
         const newSelect = newBonusRow.querySelector('.bonus-select');
         const newCalc = newBonusRow.querySelector('.bonus-calc');
+        const newEffectSpan = newBonusRow.querySelector('.effective-calc');
 
         // Copy bonus type (including blank selection)
         if (newSelect) {
@@ -305,6 +432,7 @@ function handleLockedCurrentRow(bonusRow, gemstoneItem) {
             if (!selectElement?.value && newCalc) {
                 newCalc.textContent = '—';
                 delete newCalc.dataset.logValue;
+                delete newEffectSpan.dataset.logValue;
             }
         }
 
@@ -323,6 +451,9 @@ function handleLockedCurrentRow(bonusRow, gemstoneItem) {
                     newCalc.dataset.logValue = logValue;
                 }
             }
+
+            // CUpdate effective-calc on new side
+            updateEffectiveCalc(newBonusRow);
         } else if (newCalc && !currentBonusType) {
             newCalc.textContent = '—';
             delete newCalc.dataset.logValue;
@@ -373,7 +504,7 @@ function updateBonusCalculation(bonusRow) {
 
     const bonusCalc = bonusRow.querySelector('.bonus-calc');
     const bonusValueInput = bonusRow.querySelector('.bonus-value');
-    const displayElement = bonusCalc || bonusValueInput;
+    const effectSpan = bonusRow.querySelector('.effective-calc');
 
     // Handle empty selection
     if (!selectedBonusType) {
@@ -386,20 +517,107 @@ function updateBonusCalculation(bonusRow) {
         const logBonusValue = calculateNewSideBonus(bonusRow, level, selectedBonusType);
 
         if (logBonusValue === null) {
-            if (displayElement) {
-                displayElement.textContent = 'Error';
-                delete displayElement.dataset.logValue;
+            if (bonusCalc) {
+                bonusCalc.textContent = 'Error';
+                delete bonusCalc.dataset.logValue;
             }
-        } else if (displayElement) {
-            displayElement.dataset.logValue = logBonusValue;
-            displayElement.textContent = formatLogValue(logBonusValue);
+            if (effectSpan) {
+                effectSpan.textContent = '';
+                delete effectSpan.dataset.logValue;
+            }
+        } else if (bonusCalc) {
+            // Store raw log value and display formatted raw value
+            bonusCalc.dataset.logValue = logBonusValue;
+            bonusCalc.textContent = formatLogValue(logBonusValue);
+
+            // Use the helper to update effective-calc
+            updateEffectiveCalc(bonusRow);
         }
     } else {
         storeCurrentSideValue(bonusValueInput);
+
+        // Use the helper to update effective-calc after storing value
+        updateEffectiveCalc(bonusRow);
     }
 
     // Update totals
     updateGemstoneTotals(bonusRow);
+}
+
+function updateAllEffectiveCalcs() {
+    const gemstoneItems = document.querySelectorAll('.gemstone-item');
+
+    gemstoneItems.forEach(gemstoneItem => {
+        // Update Current side
+        const currentSide = gemstoneItem.querySelector('.gemstone-current');
+        if (currentSide) {
+            const bonusRows = currentSide.querySelectorAll('.gemstone-bonus-row');
+            bonusRows.forEach(row => {
+                const select = row.querySelector('.bonus-select');
+                const bonusType = select?.value;
+                const valueInput = row.querySelector('.bonus-value');
+                const effectSpan = row.querySelector('.effective-calc');
+
+                if (bonusType && valueInput?.value && valueInput.dataset.logValue) {
+                    const logBonusValue = parseFloat(valueInput.dataset.logValue);
+                    const reduction = getBonusTypeReduction(bonusType);
+                    const rowTotalEffect = calculateBonusValue(logBonusValue, reduction);
+                    const effectFormatted = formatLogValue(rowTotalEffect);
+                    if (effectSpan) effectSpan.textContent = effectFormatted;
+                }
+            });
+        }
+
+        // Update New side
+        const newSide = gemstoneItem.querySelector('.gemstone-new');
+        if (newSide) {
+            const bonusRows = newSide.querySelectorAll('.gemstone-bonus-row');
+            bonusRows.forEach(row => {
+                const select = row.querySelector('.bonus-select');
+                const bonusType = select?.value;
+                const calcSpan = row.querySelector('.bonus-calc');
+                const effectSpan = row.querySelector('.effective-calc');
+
+                if (bonusType && calcSpan?.dataset.logValue) {
+                    const logBonusValue = parseFloat(calcSpan.dataset.logValue);
+                    const reduction = getBonusTypeReduction(bonusType);
+                    const rowTotalEffect = calculateBonusValue(logBonusValue, reduction);
+                    const effectFormatted = formatLogValue(rowTotalEffect);
+                    if (effectSpan) effectSpan.textContent = effectFormatted;
+                }
+            });
+        }
+    });
+}
+
+function updateEffectiveCalc(row) {
+    const select = row.querySelector('.bonus-select');
+    const bonusType = select?.value;
+    const valueInput = row.querySelector('.bonus-value');
+    const calcSpan = row.querySelector('.bonus-calc');
+    const effectSpan = row.querySelector('.effective-calc');
+
+    // Get the raw log value (from either valueInput or calcSpan)
+    let rawLogValue = null;
+    if (valueInput && valueInput.dataset.logValue) {
+        rawLogValue = parseFloat(valueInput.dataset.logValue);
+    } else if (calcSpan && calcSpan.dataset.logValue) {
+        rawLogValue = parseFloat(calcSpan.dataset.logValue);
+    }
+
+    // If we have a valid bonus type and raw log value, calculate and display effective value
+    if (bonusType && rawLogValue !== null && !isNaN(rawLogValue)) {
+        const reduction = getBonusTypeReduction(bonusType);
+        const effectiveLogValue = calculateBonusValue(rawLogValue, reduction);
+        if (effectSpan) {
+            effectSpan.dataset.logValue = effectiveLogValue;
+            effectSpan.textContent = formatLogValue(effectiveLogValue);
+        }
+    } else if (effectSpan) {
+        // Clear if no valid data
+        effectSpan.textContent = '';
+        delete effectSpan.dataset.logValue;
+    }
 }
 
 function formatLogValue(logValue) {
@@ -548,31 +766,35 @@ function initializeCollapsibleGemstones() {
     });
 }
 
-function initializeCollapsibleExtras() {
-    const extras = document.querySelector('.extras-container');
-    if (!extras) return;
-    
-    const header = extras.querySelector('.extras-header');
+function initializeCollapsible(containerSelector, headerSelector, startCollapsed = false) {
+    const container = document.querySelector(containerSelector);
+    if (!container) return;
+
+    const header = container.querySelector(headerSelector);
     if (!header) return;
 
     // Add collapse toggle indicator if it doesn't exist
     if (!header.querySelector('.collapse-toggle')) {
         const toggle = document.createElement('span');
         toggle.className = 'collapse-toggle';
-        toggle.textContent = '▶';
+        toggle.textContent = startCollapsed ? '▶' : '▼';
         header.appendChild(toggle);
     }
 
-    // Set initial state (expanded by default)
-    extras.classList.add('collapsed');
+    // Set initial state
+    if (startCollapsed) {
+        container.classList.add('collapsed');
+    } else {
+        container.classList.remove('collapsed');
+    }
 
     // Add click handler
     header.addEventListener('click', (e) => {
-        extras.classList.toggle('collapsed');
+        container.classList.toggle('collapsed');
 
         // Update toggle icon
         const toggle = header.querySelector('.collapse-toggle');
-        if (extras.classList.contains('collapsed')) {
+        if (container.classList.contains('collapsed')) {
             toggle.textContent = '▶';
         } else {
             toggle.textContent = '▼';
@@ -580,10 +802,18 @@ function initializeCollapsibleExtras() {
     });
 }
 
+// Then just call it for each container
+function initializeCollapsibleSummary() {
+    initializeCollapsible('.summary-container', '.summary-header', false);
+}
+
+function initializeCollapsibleExtras() {
+    initializeCollapsible('.extras-container', '.extras-header', true);
+}
+
 function handleLockToggle(checkbox, bonusRow, gemstoneItem) {
     const isLocked = checkbox.checked;
     const side = bonusRow.closest('.gemstone-current');
-    const slotType = bonusRow.dataset.slotType;
     const slotIndex = Array.from(side.querySelectorAll('.gemstone-bonus-row')).indexOf(bonusRow);
 
     // Get the corresponding New side bonus row
@@ -595,14 +825,17 @@ function handleLockToggle(checkbox, bonusRow, gemstoneItem) {
         // Locked: Copy Current values to New side and disable New side inputs
         const selectElement = bonusRow.querySelector('.bonus-select');
         const valueInput = bonusRow.querySelector('.bonus-value');
+        const effectSpan = bonusRow.querySelector('.effective-calc');
 
         const bonusType = selectElement.value;
         const bonusValue = valueInput.value;
         const logValue = valueInput.dataset.logValue;
+        const effectiveLogValue = effectSpan?.dataset.logValue;
 
         // Copy to New side
         const newSelect = newBonusRow.querySelector('.bonus-select');
         const newCalc = newBonusRow.querySelector('.bonus-calc');
+        const newEffectSpan = newBonusRow.querySelector('.effective-calc');
 
         if (newSelect && bonusType) {
             newSelect.value = bonusType;
@@ -612,6 +845,10 @@ function handleLockToggle(checkbox, bonusRow, gemstoneItem) {
             if (logValue) {
                 newCalc.dataset.logValue = logValue;
             }
+        }
+        if (newEffectSpan && effectiveLogValue) {
+            newEffectSpan.dataset.logValue = effectiveLogValue;
+            newEffectSpan.textContent = effectSpan?.textContent || '';
         }
 
         // Disable New side inputs
@@ -627,6 +864,7 @@ function handleLockToggle(checkbox, bonusRow, gemstoneItem) {
         // Unlocked: Re-enable New side inputs and clear locked values
         const newSelect = newBonusRow.querySelector('.bonus-select');
         const newCalc = newBonusRow.querySelector('.bonus-calc');
+        const newEffectSpan = newBonusRow.querySelector('.effective-calc');
 
         // Re-enable New side inputs
         if (newSelect) {
@@ -637,6 +875,10 @@ function handleLockToggle(checkbox, bonusRow, gemstoneItem) {
         if (newCalc) {
             newCalc.textContent = '—';
             delete newCalc.dataset.logValue;
+        }
+        if (newEffectSpan) {
+            newEffectSpan.textContent = '';
+            delete newEffectSpan.dataset.logValue;
         }
 
         // Remove locked class
@@ -688,48 +930,47 @@ function letterToSci(coef) {
     return `${base}e${exponent}`;
 }
 
-function normalizeToScientific(valueStr) {
+function convertToLogValue(valueStr) {
     if (!valueStr || valueStr === '—' || valueStr === 'Error') return null;
 
     valueStr = valueStr.trim();
 
-    // If already scientific, return as is
-    if (valueStr.includes('e')) return valueStr;
+    // Scientific notation - parse directly to log
+    const sciMatch = valueStr.match(/^([\d.]+)e([+-]?\d+)$/i);
+    if (sciMatch) {
+        const mantissa = parseFloat(sciMatch[1]);
+        const exponent = parseInt(sciMatch[2], 10);
+        return Math.log10(mantissa) + exponent;  // Pure math, no number overflow
+    }
 
-    // If K/M/B/T, convert to number then to scientific
+    // K/M/B/T suffixes - preserve precision by staying in log space
     const kmbtMatch = valueStr.match(/^([\d.]+)([KMBT])$/i);
     if (kmbtMatch) {
         const suffixes = { 'K': 3, 'M': 6, 'B': 9, 'T': 12 };
         const number = parseFloat(kmbtMatch[1]);
         const suffix = kmbtMatch[2].toUpperCase();
-        const actualValue = number * Math.pow(10, suffixes[suffix]);
-        return actualValue.toExponential(2);
+        const exponent = suffixes[suffix];
+        return Math.log10(number) + exponent;
     }
 
-    // If GameHive notation, use your letterToSci function
+    // GameHive notation - convert via letterToSci then parse
     if (valueStr.match(/[a-z]/i) && !valueStr.includes('e')) {
-        return letterToSci(valueStr);
+        const sciNotation = letterToSci(valueStr);
+        const sciMatch = sciNotation.match(/^([\d.]+)e([+-]?\d+)$/i);
+        if (sciMatch) {
+            const mantissa = parseFloat(sciMatch[1]);
+            const exponent = parseInt(sciMatch[2], 10);
+            return Math.log10(mantissa) + exponent;
+        }
     }
 
     // Plain number
     const number = parseFloat(valueStr);
     if (!isNaN(number)) {
-        return number.toExponential(2);
+        return Math.log10(number);
     }
 
     return null;
-}
-
-function convertToLogValue(valueStr) {
-    const sciNotation = normalizeToScientific(valueStr);
-    if (!sciNotation) return null;
-
-    const match = sciNotation.match(/^([\d.]+)e([+-]?\d+)$/i);
-    if (!match) return null;
-
-    const mantissa = parseFloat(match[1]);
-    const exponent = parseInt(match[2], 10);
-    return Math.log10(mantissa) + exponent;
 }
 
 function getGemstoneBonuses(gemstoneName, side = 'both') {
@@ -768,6 +1009,30 @@ function getBonusTypeReduction(bonusType) {
     return damageReduction + goldReduction;
 }
 
+function calculateBonusValue(value, reduction) {
+    return value * reduction;
+}
+
+function calculateRowTotalEffect(row) {
+    const select = row.querySelector('.bonus-select');
+    const bonusType = select ? select.value : '';
+
+    if (!bonusType) return 0;
+
+    const displayElement = row.querySelector('.bonus-calc') || row.querySelector('.bonus-value');
+
+    // Get the stored log value
+    let logBonusValue = null;
+    if (displayElement?.dataset?.logValue !== undefined) {
+        logBonusValue = parseFloat(displayElement.dataset.logValue);
+    }
+
+    if (logBonusValue === null || isNaN(logBonusValue)) return 0;
+
+    const reduction = getBonusTypeReduction(bonusType);
+    return calculateBonusValue(logBonusValue, reduction);
+}
+
 function calculateSideTotal(sideElement) {
     if (!sideElement) return 0;
 
@@ -775,23 +1040,7 @@ function calculateSideTotal(sideElement) {
     const bonusRows = sideElement.querySelectorAll('.gemstone-bonus-row');
 
     bonusRows.forEach(row => {
-        const select = row.querySelector('.bonus-select');
-        const bonusType = select ? select.value : '';
-
-        if (bonusType) {
-            const displayElement = row.querySelector('.bonus-calc') || row.querySelector('.bonus-value');
-
-            // Get the stored log value
-            let logBonusValue = null;
-            if (displayElement?.dataset?.logValue !== undefined) {
-                logBonusValue = parseFloat(displayElement.dataset.logValue);
-            }
-
-            if (logBonusValue !== null && !isNaN(logBonusValue)) {
-                const reduction = getBonusTypeReduction(bonusType);
-                total += logBonusValue * reduction;
-            }
-        }
+        total += calculateRowTotalEffect(row);
     });
 
     return total;
@@ -920,6 +1169,176 @@ function highlightBetterSide(gemstoneItem) {
     }
 }
 
+function updateSummaryTable() {
+    updateSummaryTextarea();
+    const buildTotals = getBuildTotals();
+
+    const summaryCells = document.querySelectorAll('.summary-value');
+    let highestTotal = -Infinity;
+    const highestCells = [];
+
+    // Update each cell using the pre-calculated values
+    summaryCells.forEach(cell => {
+        const damageType = cell.dataset.damage;
+        const goldType = cell.dataset.gold;
+
+        // Sum the damage type total and gold type total for this combination
+        // This assumes total for a combination = damage contribution + gold contribution
+        const total = buildTotals[damageType] + buildTotals[goldType];
+
+        cell.dataset.total = total;
+        cell.textContent = formatLogValue(total);
+
+        cell.classList.remove('highlight', 'highest');
+
+        // Highlight currently selected build
+        if (damageType === selectedDamageType && goldType === selectedGoldType) {
+            cell.classList.add('highlight');
+        }
+
+        // Track highest total
+        if (total > highestTotal) {
+            highestTotal = total;
+            highestCells.length = 0;
+            highestCells.push(cell);
+        } else if (total === highestTotal) {
+            highestCells.push(cell);
+        }
+    });
+
+    // Apply styling
+    summaryCells.forEach(cell => {
+        const damageType = cell.dataset.damage;
+        const goldType = cell.dataset.gold;
+        const total = parseFloat(cell.dataset.total);
+
+        cell.textContent = formatLogValue(total);
+
+        cell.classList.remove('highlight', 'highest');
+
+        // Highlight currently selected build
+        if (damageType === selectedDamageType && goldType === selectedGoldType) {
+            cell.classList.add('highlight');
+        }
+
+        // Highlight all highest totals (including ties)
+        if (highestCells.includes(cell) && highestTotal !== -Infinity) {
+            cell.classList.add('highest');
+        }
+    });
+}
+
+function updateSummaryTextarea() {
+    const summaryContainer = document.querySelector('.summary-container');
+    if (!summaryContainer) return;
+    
+    const textarea = summaryContainer.querySelector('.summary-text');
+    if (!textarea) return;
+    
+    const buildTotals = getBuildTotals();
+    const rows = [['Build', 'Value']];
+    for (const [key, value] of Object.entries(buildTotals)) {
+        const formattedValue = typeof value === 'number' ? value.toFixed(7) : value;
+        rows.push([key, formattedValue]);
+    }
+    const csvString = rows.map(row => row.join(',')).join('\n');
+    textarea.value = csvString;
+}
+
+function calculateBonusTypeTotals() {
+    const bonusTotals = {};
+    const gemstoneItems = document.querySelectorAll('.gemstone-item');
+
+    gemstoneItems.forEach(gemstoneItem => {
+        const currentSide = gemstoneItem.querySelector('.gemstone-current');
+        if (!currentSide) return;
+
+        const bonusRows = currentSide.querySelectorAll('.gemstone-bonus-row');
+
+        bonusRows.forEach(row => {
+            const select = row.querySelector('.bonus-select');
+            const bonusType = select ? select.value : '';
+
+            if (!bonusType) return;
+
+            // Get the stored log value
+            const valueInput = row.querySelector('.bonus-value');
+            let logValue = null;
+
+            if (valueInput?.dataset?.logValue !== undefined) {
+                logValue = parseFloat(valueInput.dataset.logValue);
+            }
+
+            if (logValue !== null && !isNaN(logValue)) {
+                // Add to running total for this bonus type
+                if (bonusTotals[bonusType]) {
+                    bonusTotals[bonusType] += logValue;
+                } else {
+                    bonusTotals[bonusType] = logValue;
+                }
+            }
+        });
+    });
+
+    return bonusTotals;
+}
+
+function calculateBuildTotal(GemstoneBonusTypes, buildType, isGoldType = false) {
+    let sum = 0;
+
+    for (const [BonusType, Value] of Object.entries(GemstoneBonusTypes)) {
+        // Get the reduction for this specific build type
+        let reduction = GEMSTONE_REDUCTIONS[BonusType]?.[buildType] || 0;
+
+        // Apply gold reduction if this is a gold type
+        if (isGoldType) {
+            reduction = reduction * GOLD_REDUCTION;
+        }
+
+        // Calculate total contribution
+        let total = Value * reduction;
+        sum += total;
+    }
+
+    return sum;
+}
+
+function calculateAllBuild(GemstoneBonusTypes) {
+    const results = {
+        'HeavenlyStrike': 0,
+        'Pet': 0,
+        'ClanShip': 0,
+        'ShadowClone': 0,
+        'Dagger': 0,
+        'GoldGun': 0,
+        'Fairy': 0,
+        'HeartOfGold': 0,
+        'Chesterson': 0
+    }
+
+    // Calculate for damage types
+    for (const damageType of DAMAGE_TYPES) {
+        results[damageType] = calculateBuildTotal(GemstoneBonusTypes, damageType, false);
+    }
+
+    // Calculate for gold types
+    for (const goldType of GOLD_TYPES) {
+        results[goldType] = calculateBuildTotal(GemstoneBonusTypes, goldType, true);
+    }
+
+    return results;
+}
+
+function getBuildTotals() {
+    // Get bonus totals once
+    const bonusTotals = calculateBonusTypeTotals();
+
+    // Calculate all build totals once
+    const buildTotals = calculateAllBuild(bonusTotals);
+
+    return buildTotals;
+}
+
 function prettifyJSON() { // beautify JSON when importing
     var uglyJSON = document.getElementById('saveImport').value;
     try {
@@ -974,6 +1393,7 @@ function importData(string) {
                     const logValue = convertToLogValue(value);
                     if (logValue !== null && !isNaN(logValue)) {
                         valueInput.dataset.logValue = logValue;
+                        updateEffectiveCalc(bonusRows[0], bonusType);
                     }
                 }
             }
@@ -998,6 +1418,7 @@ function importData(string) {
                             const logValue = convertToLogValue(value);
                             if (logValue !== null && !isNaN(logValue)) {
                                 valueInput.dataset.logValue = logValue;
+                                updateEffectiveCalc(bonusRows[rowIndex], bonusType);
                             }
                         }
                     } else {
@@ -1017,7 +1438,11 @@ function importData(string) {
             updateGemstoneTotals(gemstoneItem);
         }
 
+        refreshUI();
+        /*
+        updateSummaryTable();
         saveToLocalStorage();
+        */
         return true;
 
     } catch (error) {
@@ -1058,26 +1483,26 @@ function initializeContentPanel() {
         const defaultButton = document.querySelector('.content-button[data-content="about"]');
         if (defaultButton) defaultButton.classList.add('active');
     }
-    
+
     // Arrow function to handle expanding/collapsing content
     const expandContent = (button, contentId) => {
         const targetPanel = document.getElementById(contentId);
         const allPanels = document.querySelectorAll('.content-panel');
         const allButtons = document.querySelectorAll('.content-button');
-        
+
         // Check if the clicked panel is already open
         const isCurrentlyOpen = targetPanel.style.display !== 'none';
-        
+
         // Close all panels
         allPanels.forEach(panel => {
             panel.style.display = 'none';
         });
-        
+
         // Remove active class from all buttons
         allButtons.forEach(btn => {
             btn.classList.remove('active');
         });
-        
+
         // If the clicked panel wasn't open, open it
         if (!isCurrentlyOpen) {
             targetPanel.style.display = '';
@@ -1085,7 +1510,7 @@ function initializeContentPanel() {
         }
         // If it was open, it stays closed (no active class)
     };
-    
+
     // Add click handlers to buttons
     buttons.forEach(button => {
         button.addEventListener('click', () => {
@@ -1155,21 +1580,25 @@ function generateGemstoneHTML() {
                         <input type="checkbox" class="lock-checkbox" data-locked="false">
                         <select class="bonus-select"></select>
                         <input type="text" class="bonus-value">
+                        <span class="effective-calc"></span>
                     </div>
                     <div class="gemstone-bonus-row" data-slot-type="secondary">
                         <input type="checkbox" class="lock-checkbox" data-locked="false">
                         <select class="bonus-select"></select>
                         <input type="text" class="bonus-value">
+                        <span class="effective-calc"></span>
                     </div>
                     <div class="gemstone-bonus-row" data-slot-type="secondary">
                         <input type="checkbox" class="lock-checkbox" data-locked="false">
                         <select class="bonus-select"></select>
                         <input type="text" class="bonus-value">
+                        <span class="effective-calc"></span>
                     </div>
                     <div class="gemstone-bonus-row" data-slot-type="secondary">
                         <input type="checkbox" class="lock-checkbox" data-locked="false">
                         <select class="bonus-select"></select>
                         <input type="text" class="bonus-value">
+                        <span class="effective-calc"></span>
                     </div>
                     <div class="gemstone-est-total">
                         <label>Est. Total</label>
@@ -1187,18 +1616,22 @@ function generateGemstoneHTML() {
                     <div class="gemstone-bonus-row" data-slot-type="primary">
                         <select class="bonus-select"></select>
                         <span class="bonus-calc">—</span>
+                        <span class="effective-calc"></span>
                     </div>
                     <div class="gemstone-bonus-row" data-slot-type="secondary">
                         <select class="bonus-select"></select>
                         <span class="bonus-calc">—</span>
+                        <span class="effective-calc"></span>
                     </div>
                     <div class="gemstone-bonus-row" data-slot-type="secondary">
                         <select class="bonus-select"></select>
                         <span class="bonus-calc">—</span>
+                        <span class="effective-calc"></span>
                     </div>
                     <div class="gemstone-bonus-row" data-slot-type="secondary">
                         <select class="bonus-select"></select>
                         <span class="bonus-calc">—</span>
+                        <span class="effective-calc"></span>
                     </div>
                     <div class="gemstone-est-total">
                         <label>Est. Total</label>
@@ -1260,16 +1693,26 @@ function gemstoneTakeNew(gemstoneItem) {
 
         // Copy value and log value
         if (currentValueInput && newCalc && newCalc.textContent !== '—') {
-            currentValueInput.value = newCalc.textContent;
-            if (newCalc.dataset.logValue) {
-                currentValueInput.dataset.logValue = newCalc.dataset.logValue;
-            } else {
-                delete currentValueInput.dataset.logValue;
+            const rawLogValue = newCalc.dataset.logValue;
+            if (rawLogValue) {
+                // Store the raw log value
+                currentValueInput.dataset.logValue = rawLogValue;
+                // Display the formatted raw value
+                currentValueInput.value = formatLogValue(parseFloat(rawLogValue));
+
+                // Update effective-calc on Current side
+                updateEffectiveCalc(currentRow);
             }
         } else if (currentValueInput) {
             // Clear if New side is empty
             currentValueInput.value = '';
             delete currentValueInput.dataset.logValue;
+            // Clear effective-calc on Current side
+            const currentEffectSpan = currentRow.querySelector('.effective-calc');
+            if (currentEffectSpan) {
+                currentEffectSpan.textContent = '';
+                delete currentEffectSpan.dataset.logValue;
+            }
         }
 
         // If the row is locked, also update the New side to match (lock sync)
@@ -1279,20 +1722,23 @@ function gemstoneTakeNew(gemstoneItem) {
             if (newSelect && currentSelect.value) {
                 newSelect.value = currentSelect.value;
             }
-            if (newCalc && currentValueInput.value) {
-                newCalc.textContent = currentValueInput.value;
-                if (currentValueInput.dataset.logValue) {
-                    newCalc.dataset.logValue = currentValueInput.dataset.logValue;
-                }
+            if (newCalc && currentValueInput.value && currentValueInput.dataset.logValue) {
+                const rawLogValue = currentValueInput.dataset.logValue;
+                newCalc.dataset.logValue = rawLogValue;
+                newCalc.textContent = formatLogValue(parseFloat(rawLogValue));
+
+                // Update effective-calc on New side
+                updateEffectiveCalc(newRow);
             }
         }
     });
 
+    refreshUI();
+    /*
     // Update totals after copying
     updateGemstoneTotals(gemstoneItem);
-
-    // Clear new side
-    //gemstoneReset(gemstoneItem, "new");
+    updateSummaryTable();
+    */
 
     // Trigger save
     triggerSave();
@@ -1319,6 +1765,7 @@ function gemstoneReset(gemstoneItem, side = "both") {
             // Clear value/calc and stored log value
             const valueInput = row.querySelector('.bonus-value');
             const calcSpan = row.querySelector('.bonus-calc');
+            const effectiveCalc = row.querySelector('.effective-calc');
 
             if (valueInput) {
                 valueInput.value = '';
@@ -1327,6 +1774,9 @@ function gemstoneReset(gemstoneItem, side = "both") {
             if (calcSpan) {
                 calcSpan.textContent = '—';
                 delete calcSpan.dataset.logValue;
+            }
+            if (effectiveCalc) {
+                effectiveCalc.textContent = '';
             }
         });
     }
@@ -1338,12 +1788,15 @@ function gemstoneReset(gemstoneItem, side = "both") {
     if (side === "new" || side === "both") {
         clearSide(newSide);
     }
-
+    
+    refreshUI();
+    /*
     // Update totals after reset
     updateGemstoneTotals(gemstoneItem);
 
     // Trigger save
     triggerSave();
+    */
 }
 
 function gemstoneLockAll(gemstoneItem, side = "current") {
@@ -1417,7 +1870,7 @@ function gemstoneItemButtonEventListener(gemstoneItem) {
 function extrasButtonEventListener() {
     const extrasContainer = document.querySelector('.extras-container');
     if (!extrasContainer) return;
-    
+
     const buttonContainer = extrasContainer.querySelector('.extras-button-container');
     if (!buttonContainer) return;
 
@@ -1439,13 +1892,66 @@ function extrasButtonEventListener() {
     });
 }
 
+function summaryTextEventListener() {
+    const summaryContainer = document.querySelector('.summary-container');
+    if (!summaryContainer) return;
+
+    const textContainer = summaryContainer.querySelector('.summary-text-container');
+    if (!textContainer) return;
+
+    const textarea = textContainer.querySelector('.summary-text');
+    if (!textarea) return;
+
+    // Set the CSV text in the textarea
+    const buildTotals = getBuildTotals();
+    const rows = [['Build', 'Value']];
+    for (const [key, value] of Object.entries(buildTotals)) {
+        const formattedValue = typeof value === 'number' ? value.toFixed(7) : value;
+        rows.push([key, formattedValue]);
+    }
+    const csvString = rows.map(row => row.join(',')).join('\n');
+    textarea.value = csvString;
+
+    // Copy to clipboard function
+    function copyToClipboard(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text);
+        } else {
+            const tempTextarea = Object.assign(document.createElement('textarea'), {
+                value: text,
+                style: 'position: fixed; top: -9999px; left: -9999px;'
+            });
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextarea);
+        }
+    }
+
+    // Click handler for the textarea
+    textarea.addEventListener('click', () => {
+        copyToClipboard(textarea.value);
+        
+        // Optional visual feedback
+        const originalText = textarea.value;
+        textarea.value = 'Copied!';
+        setTimeout(() => {
+            textarea.value = originalText;
+        }, 1500);
+    });
+}
+
 // Global functions for extras
 function resetAllGemstones() {
     const gemstoneItems = document.querySelectorAll('.gemstone-item');
     gemstoneItems.forEach(gemstoneItem => {
         gemstoneReset(gemstoneItem, 'both');
     });
+    refreshUI();
+    /*
+    updateSummaryTable();
     triggerSave();
+    */
 }
 
 function lockAllGemstones() {
@@ -1453,7 +1959,11 @@ function lockAllGemstones() {
     gemstoneItems.forEach(gemstoneItem => {
         gemstoneLockAll(gemstoneItem);
     });
+    refreshUI();
+    /*
+    updateSummaryTable();
     triggerSave();
+    */
 }
 
 function unlockAllGemstones() {
@@ -1461,16 +1971,20 @@ function unlockAllGemstones() {
     gemstoneItems.forEach(gemstoneItem => {
         gemstoneUnlockAll(gemstoneItem);
     });
+    refreshUI();
+    /*
+    updateSummaryTable();
     triggerSave();
+    */
 }
 
 function collapseAll() {
     const gemstoneItems = document.querySelectorAll('.gemstone-item');
-    
+
     gemstoneItems.forEach(gemstoneItem => {
         if (!gemstoneItem.classList.contains('collapsed')) {
             gemstoneItem.classList.add('collapsed');
-            
+
             // Update toggle icon
             const header = gemstoneItem.querySelector('.gemstone-header');
             const toggle = header?.querySelector('.collapse-toggle');
@@ -1483,11 +1997,11 @@ function collapseAll() {
 
 function expandAll() {
     const gemstoneItems = document.querySelectorAll('.gemstone-item');
-    
+
     gemstoneItems.forEach(gemstoneItem => {
         if (gemstoneItem.classList.contains('collapsed')) {
             gemstoneItem.classList.remove('collapsed');
-            
+
             // Update toggle icon
             const header = gemstoneItem.querySelector('.gemstone-header');
             const toggle = header?.querySelector('.collapse-toggle');
@@ -1600,12 +2114,16 @@ function applyBonusRow(row, bonusData, isNewSide = false, gemstoneItem = null) {
             const logValue = bonusData.logValue;
             valueInput.dataset.logValue = logValue;
             valueInput.value = formatLogValue(logValue);
+
+            // Update effective-calc on Current side
+            updateEffectiveCalc(row);
         } else if (valueInput && bonusData.value) {
             // Fallback for old save data
             valueInput.value = bonusData.value;
             const logValue = convertToLogValue(bonusData.value);
             if (logValue !== null && !isNaN(logValue)) {
                 valueInput.dataset.logValue = logValue;
+                updateEffectiveCalc(row);
             }
         }
         if (lockCheckbox) lockCheckbox.checked = bonusData.locked || false;
@@ -1617,20 +2135,22 @@ function applyBonusRow(row, bonusData, isNewSide = false, gemstoneItem = null) {
             const logValue = bonusData.logValue;
             calcSpan.dataset.logValue = logValue;
             calcSpan.textContent = formatLogValue(logValue);
+
+            // Update effective-calc on New side
+            updateEffectiveCalc(row);
         } else if (calcSpan && bonusData.value) {
             // Fallback for old save data
             calcSpan.textContent = bonusData.value;
             const logValue = convertToLogValue(bonusData.value);
             if (logValue !== null && !isNaN(logValue)) {
                 calcSpan.dataset.logValue = logValue;
+                updateEffectiveCalc(row);
             }
         }
     }
 
     // Trigger calculation for New side if needed
     if (isNewSide && gemstoneItem && bonusData.bonusType) {
-        // No need to recalculate since we restored from stored value
-        // Just ensure totals are updated
         updateGemstoneTotals(gemstoneItem);
     }
 }
@@ -1726,24 +2246,47 @@ function attachAutoSave() {
     });
 }
 
+function refreshUI() {
+    // Update all gemstone totals
+    updateAllGemstoneTotals();
+    
+    // Update summary table and textarea
+    updateSummaryTable();
+    
+    // Update all effective calculations
+    updateAllEffectiveCalcs();
+    
+    // Trigger save to localStorage
+    triggerSave();
+}
+
 // Initialize everything when the page loads
-document.addEventListener('DOMContentLoaded', function () {
-    // 1. Generate HTML structure
+document.addEventListener('DOMContentLoaded', async function () {
+    // 1. Fetch equipment set data
+    await getEquipmentSetCounts();
+
+    // 2. Generate HTML structure
     generateGemstoneHTML();
 
-    // 2. Setup damage/gold type buttons (so they're ready for loading)
+    // 3. Setup damage/gold type buttons
     setupDamageGoldTypeButtons();
 
-    // 3. Load saved data from localStorage (populates values)
+    // 4. Load saved data from localStorage
     loadFromLocalStorage();
 
-    // 4. Attach event listeners (so they don't trigger on initial load)
+    // 5. Attach event listeners
     attachGemstoneEventListeners();
     attachImportEventListener();
     attachLockEventListeners();
     initializeContentPanel();
+    initializeCollapsibleSummary();
     initializeCollapsibleExtras();
     extrasButtonEventListener();
+    summaryTextEventListener();
     initializeCollapsibleGemstones();
     attachAutoSave();
+
+    // 6. Update totals and summary
+    updateAllGemstoneTotals();
+    updateSummaryTable();
 });

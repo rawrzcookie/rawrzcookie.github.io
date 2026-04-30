@@ -178,6 +178,121 @@
                     </div>
                 </div>
 
+                <div style="height: 20px; display: block;"></div>
+
+                <div class="tablestats" id="left">
+                    <div class="summary-container">
+                        <div class="summary-header">
+                            <span class="summary-name">Summary</span>
+                            <span class="collapse-toggle">▼</span>
+                        </div>
+                        <div class="summary-content">
+                            <div class="summary-table-container">
+                                <table class="summary-table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="summary-legend">
+                                                    <span>Current Build</span>
+                                                    <span>Highest Build</span>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <img src="images/skillicons/FairyGold.png" class="summary-icon"
+                                                    alt="Fairy">
+                                            </th>
+                                            <th>
+                                                <img src="images/skillicons/PetGoldQTE.png" class="summary-icon"
+                                                    alt="Heart of Gold">
+                                            </th>
+                                            <th>
+                                                <img src="images/skillicons/ChestGold.png" class="summary-icon"
+                                                    alt="Chesterson">
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="damage-header">
+                                                <img src="images/skillicons/BurstSkillBoost.png" class="summary-icon"
+                                                    alt="Heavenly Strike">
+                                            </td>
+                                            <td class="summary-value" data-damage="HeavenlyStrike" data-gold="Fairy">—
+                                            </td>
+                                            <td class="summary-value" data-damage="HeavenlyStrike"
+                                                data-gold="HeartOfGold">—
+                                            </td>
+                                            <td class="summary-value" data-damage="HeavenlyStrike"
+                                                data-gold="Chesterson">—
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="damage-header">
+                                                <img src="images/skillicons/PetDmg.png" class="summary-icon" alt="Pet">
+                                            </td>
+                                            <td class="summary-value" data-damage="Pet" data-gold="Fairy">—</td>
+                                            <td class="summary-value" data-damage="Pet" data-gold="HeartOfGold">—</td>
+                                            <td class="summary-value" data-damage="Pet" data-gold="Chesterson">—</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="damage-header">
+                                                <img src="images/skillicons/ClanShipDmg.png" class="summary-icon"
+                                                    alt="Clan Ship">
+                                            </td>
+                                            <td class="summary-value" data-damage="ClanShip" data-gold="Fairy">—</td>
+                                            <td class="summary-value" data-damage="ClanShip" data-gold="HeartOfGold">—
+                                            </td>
+                                            <td class="summary-value" data-damage="ClanShip" data-gold="Chesterson">—
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="damage-header">
+                                                <img src="images/skillicons/CloneSkillBoost.png" class="summary-icon"
+                                                    alt="Shadow Clone">
+                                            </td>
+                                            <td class="summary-value" data-damage="ShadowClone" data-gold="Fairy">—</td>
+                                            <td class="summary-value" data-damage="ShadowClone" data-gold="HeartOfGold">
+                                                —
+                                            </td>
+                                            <td class="summary-value" data-damage="ShadowClone" data-gold="Chesterson">—
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="damage-header">
+                                                <img src="images/skillicons/UltraDagger.png" class="summary-icon"
+                                                    alt="Dagger">
+                                            </td>
+                                            <td class="summary-value" data-damage="Dagger" data-gold="Fairy">—</td>
+                                            <td class="summary-value" data-damage="Dagger" data-gold="HeartOfGold">—
+                                            </td>
+                                            <td class="summary-value" data-damage="Dagger" data-gold="Chesterson">—</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="damage-header">
+                                                <img src="images/skillicons/GoldGun.png" class="summary-icon"
+                                                    alt="Gold Gun">
+                                            </td>
+                                            <td class="summary-value" data-damage="GoldGun" data-gold="Fairy">—</td>
+                                            <td class="summary-value" data-damage="GoldGun" data-gold="HeartOfGold">—
+                                            </td>
+                                            <td class="summary-value" data-damage="GoldGun" data-gold="Chesterson">—
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="summary-text-container">
+                                <textarea class="summary-text" data-action="copy-to-clipboard" readonly></textarea>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H10V7h9v14z">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="tablestats" id="left">
                     <div class="extras-container">
                         <div class="extras-header">
@@ -276,6 +391,7 @@
     </script>
     <script src="javascripts\gemstone_info.js"></script>
     <script src="javascripts\gemstone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.5.3/papaparse.min.js"></script>
 </body>
 
 </html>
