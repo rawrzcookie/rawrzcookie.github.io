@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="rawrzcookie's tools">
+    <meta property="og:description" content="A collection of tools for Tap Titans 2, made and compiled by rawrzcookie">
+    <meta property="og:url" content="https://rawrzcookie.github.io/">
+    <meta property="og:image" content="https://i.imgur.com/LUAz5M6.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="rawrzcookie's tools">
+    <meta property="twitter:description"
+        content="A collection of tools for Tap Titans 2, made and compiled by rawrzcookie">
+    <meta property="twitter:image" content="https://i.imgur.com/LUAz5M6.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/Circle Cookie Dino.png">
+    <title>rawrzcookie's tools</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7920010104044650"
+        crossorigin="anonymous"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Y80TVE110"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-9Y80TVE110');
+    </script>
+    <script src="javascripts/navbar.js"></script>
+</head>
+
+<body class="nav" style=background-color:#313338>
+    <div class="page-container">
+        <site-navbar></site-navbar>
+
+        <div class="container soloraid">
+            <div class="section note">
+                <p>Special thanks to Aevitas for sharing the original Solo Raid component that made this page possible.</p>
+            </div>
+
+            <div class="section">
+                <div class="form">
+                    <div class="form-field">
+                        <label for="world">World</label>
+                        <input id="world" class="world" type="number" min="1" max="" />
+                    </div>
+
+                    <div class="form-field">
+                        <label for="floor">Floor</label>
+                        <input id="floor" class="floor" type="number" min="1" max="10" />
+                    </div>
+
+                    <div class="form-field includeInactiveCards">
+                        <label for="includeInactiveCards">
+                            <input id="includeInactiveCards" class="includeInactiveCards" type="checkbox" />
+                            Include inactive cards
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section enemies-section">
+                <h3>Possible titans:</h3>
+                <div class="enemies-container"></div>
+            </div>
+
+            <div class="section deck-section">
+                <h1 class="deck-count"></h1>
+                <div class="deck-group__wrapper"></div>
+            </div>
+        </div>
+
+        <footer>
+            &copy 2023 - 2026 rawrzcookie. All rights reserved. &nbsp; | &nbsp; <a href="privacy.html"
+                style="color: #0088a9;">Privacy Policy</a>
+        </footer>
+    </div>
+
+
+
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+    <style>
+        .floatingchat-container-wrap {
+            left: unset;
+            right: 10px;
+        }
+
+        .floating-chat-kofi-popup-iframe {
+            left: unset;
+            right: 10px;
+        }
+
+        .floatingchat-container-wrap-mobi {
+            left: unset;
+            right: 160px;
+        }
+
+        .floating-chat-kofi-popup-iframe-mobi {
+            left: unset;
+            right: 10px;
+        }
+    </style>
+    <script>
+        kofiWidgetOverlay.draw('rawrzcookie', {
+            'type': 'floating-chat',
+            'floating-chat.donateButton.text': 'Like It?',
+            'floating-chat.donateButton.background-color': '#00b9fe',
+            'floating-chat.donateButton.text-color': '#fff'
+        });
+    </script>
+    <script>
+        const toggleButton = document.getElementsByClassName('toggle-button')[0];
+        const navbarLinks = document.getElementsByClassName('navbar-links')[0];
+
+        toggleButton.addEventListener('click', () => {
+            navbarLinks.classList.toggle('active')
+        })
+    </script>
+    <script src="javascripts\soloraid.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.5.3/papaparse.min.js"></script>
+</body>
+
+</html>
