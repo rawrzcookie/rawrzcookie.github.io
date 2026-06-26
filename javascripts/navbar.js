@@ -24,8 +24,8 @@ class SiteNavbar extends HTMLElement {
                         <li><a href="spopti.html">Skill Tree Builder</a></li>
                         <li><a href="setup.html">Build Setup</a></li>
                         <li><a href="gemstones.html">Gemstones</a></li>
-                        <li><a href="lbms.html">Mana Optimizer</a></li>
                         <li><a href="soloraid.html">Solo Raid Decks</a></li>
+                        <li><a href="https://github.com/rawrzcookie/TT2_CSV">TT2 CSVs</a></li>
                         <li><a href="https://discord.gg/zhJt63Atn3" style="padding-bottom: 5px;"><img
                                 src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg"
                                 height="20"></a></li>
