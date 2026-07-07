@@ -23,7 +23,6 @@ class SiteNavbar extends HTMLElement {
                     <ul>
                         <li><a href="spopti.html">Skill Tree Builder</a></li>
                         <li><a href="setup.html">Build Setup</a></li>
-                        <li><a href="gemstones.html">Gemstones</a></li>
                         <li><a href="soloraid.html">Solo Raid Decks</a></li>
                         <li><a href="https://github.com/rawrzcookie/TT2_CSV">TT2 CSVs</a></li>
                         <li><a href="https://discord.gg/zhJt63Atn3" style="padding-bottom: 5px;"><img
