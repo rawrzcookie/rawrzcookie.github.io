@@ -477,12 +477,14 @@ const baseline = {
                 "ManaStealSkillBoost": 4
             },
             "250": {
+                "FairyChance": 5,
                 "ClanQTE": 3,
                 "ClanShipStun": 6,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4
             },
             "300": {
+                "FairyChance": 7,
                 "ClanQTE": 3,
                 "ClanShipStun": 8,
                 "MPCapacityBoost": 3,
@@ -490,6 +492,7 @@ const baseline = {
                 "Cloaking": 9
             },
             "399": {
+                "FairyChance": 9,
                 "ClanQTE": 6,
                 "ClanShipStun": 9,
                 "MPCapacityBoost": 3,
@@ -498,6 +501,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "501": {
+                "FairyChance": 9,
                 "ClanQTE": 6,
                 "ClanShipStun": 10,
                 "MPCapacityBoost": 3,
@@ -506,6 +510,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "602": {
+                "FairyChance": 9,
                 "ClanQTE": 8,
                 "ClanShipStun": 11,
                 "MPCapacityBoost": 3,
@@ -514,6 +519,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "701": {
+                "FairyChance": 9,
                 "ClanQTE": 8,
                 "ClanShipStun": 12,
                 "MPCapacityBoost": 3,
@@ -522,6 +528,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "800": {
+                "FairyChance": 9,
                 "ClanQTE": 8,
                 "ClanShipStun": 13,
                 "MPCapacityBoost": 3,
@@ -530,6 +537,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "900": {
+                "FairyChance": 9,
                 "ClanQTE": 10,
                 "ClanShipStun": 14,
                 "MPCapacityBoost": 3,
@@ -538,6 +546,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "998": {
+                "FairyChance": 9,
                 "ClanQTE": 14,
                 "ClanShipStun": 15,
                 "MPCapacityBoost": 3,
@@ -546,6 +555,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "1502": {
+                "FairyChance": 9,
                 "ClanQTE": 20,
                 "ClanShipStun": 17,
                 "MPCapacityBoost": 3,
@@ -554,6 +564,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "1999": {
+                "FairyChance": 9,
                 "ClanQTE": 20,
                 "ClanShipStun": 27,
                 "MPCapacityBoost": 6,
@@ -562,6 +573,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "2500": {
+                "FairyChance": 9,
                 "ClanQTE": 25,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -570,6 +582,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "3000": {
+                "FairyChance": 9,
                 "ClanQTE": 30,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -578,6 +591,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "3500": {
+                "FairyChance": 9,
                 "ClanQTE": 30,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -586,6 +600,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "4000": {
+                "FairyChance": 9,
                 "ClanQTE": 30,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -594,6 +609,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "4500": {
+                "FairyChance": 9,
                 "ClanQTE": 30,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -602,6 +618,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "5000": {
+                "FairyChance": 9,
                 "ClanQTE": 30,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -610,6 +627,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "5500": {
+                "FairyChance": 9,
                 "ClanQTE": 30,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -618,6 +636,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "6000": {
+                "FairyChance": 9,
                 "ClanQTE": 30,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -626,6 +645,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "6500": {
+                "FairyChance": 9,
                 "ClanQTE": 30,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -634,6 +654,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "7000": {
+                "FairyChance": 9,
                 "ClanQTE": 30,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -642,6 +663,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "7500": {
+                "FairyChance": 9,
                 "ClanQTE": 30,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -650,6 +672,7 @@ const baseline = {
                 "LovePotion": 9
             },
             "8000": {
+                "FairyChance": 9,
                 "ClanQTE": 30,
                 "ClanShipStun": 30,
                 "MPCapacityBoost": 6,
@@ -1195,236 +1218,265 @@ const baseline = {
             "26": {
                 "MPCapacityBoost": 2,
                 "CloneSkillBoost": 5,
-                "ManaStealSkillBoost": 1,
+                "ManaStealSkillBoost": 1
             },
             "49": {
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 7,
-                "ManaStealSkillBoost": 2,
+                "ManaStealSkillBoost": 2
             },
             "99": {
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
-                "ManaStealSkillBoost": 4,
+                "ManaStealSkillBoost": 4
             },
             "150": {
+                "FairyChance": 1,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
-                "ManaStealSkillBoost": 4,
+                "ManaStealSkillBoost": 4
             },
             "200": {
+                "FairyChance": 3,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
-                "ManaStealSkillBoost": 4,
+                "ManaStealSkillBoost": 4
             },
             "252": {
+                "FairyChance": 5,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
-                "ManaStealSkillBoost": 4,
+                "ManaStealSkillBoost": 4
             },
             "300": {
+                "FairyChance": 7,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
-                "ManaStealSkillBoost": 4,
+                "ManaStealSkillBoost": 4
             },
             "399": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 4,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "499": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
                 "MultiMonsters": 3,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "600": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
                 "MultiMonsters": 3,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "700": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
                 "MultiMonsters": 3,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "800": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "900": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "1000": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "1500": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "2000": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "2500": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "3000": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "3500": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "4000": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "4502": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "5000": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "5500": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "6000": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "6500": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "7000": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "7500": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "8000": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "8500": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "9000": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "9500": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "10000": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "CloneSkillBoost": 9,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 11,
-                "LovePotion": 9,
-            },
+                "LovePotion": 9
+            }
         },
     },
     "Heavenly Strike": {
@@ -1932,10 +1984,10 @@ const baseline = {
     "Pet": {
         "Fairy": {
             "0": {},
-            "25": {"PetQTE": 2},
-            "50": {"PetQTE": 5},
-            "101": {"PetQTE": 7, "BossDmgQTE": 4},
-            "148": {"PetQTE": 9, "BossDmgQTE": 4},
+            "25": { "PetQTE": 2 },
+            "50": { "PetQTE": 5 },
+            "101": { "PetQTE": 7, "BossDmgQTE": 4 },
+            "148": { "PetQTE": 9, "BossDmgQTE": 4 },
             "200": {
                 "PetQTE": 11,
                 "BossDmgQTE": 4,
@@ -2191,10 +2243,10 @@ const baseline = {
         },
         "HoG": {
             "0": {},
-            "24": {"PetGoldQTE": 1, "PetQTE": 1},
-            "50": {"PetGoldQTE": 1, "PetQTE": 5},
-            "102": {"PetGoldQTE": 1, "PetQTE": 7, "BossDmgQTE": 4},
-            "148": {"PetGoldQTE": 1, "PetQTE": 9, "BossDmgQTE": 4},
+            "24": { "PetGoldQTE": 1, "PetQTE": 1 },
+            "50": { "PetGoldQTE": 1, "PetQTE": 5 },
+            "102": { "PetGoldQTE": 1, "PetQTE": 7, "BossDmgQTE": 4 },
+            "148": { "PetGoldQTE": 1, "PetQTE": 9, "BossDmgQTE": 4 },
             "200": {
                 "PetGoldQTE": 2,
                 "PetQTE": 11,
@@ -2454,494 +2506,544 @@ const baseline = {
         },
         "Chesterson": {
             "0": {},
-            "24": {"PetQTE": 2},
-            "50": {"PetQTE": 5},
-            "102": {"PetQTE": 7, "BossDmgQTE": 4},
-            "148": {"PetQTE": 9, "BossDmgQTE": 4},
+            "24": {
+                "PetQTE": 2
+            },
+            "50": {
+                "PetQTE": 5
+            },
+            "102": {
+                "PetQTE": 7,
+                "BossDmgQTE": 4
+            },
+            "148": {
+                "PetQTE": 9,
+                "BossDmgQTE": 4
+            },
             "200": {
                 "PetQTE": 11,
                 "BossDmgQTE": 4,
                 "MPCapacityBoost": 3,
-                "ManaStealSkillBoost": 4,
+                "ManaStealSkillBoost": 4
             },
             "251": {
+                "FairyChance": 5,
                 "PetQTE": 14,
                 "BossDmgQTE": 4,
                 "MPCapacityBoost": 3,
-                "ManaStealSkillBoost": 4,
+                "ManaStealSkillBoost": 4
             },
             "301": {
+                "FairyChance": 7,
                 "PetQTE": 16,
                 "BossDmgQTE": 4,
                 "MPCapacityBoost": 3,
-                "ManaStealSkillBoost": 4,
+                "ManaStealSkillBoost": 4
             },
             "401": {
+                "FairyChance": 9,
                 "PetQTE": 20,
                 "BossDmgQTE": 5,
                 "MPCapacityBoost": 3,
-                "ManaStealSkillBoost": 4,
+                "ManaStealSkillBoost": 4
             },
             "501": {
+                "FairyChance": 9,
                 "PetQTE": 20,
                 "BossDmgQTE": 6,
                 "MPCapacityBoost": 3,
-                "ManaStealSkillBoost": 4,
+                "ManaStealSkillBoost": 4
             },
             "600": {
+                "FairyChance": 9,
                 "PetQTE": 20,
                 "BossDmgQTE": 7,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "702": {
+                "FairyChance": 9,
                 "PetQTE": 20,
                 "BossDmgQTE": 8,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "799": {
+                "FairyChance": 9,
                 "PetQTE": 21,
                 "BossDmgQTE": 9,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "902": {
+                "FairyChance": 9,
                 "PetQTE": 22,
                 "BossDmgQTE": 10,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "1000": {
+                "FairyChance": 9,
                 "PetQTE": 23,
                 "BossDmgQTE": 11,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "1500": {
+                "FairyChance": 9,
                 "PetQTE": 28,
                 "BossDmgQTE": 14,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
                 "MultiMonsters": 1,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "2002": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 16,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "Cloaking": 9,
                 "MultiMonsters": 1,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "2501": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 1,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "3000": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 1,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "3500": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 2,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "4000": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 2,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "4500": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 3,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "5000": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 4,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "5500": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 4,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "6000": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 5,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "6500": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 5,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "7000": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 5,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "7500": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 6,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "8000": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 6,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "8500": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "9000": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "9500": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "10000": {
+                "FairyChance": 9,
                 "PetQTE": 30,
                 "BossDmgQTE": 20,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "Cloaking": 9,
                 "MultiMonsters": 10,
-                "LovePotion": 9,
-            },
+                "LovePotion": 9
+            }
         },
     },
     "Dagger": {
         "Fairy": {
             "0": {},
-            "100": {"UltraDagger": 7, "PoisonedBlade": 4},
+            "100": {
+                "UltraDagger": 7,
+                "PoisonedBlade": 4
+            },
             "149": {
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 9,
-                "PoisonedBlade": 5,
+                "PoisonedBlade": 5
             },
             "199": {
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 12,
-                "PoisonedBlade": 6,
+                "PoisonedBlade": 6
             },
             "250": {
+                "FairyChance": 2,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 15,
-                "PoisonedBlade": 6,
+                "PoisonedBlade": 6
             },
             "299": {
+                "FairyChance": 4,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 17,
-                "PoisonedBlade": 6,
+                "PoisonedBlade": 6
             },
             "400": {
+                "FairyChance": 7,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 18,
-                "PoisonedBlade": 13,
+                "PoisonedBlade": 13
             },
             "500": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 18,
-                "PoisonedBlade": 17,
+                "PoisonedBlade": 17
             },
             "601": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 18,
-                "PoisonedBlade": 19,
+                "PoisonedBlade": 19
             },
             "701": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 20,
-                "PoisonedBlade": 21,
+                "PoisonedBlade": 21
             },
             "798": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 21,
-                "PoisonedBlade": 21,
+                "PoisonedBlade": 21
             },
             "902": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 21,
                 "PoisonedBlade": 21,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "1001": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 23,
                 "PoisonedBlade": 21,
-                "LovePotion": 9,
+                "LovePotion": 9
             },
             "1501": {
+                "FairyChance": 9,
                 "MPCapacityBoost": 3,
                 "ManaStealSkillBoost": 4,
                 "UltraDagger": 28,
                 "Cloaking": 9,
                 "PoisonedBlade": 25,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "2001": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 25,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "2500": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "3000": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "3500": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "4000": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "4500": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "5000": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "5500": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "6000": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "6500": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "7000": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "7500": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "8000": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "8500": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "9000": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "9500": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
+                "MultiMonsters": 9,
+                "LovePotion": 9
             },
             "10000": {
-                "FairyChance": 0,
+                "FairyChance": 9,
                 "MPCapacityBoost": 6,
                 "ManaStealSkillBoost": 9,
                 "UltraDagger": 30,
                 "Cloaking": 9,
                 "PoisonedBlade": 30,
-                "MultiMonsters": 10,
-                "LovePotion": 9,
-            },
+                "MultiMonsters": 9,
+                "LovePotion": 9
+            }
         },
         "HoG": {
             "0": {},
-            "100": {"PetGoldQTE": 1, "UltraDagger": 7, "PoisonedBlade": 5},
+            "100": { "PetGoldQTE": 1, "UltraDagger": 7, "PoisonedBlade": 5 },
             "149": {
                 "PetGoldQTE": 1,
                 "MPCapacityBoost": 3,
@@ -3856,330 +3958,330 @@ const baseline = {
                 "AuricShot": 20,
                 "ExplosivesExpert": 9
             }
-            },
+        },
         "Chesterson": {
             "0": {},
             "199": {
-              "GoldGun": 14,
-              "MagnumOpus": 4,
-              "AuricShot": 5,
-              "ExplosivesExpert": 1
+                "GoldGun": 14,
+                "MagnumOpus": 4,
+                "AuricShot": 5,
+                "ExplosivesExpert": 1
             },
             "249": {
-              "FairyChance": 2,
-              "MPCapacityBoost": 3,
-              "ManaStealSkillBoost": 4,
-              "GoldGun": 14,
-              "MagnumOpus": 4,
-              "AuricShot": 5,
-              "ExplosivesExpert": 1
+                "FairyChance": 2,
+                "MPCapacityBoost": 3,
+                "ManaStealSkillBoost": 4,
+                "GoldGun": 14,
+                "MagnumOpus": 4,
+                "AuricShot": 5,
+                "ExplosivesExpert": 1
             },
             "300": {
-              "FairyChance": 2,
-              "MPCapacityBoost": 3,
-              "ManaStealSkillBoost": 4,
-              "GoldGun": 14,
-              "MagnumOpus": 8,
-              "AuricShot": 5,
-              "ExplosivesExpert": 1
+                "FairyChance": 2,
+                "MPCapacityBoost": 3,
+                "ManaStealSkillBoost": 4,
+                "GoldGun": 14,
+                "MagnumOpus": 8,
+                "AuricShot": 5,
+                "ExplosivesExpert": 1
             },
             "400": {
-              "FairyChance": 5,
-              "MPCapacityBoost": 3,
-              "ManaStealSkillBoost": 4,
-              "GoldGun": 14,
-              "MagnumOpus": 9,
-              "LovePotion": 9,
-              "AuricShot": 7,
-              "ExplosivesExpert": 1
+                "FairyChance": 5,
+                "MPCapacityBoost": 3,
+                "ManaStealSkillBoost": 4,
+                "GoldGun": 14,
+                "MagnumOpus": 9,
+                "LovePotion": 9,
+                "AuricShot": 7,
+                "ExplosivesExpert": 1
             },
             "502": {
-              "FairyChance": 5,
-              "MPCapacityBoost": 3,
-              "ManaStealSkillBoost": 4,
-              "Cloaking": 9,
-              "MultiMonsters": 1,
-              "GoldGun": 14,
-              "MagnumOpus": 11,
-              "LovePotion": 9,
-              "AuricShot": 8,
-              "ExplosivesExpert": 1
+                "FairyChance": 5,
+                "MPCapacityBoost": 3,
+                "ManaStealSkillBoost": 4,
+                "Cloaking": 9,
+                "MultiMonsters": 1,
+                "GoldGun": 14,
+                "MagnumOpus": 11,
+                "LovePotion": 9,
+                "AuricShot": 8,
+                "ExplosivesExpert": 1
             },
             "602": {
-              "FairyChance": 5,
-              "MPCapacityBoost": 3,
-              "ManaStealSkillBoost": 4,
-              "Cloaking": 9,
-              "MultiMonsters": 1,
-              "GoldGun": 15,
-              "MagnumOpus": 12,
-              "LovePotion": 9,
-              "AuricShot": 9,
-              "ExplosivesExpert": 1
+                "FairyChance": 5,
+                "MPCapacityBoost": 3,
+                "ManaStealSkillBoost": 4,
+                "Cloaking": 9,
+                "MultiMonsters": 1,
+                "GoldGun": 15,
+                "MagnumOpus": 12,
+                "LovePotion": 9,
+                "AuricShot": 9,
+                "ExplosivesExpert": 1
             },
             "699": {
-              "FairyChance": 8,
-              "MPCapacityBoost": 3,
-              "ManaStealSkillBoost": 4,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 15,
-              "MagnumOpus": 12,
-              "LovePotion": 9,
-              "AuricShot": 10,
-              "ExplosivesExpert": 1
+                "FairyChance": 8,
+                "MPCapacityBoost": 3,
+                "ManaStealSkillBoost": 4,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 15,
+                "MagnumOpus": 12,
+                "LovePotion": 9,
+                "AuricShot": 10,
+                "ExplosivesExpert": 1
             },
             "803": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 3,
-              "ManaStealSkillBoost": 4,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 18,
-              "MagnumOpus": 12,
-              "LovePotion": 9,
-              "AuricShot": 11,
-              "ExplosivesExpert": 1
+                "FairyChance": 9,
+                "MPCapacityBoost": 3,
+                "ManaStealSkillBoost": 4,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 18,
+                "MagnumOpus": 12,
+                "LovePotion": 9,
+                "AuricShot": 11,
+                "ExplosivesExpert": 1
             },
             "900": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 3,
-              "ManaStealSkillBoost": 4,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 19,
-              "MagnumOpus": 14,
-              "LovePotion": 9,
-              "AuricShot": 12,
-              "ExplosivesExpert": 1
+                "FairyChance": 9,
+                "MPCapacityBoost": 3,
+                "ManaStealSkillBoost": 4,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 19,
+                "MagnumOpus": 14,
+                "LovePotion": 9,
+                "AuricShot": 12,
+                "ExplosivesExpert": 1
             },
             "1000": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 3,
-              "ManaStealSkillBoost": 4,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 20,
-              "MagnumOpus": 15,
-              "LovePotion": 9,
-              "AuricShot": 12,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 3,
+                "ManaStealSkillBoost": 4,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 20,
+                "MagnumOpus": 15,
+                "LovePotion": 9,
+                "AuricShot": 12,
+                "ExplosivesExpert": 9
             },
             "1501": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 3,
-              "ManaStealSkillBoost": 4,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 25,
-              "MagnumOpus": 16,
-              "LovePotion": 9,
-              "AuricShot": 18,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 3,
+                "ManaStealSkillBoost": 4,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 25,
+                "MagnumOpus": 16,
+                "LovePotion": 9,
+                "AuricShot": 18,
+                "ExplosivesExpert": 9
             },
             "2001": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 3,
-              "ManaStealSkillBoost": 4,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 30,
-              "MagnumOpus": 25,
-              "LovePotion": 9,
-              "AuricShot": 18,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 3,
+                "ManaStealSkillBoost": 4,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 30,
+                "MagnumOpus": 25,
+                "LovePotion": 9,
+                "AuricShot": 18,
+                "ExplosivesExpert": 9
             },
             "2499": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "3000": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "3500": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "4000": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "4500": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "5000": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 3,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 3,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "5500": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 4,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 4,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "6002": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 4,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 4,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "6500": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 4,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 4,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "7000": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 4,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 4,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "7500": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 4,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 4,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "8000": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 4,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 4,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "8500": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 5,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 5,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "9000": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 6,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 6,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "9500": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 9,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 9,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             },
             "10000": {
-              "FairyChance": 9,
-              "MPCapacityBoost": 6,
-              "ManaStealSkillBoost": 9,
-              "Cloaking": 9,
-              "MultiMonsters": 11,
-              "GoldGun": 30,
-              "MagnumOpus": 30,
-              "LovePotion": 9,
-              "AuricShot": 20,
-              "ExplosivesExpert": 9
+                "FairyChance": 9,
+                "MPCapacityBoost": 6,
+                "ManaStealSkillBoost": 9,
+                "Cloaking": 9,
+                "MultiMonsters": 11,
+                "GoldGun": 30,
+                "MagnumOpus": 30,
+                "LovePotion": 9,
+                "AuricShot": 20,
+                "ExplosivesExpert": 9
             }
         },
     },
