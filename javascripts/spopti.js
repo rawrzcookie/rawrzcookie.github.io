@@ -196,7 +196,13 @@ class Player {
       );
 
       // Calculate final value directly
-      const currEffs = efficiency * (mythic ** cost);
+      let currEffs;
+      if (talentID === "HelperDmgQTE") {
+        // astral awakening can exceed e308
+        currEffs = efficiency + (Math.log10(mythic) * cost);
+      } else {
+        currEffs = Math.log10(efficiency) + (Math.log10(mythic) * cost);
+      }
 
       effectArr.push(currEffs);
     }
@@ -289,9 +295,11 @@ class Player {
         break;
 
       case "HelperDmgQTE": // Astral Awakening
-        next = (nextA ** (5 * reductionFactor));
-        curr = ((currA || 1) ** (5 * reductionFactor));
-        efficiency = next / curr;
+        next = Math.log10(nextA) * (5 * reductionFactor);
+        curr = Math.log10(currA || 1) * (5 * reductionFactor);
+
+        // efficiency = next / curr = 10^logNext / 10^logCurr = 10^(logNext - logCurr)
+        efficiency = Math.pow(10, next - curr);
         break;
 
       // Voltaic Sails, Weakpoint Throw
@@ -529,8 +537,8 @@ class Player {
   get totalEffect() {
     let effects = this.totalEffects();
     let total = 0;
-    for (let i of effects) {
-      total += (Math.log10(i));
+    for (let i = 0; i < effects.length; i++) {
+      total += effects[i];
     }
 
     let result = (10 ** (total - Math.floor(total))).toFixed(2) + "e" + Math.floor(total);
