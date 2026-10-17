@@ -551,7 +551,11 @@ let flagop = 1;
 
 class Optimize {
 
-  // Dorijanko's modified
+  // Thanks to Dorijanko for the original algorithm
+  // which has now been improved and iterated from.
+  // Thanks to Kaestlyn for providing an optimized variation
+  // that speeds up optimizing by almost 10x.
+
   static getImportant(a) {
     const imp = [];
     let maxSF = -Infinity;
@@ -569,8 +573,7 @@ class Optimize {
     return imp;
   }
 
-
-  static mergeEff(a, b, req, goodMasks) {
+  static mergeEff(a, b, req, goodMasks, cap = Infinity) {
     /*
     1 = previous skill taken
     2 = two skills ago taken
@@ -581,20 +584,15 @@ class Optimize {
     [0,0,1,1,0,0,1,1]; //T5 mid; 2, 3, 6, 7
     [0,0,0,0,1,1,1,1]; //T5 left; 4, 5, 6, 7
     */
-    // Pre-allocate arrays with correct size once
-    const resultLength = a.length + b[0].length - 1;
+    const resultLength = Math.min(a.length + b[0].length - 1, cap);
+    const c = Array.from({ length: 8 }, () => new Float64Array(resultLength).fill(-100000));
+    const d = Array.from({ length: 8 }, () => new Int32Array(resultLength).fill(-100000));
 
-    // Create arrays once with proper initialization
-    const c = Array(8).fill().map(() => new Array(resultLength).fill(-100000));
-    const d = Array(8).fill().map(() => new Array(resultLength).fill(-100000));
-
-    // Cache important indices of b arrays outside loop
     const bImportantIndices = [];
     for (let mask = 0; mask < 8; mask++) {
       bImportantIndices[mask] = this.getImportant(b[mask]);
     }
 
-    // Main processing loop
     for (let i = 0; i < a.length; i++) {
       if (a[i] < 0) continue;
 
@@ -604,15 +602,19 @@ class Optimize {
         const newMask = (mask * 2 + (i > 0 ? 1 : 0)) % 8;
         const b1 = b[mask];
         const impj = bImportantIndices[mask];
+        const c1 = c[newMask];
+        const d1 = d[newMask];
 
         for (let jIdx = 0; jIdx < impj.length; jIdx++) {
           const j = impj[jIdx];
           const idx = i + j;
-          if ((i === 0 || j >= req) && idx < resultLength) {
+          if (idx >= resultLength) break;
+
+          if (i === 0 || j >= req) {
             const sum = a[i] + b1[j];
-            if (sum > c[newMask][idx]) {
-              c[newMask][idx] = sum;
-              d[newMask][idx] = i;
+            if (sum > c1[idx]) {
+              c1[idx] = sum;
+              d1[idx] = i;
             }
           }
         }
@@ -622,92 +624,215 @@ class Optimize {
     return [c, d];
   }
 
-  static mergeTrees(a, b, totSP) {
-    const tot = totSP + 1000;
-    const c = [];
-    const d = [];
-
-    // Pre-calculate important indices once
-    const impj = this.getImportant(b);
-    const impi = [];
-    for (let mask = 0; mask < 8; ++mask) {
-      impi[mask] = this.getImportant(a[mask]);
-    }
+  // Keep the best end mask for each branch SP amount, retaining the lowest mask on ties.
+  static collapseMasks(a) {
+    const len = a[0].length;
+    const A = new Float64Array(len).fill(-Infinity);
+    const M = new Int32Array(len);
 
     for (let mask = 0; mask < 8; ++mask) {
       const a1 = a[mask];
-      const lenAB = Math.min(a1.length + b.length, tot + 1);
-      const c1 = new Array(lenAB).fill(-100000);
-      const d1 = new Array(lenAB).fill(-100000);
-
-      const currentImpi = impi[mask];
-
-      for (let iIdx = 0; iIdx < currentImpi.length; iIdx++) {
-        const i = currentImpi[iIdx];
+      for (const i of this.getImportant(a1)) {
         if (a1[i] < 0) continue;
+        if (a1[i] > A[i]) {
+          A[i] = a1[i];
+          M[i] = mask;
+        }
+      }
+    }
 
-        for (let jIdx = 0; jIdx < impj.length; jIdx++) {
-          const j = impj[jIdx];
-          const index = i + j;
-          if (index > tot) break;
+    const idx = [];
+    for (let i = 0; i < len; ++i) {
+      if (A[i] !== -Infinity) idx.push(i);
+    }
+    return { A, M, idx };
+  }
 
-          const sum = a1[i] + b[j];
-          if (sum > c1[index]) {
-            c1[index] = sum;
-            d1[index] = i;
+  static newPrefix(length) {
+    return {
+      c: new Float64Array(length).fill(-100000),
+      d: new Int32Array(length).fill(-100000),
+      m: new Int32Array(length)
+    };
+  }
+
+  // Upper concave hull, used to bound the score of every possible split.
+  static hullBound(xs, val) {
+    const last = xs[xs.length - 1];
+    const h = new Float64Array(last + 1).fill(-Infinity);
+    const hx = [];
+
+    for (let n = 0; n < xs.length; ++n) {
+      const x = xs[n];
+      while (hx.length >= 2) {
+        const x1 = hx[hx.length - 2];
+        const x2 = hx[hx.length - 1];
+        if ((val[x2] - val[x1]) * (x - x1) > (val[x] - val[x1]) * (x2 - x1)) break;
+        hx.pop();
+      }
+      hx.push(x);
+    }
+
+    for (let n = 0; n + 1 < hx.length; ++n) {
+      const x1 = hx[n];
+      const x2 = hx[n + 1];
+      const slope = (val[x2] - val[x1]) / (x2 - x1);
+      for (let x = x1; x < x2; ++x) {
+        h[x] = val[x1] + slope * (x - x1);
+      }
+    }
+
+    h[last] = val[last];
+    for (const x of xs) {
+      if (val[x] > h[x]) h[x] = val[x];
+    }
+    return h;
+  }
+
+  // Minimum score in each forward window, computed with a monotone deque.
+  static windowMin(c, span) {
+    const out = new Float64Array(c.length);
+    const q = new Int32Array(c.length);
+    let head = 0;
+    let tail = 0;
+
+    for (let x = c.length - 1; x >= 0; --x) {
+      while (tail > head && c[q[tail - 1]] >= c[x]) --tail;
+      q[tail++] = x;
+      if (q[head] > x + span) ++head;
+      out[x] = c[q[head]];
+    }
+    return out;
+  }
+
+  // The first 101 SP entries may not be concave due to tier unlocks.
+  static lowPass(A, M, idx, b, low, tot, prefix) {
+    if (!low.length) return;
+    const { c, d, m } = prefix;
+    let bMax = -Infinity;
+    for (const j of low) bMax = Math.max(bMax, b[j]);
+
+    const span = low[low.length - 1];
+    const floor = this.windowMin(c, span);
+
+    for (const i of idx) {
+      if (i > tot) break;
+      if (A[i] + bMax < floor[i]) continue;
+
+      for (const j of low) {
+        const k = i + j;
+        if (k > tot) break;
+        const sum = A[i] + b[j];
+        const mi = M[i];
+        if (sum > c[k] || (sum === c[k] && (mi < m[k] || (mi === m[k] && i < d[k])))) {
+          c[k] = sum;
+          d[k] = i;
+          m[k] = mi;
+        }
+      }
+    }
+  }
+
+  // Search from the concave bound's peak, pruning splits that cannot beat the best score.
+  static hullPass(A, M, idx, b, J, prefix) {
+    const { c, d, m } = prefix;
+    const hA = this.hullBound(idx, A);
+    const hB = this.hullBound(J, b);
+    const inJ = new Uint8Array(J[J.length - 1] + 1);
+    for (const j of J) inJ[j] = 1;
+
+    const iF = idx[0];
+    const iL = idx[idx.length - 1];
+    const jF = J[0];
+    const jL = J[J.length - 1];
+    let peak = iF;
+    const kEnd = Math.min(c.length - 1, iL + jL);
+
+    for (let k = iF + jF; k <= kEnd; ++k) {
+      const lo = Math.max(iF, k - jL);
+      const hi = Math.min(iL, k - jF);
+      if (lo > hi) continue;
+
+      let s = Math.min(Math.max(peak, lo), hi);
+      while (s < hi && hA[s + 1] + hB[k - s - 1] >= hA[s] + hB[k - s]) ++s;
+      while (s > lo && hA[s - 1] + hB[k - s + 1] > hA[s] + hB[k - s]) --s;
+      peak = s;
+
+      let best = c[k];
+      let bestMask = m[k];
+      let bestI = d[k];
+      let cutoff = best - 1e-9 * (1 + Math.abs(best));
+
+      for (let dir = -1; dir <= 1; dir += 2) {
+        for (let i = dir < 0 ? s : s + 1; i >= lo && i <= hi; i += dir) {
+          const j = k - i;
+          if (hA[i] + hB[j] < cutoff) break;
+          if (A[i] === -Infinity || !inJ[j]) continue;
+
+          const sum = A[i] + b[j];
+          const mi = M[i];
+          if (sum > best || (sum === best && (mi < bestMask || (mi === bestMask && i < bestI)))) {
+            best = sum;
+            bestMask = mi;
+            bestI = i;
+            cutoff = best - 1e-9 * (1 + Math.abs(best));
           }
         }
       }
-
-      c.push(c1);
-      d.push(d1);
+      c[k] = best;
+      d[k] = bestI;
+      m[k] = bestMask;
     }
-    return [c, d];
   }
 
+  static mergeTrees(a, b, tot) {
+    const { A, M, idx } = this.collapseMasks(a);
+    const impj = this.getImportant(b);
+    const lenAB = Math.min(a[0].length + b.length, tot + 1);
+    const prefix = this.newPrefix(lenAB);
+    if (!idx.length) return prefix;
 
-  static intoOne(a, b, which) {
-    const len = a[0].length;
-    const c = new Array(len).fill(-100000);
-    const d = new Array(len).fill().map(() => [-1, -1]);
+    const LOW_J = 101;
+    let firstHigh = 0;
+    while (firstHigh < impj.length && impj[firstHigh] < LOW_J) ++firstHigh;
 
-    for (let x = 0; x < which.length; ++x) {
-      const i = which[x];
-      const ai = a[i];
-
-      for (let j = 0; j < ai.length; ++j) {
-        if (ai[j] > c[j]) {
-          c[j] = ai[j];
-          d[j] = [b[i][j], i];
-        }
-      }
+    if (firstHigh < impj.length) {
+      this.hullPass(A, M, idx, b, impj.slice(firstHigh), prefix);
     }
-    return [c, d];
+    this.lowPass(A, M, idx, b, impj.slice(0, firstHigh), tot, prefix);
+    return prefix;
   }
 
+  // The final branch in spend-all mode needs only one SP total.
+  static mergeTreesAt(a, b, tot, target) {
+    const { A, M, idx } = this.collapseMasks(a);
+    const important = new Uint8Array(b.length);
+    for (const j of this.getImportant(b)) important[j] = 1;
 
-  static intoOneFastc(a, which) {
-    const c = new Array(a[0].length).fill(-100000);
+    const lenAB = Math.min(a[0].length + b.length, tot + 1);
+    const prefix = this.newPrefix(lenAB);
+    const { c, d, m } = prefix;
+    if (target >= lenAB) return prefix;
 
-    for (let x = 0; x < which.length; ++x) {
-      const i = which[x];
-      const ai = a[i];
-
-      for (let j = 0; j < ai.length; ++j) {
-        if (ai[j] > c[j]) {
-          c[j] = ai[j];
-        }
+    for (const i of idx) {
+      const j = target - i;
+      if (j < 0) break;
+      if (j >= important.length || !important[j]) continue;
+      const sum = A[i] + b[j];
+      if (sum > c[target] || (sum === c[target] && M[i] < m[target])) {
+        c[target] = sum;
+        d[target] = i;
+        m[target] = M[i];
       }
     }
-    return [c];
+    return prefix;
   }
 
   static intoOneFastd(a, b, which, totSP) {
     let c = Number.NEGATIVE_INFINITY;
     let d = [-1, -1];
 
-    for (let x = 0; x < which.length; ++x) {
-      const i = which[x];
+    for (const i of which) {
       if (totSP < a[i].length && a[i][totSP] > c) {
         c = a[i][totSP];
         d = [b[i][totSP], i];
@@ -720,26 +845,37 @@ class Optimize {
     return Object.values(skillInfo).map(obj => [obj.Branch]);
   }
 
+  static validMasksForSkill(skillIndex, treePosition, spIndexGroups) {
+    if (treePosition === 1) return [0, 1, 2, 3, 4, 5, 6, 7];
+    if (treePosition >= 5 && treePosition < 11) return [4, 5, 6, 7];
+    if (spIndexGroups.Prev1.includes(skillIndex)) return [1, 3, 5, 7];
+    if (spIndexGroups.Prev2.includes(skillIndex)) return [2, 3, 6, 7];
+    if (spIndexGroups.Prev3.includes(skillIndex)) return [4, 5, 6, 7];
+    return [1, 2, 3, 4, 5, 6, 7];
+  }
+
   static optTree(efficiencies, currLevels, SP) {
     const optData = efficiencies;
     const goodRows = optData.length;
     const branches = this.treeBranch();
     const trees = [];
-    const baseB = [[0], [0], [0], [0], [0], [0], [0], [0]];
+    const baseB = Array.from({ length: 8 }, () => Float64Array.of(0));
     let tree = [[baseB, []]];
 
-    // Cache common mask arrays
-    const T5Prev1 = [0, 1, 0, 1, 0, 1, 0, 1]; //T5 right; 1, 3, 5, 7
-    const T5Prev2 = [0, 0, 1, 1, 0, 0, 1, 1]; //T5 mid; 2, 3, 6, 7
-    const T5Prev3 = [0, 0, 0, 0, 1, 1, 1, 1]; //T5 left; 4, 5, 6, 7
+    const T5Prev1 = [0, 1, 0, 1, 0, 1, 0, 1];
+    const T5Prev2 = [0, 0, 1, 1, 0, 0, 1, 1];
+    const T5Prev3 = [0, 0, 0, 0, 1, 1, 1, 1];
     const allMask = [1, 1, 1, 1, 1, 1, 1, 1];
-    const standardMasks = [0, 1, 2, 3, 4, 5, 6, 7];
 
     const spIndexGroups = {
       Prev1: [34],
       Prev2: [10, 11, 23],
       Prev3: [22, 45, 56, 57, 58, 69, 70, 71]
-    }
+    };
+
+    // Preserve the site's optimize mode and its original SP + 1000 search range.
+    const mode = document.querySelector('.optimizeMode').getAttribute('data-maxCumlEff') === 'true';
+    const tot = mode ? SP + 1000 : SP;
 
     for (let i = 0; i < goodRows; ++i) {
       if (i > 0 && branches[i][0] != branches[i - 1][0]) {
@@ -747,10 +883,8 @@ class Optimize {
         tree = [[baseB, []]];
       }
 
-      // Find maxLevInc more efficiently
       let maxLevInc = 0;
       while (maxLevInc < MID_POINT && optData[i][maxLevInc + MID_POINT] < optData[i][maxLevInc + MID_POINT + 1]) ++maxLevInc;
-
       const newArray = new Array(optData[i][maxLevInc + MID_POINT] + 1).fill(-100000);
       const SPU = optData[i][MID_POINT];
       newArray[SPU] = 0;
@@ -760,53 +894,42 @@ class Optimize {
         newArray[SPC] = (SPC - SPU) * Math.log10(optData[i][j - 1]);
       }
 
-      // Determine SPReq based on tree length
       let SPReq = 0;
       if (tree.length >= 2) SPReq = 3;
       if (tree.length >= 5) SPReq = 20;
       if (tree.length >= 8) SPReq = 50;
       if (tree.length >= 11) SPReq = 100;
 
-      // Determine goodMasks based on conditions
       let goodMasks;
-      if (tree.length === 1) {
-        goodMasks = allMask;
-      } else if (tree.length >= 5 && tree.length < 11) {
-        goodMasks = T5Prev3;
-      } else if (spIndexGroups.Prev1.includes(i)) {
-        goodMasks = T5Prev1; //T5 right
-      } else if (spIndexGroups.Prev2.includes(i)) {
-        goodMasks = T5Prev2; //T5 mid
-      } else if (spIndexGroups.Prev3.includes(i)) {
-        goodMasks = T5Prev3; //T5 left
-      } else {
-        goodMasks = [0, 1, 1, 1, 1, 1, 1, 1];
-      }
+      if (tree.length === 1) goodMasks = allMask;
+      else if (tree.length >= 5 && tree.length < 11) goodMasks = T5Prev3;
+      else if (spIndexGroups.Prev1.includes(i)) goodMasks = T5Prev1;
+      else if (spIndexGroups.Prev2.includes(i)) goodMasks = T5Prev2;
+      else if (spIndexGroups.Prev3.includes(i)) goodMasks = T5Prev3;
+      else goodMasks = [0, 1, 1, 1, 1, 1, 1, 1];
 
-      tree.push(this.mergeEff(newArray, tree[tree.length - 1][0], SPReq, goodMasks));
+      tree.push(this.mergeEff(newArray, tree[tree.length - 1][0], SPReq, goodMasks, tot + 1));
     }
     trees.push(tree);
 
     let totSP = SP;
-    const prefTrees = [[baseB, baseB]];
+    const prefTrees = [{ c: Float64Array.of(0), d: Int32Array.of(0), m: Int32Array.of(0) }];
 
     for (let i = 0; i < trees.length; ++i) {
-      const oldVal = this.intoOneFastc(prefTrees[i][0], standardMasks)[0];
-      prefTrees.push(this.mergeTrees(trees[i][trees[i].length - 1][0], oldVal, totSP));
+      const branchEnd = trees[i][trees[i].length - 1][0];
+      prefTrees.push(i === trees.length - 1 && !mode
+        ? this.mergeTreesAt(branchEnd, prefTrees[i].c, tot, totSP)
+        : this.mergeTrees(branchEnd, prefTrees[i].c, tot));
     }
 
-    // Check for optimize mode
-    const mode = document.querySelector('.optimizeMode').getAttribute("data-maxCumlEff") === 'true';
     if (mode) {
-      const effVals = this.intoOneFastc(prefTrees[trees.length][0], standardMasks)[0];
+      const effVals = prefTrees[trees.length].c;
       const SPused = Number(PageHelper.spUsed());
       let maxCumEff = effVals[totSP] / (totSP - SPused);
 
       for (let i = totSP + 1; i < effVals.length; ++i) {
-        const currentEff = effVals[i] / (i - SPused);
-        maxCumEff = Math.max(maxCumEff, currentEff);
+        maxCumEff = Math.max(maxCumEff, effVals[i] / (i - SPused));
       }
-
       for (let i = totSP; i > SPused; --i) {
         if (effVals[i] / (i - SPused) >= maxCumEff) {
           totSP = i;
@@ -819,60 +942,34 @@ class Optimize {
     const oldLevels = currLevels;
 
     for (let i = trees.length; i >= 1; --i) {
-      const vaalFast = this.intoOneFastd(prefTrees[i][0], prefTrees[i][1], standardMasks, totSP);
+      const pref = prefTrees[i];
+      const vaalFast = totSP < pref.c.length ? [pref.d[totSP], pref.m[totSP]] : [-1, -1];
       let totSPinTree = vaalFast[0];
       let usedMasks = [vaalFast[1]];
 
       for (let j = trees[i - 1].length - 1; j >= 1; --j) {
-        const curValFast = this.intoOneFastd(trees[i - 1][j][0], trees[i - 1][j][1], usedMasks, totSPinTree);
-        const SPHere = curValFast[0];
-        const curMask = curValFast[1];
-
+        const [SPHere, curMask] = this.intoOneFastd(trees[i - 1][j][0], trees[i - 1][j][1], usedMasks, totSPinTree);
         let levHere = 0;
         while (levHere < optData[0].length && optData[goodRows - levels.length - 1][levHere + MID_POINT] !== SPHere) {
           ++levHere;
         }
-
         totSPinTree -= SPHere;
         levels.push(levHere);
 
-        const getValidMasksForSkill = (skillIndex, treePosition) => {
-          if (treePosition === 1) {
-            return [0, 1, 2, 3, 4, 5, 6, 7]; // allMask
-          } else if (treePosition >= 5 && treePosition < 11) {
-            return [4, 5, 6, 7]; // minMask 4
-          } else if (spIndexGroups.Prev1.includes(skillIndex)) {
-            return [1, 3, 5, 7]; // T5Prev1
-          } else if (spIndexGroups.Prev2.includes(skillIndex)) {
-            return [2, 3, 6, 7]; // T5Prev2
-          } else if (spIndexGroups.Prev3.includes(skillIndex)) {
-            return [4, 5, 6, 7]; // T5Prev3
-          } else {
-            return [1, 2, 3, 4, 5, 6, 7]; // default
-          }
-        };
-
-        const currentSkillIndex = goodRows - levels.length;
-        const validMasks = getValidMasksForSkill(currentSkillIndex, j);
+        const validMasks = this.validMasksForSkill(goodRows - levels.length, j, spIndexGroups);
         const cand = Math.floor(curMask / 2);
-
         usedMasks = [];
         if (validMasks.includes(cand) || SPHere === 0) usedMasks.push(cand);
         usedMasks.push(cand + 4);
       }
-
       totSP -= vaalFast[0];
     }
 
     const newLevels = [];
     for (let i = 0; i < goodRows; ++i) {
-      if (oldLevels[i].length === 0) {
-        newLevels.push([levels[goodRows - i - 1]]);
-      } else {
-        newLevels.push([Number(levels[goodRows - i - 1]) + Number(oldLevels[i][0])]);
-      }
+      if (oldLevels[i].length === 0) newLevels.push([levels[goodRows - i - 1]]);
+      else newLevels.push([Number(levels[goodRows - i - 1]) + Number(oldLevels[i][0])]);
     }
-
     return newLevels;
   }
 }
